@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>科技园企业管理系统</title>
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all"/>
+		<link rel="stylesheet" href="../../resource/layui-admin/css/login.css" />
+		<link rel="stylesheet" href="../../resource/layui/css/modules/layer/default/layer.css" />
+	</head>
+
+	<body class="beg-login-bg">
+		<div class="beg-login-box">
+			<header>
+				<h1>园区管理系统</h1>
+			</header>
+			<div class="beg-login-main">
+				<form>
+					<div class="layui-form-item">
+						<label class="beg-login-icon">
+                        <i class="layui-icon">&#xe612;</i>
+                    </label>
+						<input type="text" name="username" id="val1" autocomplete="off" placeholder="这里输入登录名" class="layui-input">
+					</div>
+					<div class="layui-form-item">
+						<label class="beg-login-icon">
+                        <i class="layui-icon">&#xe642;</i>
+                    </label>
+						<input type="password" name="password" id="val2" autocomplete="off" placeholder="这里输入密码" class="layui-input">
+					</div>
+					<div class="layui-form-item">
+						<div class="beg-pull-left">
+							<button style="width: 100%;" class="layui-btn layui-btn-primary" onclick="login();return false;">登录</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<footer>
+				<p>Beginner © </p>
+			</footer>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/lay/modules/layer.js"></script>
+		<script type="text/javascript">
+			function login(){
+				var username = $("input[name='username']").val();
+				var password = $("input[name='password']").val();
+				if(username==null || $.trim(username)==''){
+					layer.tips('请输入账号', '#val1', {tips: [1, '#34495E']});
+					return;
+				}
+				reg1 = /^[a-zA-Z0-9_]{4,9}$/;
+				if(!reg1.test(username)){
+					layer.tips('4到9位数字,字母,下划线', '#val1', {tips: [1, '#34495E']});	return;
+				}
+				if(password==null || $.trim(password)==''){
+					layer.tips('请输入密码', '#val2', {tips: [1, '#34495E']});return;
+				}
+				reg2 = /^[a-zA-Z0-9_!@#$%^&*]{6,11}$/;
+				if(!reg2.test(password)){
+					layer.tips('6到11位数字,字母,特殊字符', '#val2', {tips: [1, '#34495E']});return;
+				}
+				$.post('/manage/adminLogin', $('form').serialize(), function(data){
+					if(data.result){
+						layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+							location.replace('/manage/index');
+						}); 
+					}else{
+						$('#reset').trigger('click');
+						layer.tips(data.msg, '.beg-login-main', {tips: [4, '#E74C3C']});
+					}
+				}, 'json');
+			}
+			
+			//回车确认事件
+			document.onkeydown = function(event){
+				var e = event || window.event || arguments.callee.caller.arguments[0];
+				if(e && e.keyCode==13){
+					login();
+				}
+			};
+		</script>
+	</body>
+</html>

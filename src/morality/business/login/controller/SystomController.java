@@ -1,0 +1,72 @@
+package morality.business.login.controller;
+
+import java.util.List;
+
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+import morality.business.login.service.SystomService;
+import morality.util.interceptor.ManageInterceptor;
+
+/**
+* @desc 系统操作
+* @author yangbo
+*/
+@Before(ManageInterceptor.class)
+public class SystomController extends Controller{
+	
+	/***********************模块管理************************/
+	// 模块列表
+	public void menulist(){
+		render("menu_list.html");
+	}
+	
+	/***********************角色管理************************/
+	// 角色列表
+	public void rolelist(){
+		Integer pageno = getParaToInt()==null?1:getParaToInt();
+		Page<Record> page = SystomService.getRoleList(pageno, 16);
+		setAttr("pageno", page.getPageNumber());
+		setAttr("totalpage", page.getTotalPage());
+		setAttr("totalrow", page.getTotalRow());
+		setAttr("rolelist", page.getList());
+		render("role_list.html");
+	}
+	
+	// 获得单条记录
+	public void getRole(){
+		Integer id = getParaToInt();
+		if(id != null){
+			setAttr("role", Db.findById("t_role", id));
+		}
+		List<Record> departs = SystomService.getDepartMents();
+		setAttr("departs", departs);
+		render("role_detail.html");
+	}
+	
+	// 保存数据
+	public void saveRole(){
+		Integer id = getParaToInt("id");
+		String rolename = getPara("rolename");
+		Integer did = getParaToInt("department");
+		String desc = getPara("desc");
+		boolean result = SystomService.saveRole(id, rolename, did, desc);
+		renderJson("result", result);
+	}
+	
+	// 删除数据
+	public void delRole(){
+		Integer id = getParaToInt();
+		boolean result = Db.deleteById("t_role", id);
+		renderJson(result);
+	}
+	
+
+	/***********************模块管理************************/
+	// 模块列表
+	public void authlist(){
+		render("auth_list.html");
+	}
+}

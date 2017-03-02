@@ -1,0 +1,47 @@
+package morality.business.login.controller;
+
+/**
+ * @desc 数据字典
+ * @author liyu
+ */
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+
+import morality.util.interceptor.ManageInterceptor;
+
+@Before(ManageInterceptor.class)
+public class DataDictionaryController extends Controller{
+	public void index(){
+		render("job_list.html");
+	}
+	//职位管理
+	public void  job(){
+		render("job_list.html");
+	}
+	//大楼管理
+	public void  department(){
+		render("department_list.html");
+	}
+	//大楼编号管理
+	public void buildingNo(){
+		render("buildingNo_list.html");
+	}
+	//大楼性质管理
+	public void buildingType(){
+		render("buildingType_list.html");
+	}
+	//行业代码父级
+	public void industryCodeParent(){
+		render("industryCodeParent_list.html");
+	}
+	//行业代码子级
+	public void industryCodeChild(){
+		render("industryCodeChild_list.html");
+	}
+	//行业代码
+	public void industryCode(){
+		render("industryCode_list.html");
+	}
+
+
+}

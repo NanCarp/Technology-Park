@@ -1,0 +1,18 @@
+package morality.business.login.controller;
+
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+
+import morality.util.interceptor.ManageInterceptor;
+
+/**
+* @desc 系统操作
+* @author yangbo
+*/
+public class SystomController extends Controller{
+	
+	@Before(ManageInterceptor.class)
+	public void index(){
+		render("role_list.html");
+	}
+}

@@ -1,0 +1,17 @@
+package morality.business.login.service;
+
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
+/**
+* 系统管理
+* @author yangbo
+*/
+public class SystomService {
+
+	// 获得角色列表
+	public static Page<Record> getRoleList(Integer pageno, int pagesize) {
+		return Db.paginate(pageno, pagesize, "SELECT a.id,a.role_name,b.department_name,a.role_desc,a.create_time  ", "FROM t_role a LEFT JOIN t_department b ON a.department_id = b.id");
+	}
+}

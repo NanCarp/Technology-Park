@@ -1,0 +1,27 @@
+package morality.business.login.controller;
+
+import com.jfinal.aop.Before;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
+import morality.business.login.service.SystomService;
+import morality.util.interceptor.ManageInterceptor;
+
+/**
+* @desc 系统操作
+* @author yangbo
+*/
+public class SystomController extends Controller{
+	
+	@Before(ManageInterceptor.class)
+	public void rolelist(){
+		Integer pageno = getParaToInt()==null?1:getParaToInt();
+		Page<Record> page = SystomService.getRoleList(pageno, 16);
+		setAttr("pageno", page.getPageNumber());
+		setAttr("totalpage", page.getTotalPage());
+		setAttr("totalrow", page.getTotalRow());
+		setAttr("rolelist", page.getList());
+		render("role_list.html");
+	}
+}

@@ -50,11 +50,18 @@ public class DataDictionaryService {
 				"FROM t_sub_industry ");
 	}
 
+	// 查询子级行业列表
+	public static List<Record> getSubIndustryList() {
+		return Db.find("SELECT id,sub_industry_code,sub_industry_name FROM t_sub_industry ");
+	}
+	
 	// 行业代码分页查询
 	public static Page<Record> getIndustryCodeList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize,
 				"SELECT id,industry_code,industry_name,superior_industry,sub_industry,create_time ",
 				"FROM t_industry_code ");
 	}
+
+
 
 }

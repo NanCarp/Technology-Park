@@ -185,5 +185,23 @@ public class DataDictionaryController extends Controller {
 
 		render("industry_code_list.html");
 	}
+	
+	// 获得单条记录
+	public void getIndustryCode() {
+		Integer id = getParaToInt();
+		if (null != id) {
+			setAttr("industrycode", Db.findById("t_industry_code", id));
+		}
+
+		// 获得父级行业列表
+		List<Record> superiorindustrylist = DataDictionaryService.getSuperiorIndustryList();
+		setAttr("superiorindustrylist", superiorindustrylist);
+		
+		// 获得子级行业列表
+		List<Record> subindustrylist = DataDictionaryService.getSubIndustryList();
+		setAttr("subindustrylist", subindustrylist);
+
+		render("industry_code_detail.html");
+	}
 
 }

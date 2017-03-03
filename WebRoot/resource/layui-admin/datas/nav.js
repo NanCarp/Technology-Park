@@ -1,14 +1,14 @@
 var navs = [{
 	"title": "系统管理",
-	"icon": "fa-cubes",
+	"icon": "&#xe620;",
 	"spread": true,
 	"children": [{
 		"title": "模块管理",
-		"icon": "&#xe641;",
+		"icon": "&#xe631;",
 		"href": "/systom/menulist"
 	}, {
 		"title": "角色管理",
-		"icon": "&#xe63c;",
+		"icon": "&#xe612;",
 		"href": "/systom/rolelist"
 	}, {
 		"title": "权限字典",
@@ -89,23 +89,23 @@ var navs = [{
 	"children": [{
 		"title": "企业入驻管理",
 		"icon": "&#xe608;",
-		"href": "/enterprise/in"
+		"href": "/enterprise/in_list"
 	}, {
 		"title": "离驻企业管理",
 		"icon": "&#xe640;",
-		"href": "/enterprise/leave"
+		"href": "/enterprise/retreat_list"
 	}, {
 		"title": "企业经济情况",
 		"icon": "&#xe62d;",
-		"href": "/enterprise/economy"
+		"href": "/enterprise/economy_list"
 	}, {
 		"title": "企业从业人员情况",
 		"icon": "&#xe612;",
-		"href": "/enterprise/employee"
+		"href": "/enterprise/practitioners_list"
 	}, {
 		"title": "企业知识产权情况",
 		"icon": "&#xe600;",
-		"href": "/enterprise/ipr"
+		"href": "/enterprise/property_right_list"
 	}]
 }, {
 	"title": "文件管理",
@@ -123,20 +123,20 @@ var navs = [{
 	}]
 }, {
 	"title": "查询统计",
-	"icon": "fa-stop-circle",
+	"icon": "&#xe622;",
 	"href": "https://www.baidu.com",
 	"spread": false,
 	"children":  [{
 		"title": "楼区数据统计",
-		"icon": "fa-github",
+		"icon": "&#xe624;",
 		"href": "/statistic/buildinglist"
 	}, {
 		"title": "企业数据总览",
-		"icon": "fa-qq",
+		"icon": "&#xe62a;",
 		"href": "/statistic/companylist"
 	}, {
 		"title": "园区缴费情况总表",
-		"icon": "fa-qq",
+		"icon": "&#xe63c;",
 		"href": "/statistic/parkpaylist"
 	}]
 }];

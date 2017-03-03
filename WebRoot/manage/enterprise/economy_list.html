@@ -1,188 +1,119 @@
-<!DOCTYPE html>
 <html>
-
-	<head>
-		<meta charset="UTF-8">
-		<title>Table</title>
-		<link rel="stylesheet" href="/resource/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="/resource/layui-admin/css/global.css" media="all">
-		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-		<link rel="stylesheet" href="/resource/layui-admin/css/table.css" />
-	</head>
-	<body>
-		<div class="admin-main">
-			<blockquote class="layui-elem-quote">
-				<a href="javascript:;" class="layui-btn layui-btn-small" id="add">
-					<i class="layui-icon">&#xe608;</i> 添加信息
-				</a>
-				<a href="#" class="layui-btn layui-btn-small" id="import">
-					<i class="layui-icon">&#xe608;</i> 导入信息
-				</a>
-				<a href="#" class="layui-btn layui-btn-small">
-					<i class="fa fa-shopping-cart" aria-hidden="true"></i> 导出信息
-				</a>
-				<a href="javascript:;" class="layui-btn layui-btn-small" id="search">
-					<i class="layui-icon">&#xe615;</i> 搜索
-				</a>
-			</blockquote>
-			<fieldset class="layui-elem-field">
-				<legend>数据列表</legend>
-				<div class="layui-field-box">
-					<table class="site-table table-hover">
-						<thead>
-							<tr>
-								<th><input type="checkbox" id="selected-all"></th>
-								<th></th>
-								<th>时间</th>
-								<th>企业名称 </th>
-								<th>企业总收入(万元)</th>
-								<th>企业净利润(万元)</th>
-								<th>企业上缴税费(万元)</th>
-								<th>企业R&D投入(万元)</th>
-								<th></th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>+</td>
-								<td>
-									<a href="/manage/article_edit_1">演示站点发布成功啦。</a>
-								</td>
-								<td>Beginner</td>
-								<td>2016-11-16 11:50</td>
-								<td>1298</td>
-								<td>正常</td>
-								<td>99</td>
-								<td style="text-align:center;"><i class="layui-icon" style="color:green;"></i></td>
-								<td>
-									<a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
-									<a href="/manage/article_edit_1" class="layui-btn layui-btn-mini">编辑</a>
-									<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
-								</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>+</td>
-								<td>
-									<a href="/manage/article_edit_19">神5飞天震寰宇</a>
-								</td>
-								<td>就是我</td>
-								<td>2016-11-18 10:18</td>
-								<td>74</td>
-								<td>正常</td>
-								<td>0</td>
-								<td style="text-align:center;"><i class="layui-icon" style="color:green;"></i></td>
-								<td>
-									<a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
-									<a href="/manage/article_edit_1" class="layui-btn layui-btn-mini">编辑</a>
-									<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
-								</td>
-							</tr>
-
-						</tbody>
-					</table>
-
-				</div>
-			</fieldset>
-			<div class="admin-table-page">
-				<div id="page" class="page">
-				</div>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../resource/layui/css/layui.css"
+	media="all" />
+<link rel="stylesheet" href="../../resource/layui-admin/css/global.css"
+	media="all">
+<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+<style type="text/css">
+.forpage {
+	text-align: right;
+	margin-top: 10px;
+}
+</style>
+<title>企业管理 - 企业经济情况</title>
+</head>
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote">
+			<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加企业经济</a>
+			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+			<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend>企业列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>时间</th>
+							<th>企业名称</th>
+							<th>企业总收入（万元）</th>
+							<th>企业净利润(万元)</th>
+							<th>企业上缴税费(万元)</th>
+							<th>企业R&D投入(万元) </th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#if economylist?? && economylist?size gt 0>
+						<#list economylist as economy>
+						<tr>
+							<td>${economy_index+1}</td>
+							<td>${economy.company_name}</td>
+							<td>${economy.the_date}</td>
+							<td>${economy.income}</td>
+							<td>${economy.net_profit}</td>
+							<td>${economy.taxation}</td>
+							<td>${economy.investment}</td>
+							<td>
+								<a onclick="_edit(${economy.id})" class="layui-btn layui-btn-mini">编辑</a>
+								<a onclick="_delete(${economy.id})" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+							</td>
+						</tr>
+						</#list> <#else>
+						<tr>
+							<td colspan="6" style="text-align: center;"><span>没有数据信息</span></td>
+						</tr>
+						</#if>
+					</tbody>
+				</table>
+				<div class="forpage" id="forpage"></div>
 			</div>
-		</div>
-		<script type="text/javascript" src="/resource/layui/layui.js"></script>
-		<script>
-			layui.config({
-				base: '/resource/layui/modules/'
-			});
-
-			layui.use(['icheck', 'laypage','layer'], function() {
-				var $ = layui.jquery,
-					laypage = layui.laypage,
-					layer = parent.layer === undefined ? layui.layer : parent.layer;
-				$('input').iCheck({
-					checkboxClass: 'icheckbox_flat-green'
+		</fieldset>
+	</div>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript"
+		src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				            location.replace('/enterprise/economy_list/'+e.curr);
+				        }
+				    }
 				});
-
-				//page
-				laypage({
-					cont: 'page',
-					pages: 25 //总页数
-						,
-					groups: 5 //连续显示分页数
-						,
-					jump: function(obj, first) {
-						//得到了当前页，用于向服务端请求对应数据
-						var curr = obj.curr;
-						if(!first) {
-							//layer.msg('第 '+ obj.curr +' 页');
-						}
-					}
-				});
-
-				$('#search').on('click', function() {
-					parent.layer.alert('你点击了搜索按钮')
-				});
-
-				$('#add').on('click', function() {
-					$.get('temp/edit-form.html', null, function(form) {
-						layer.open({
-							type: 1,
-							title: '添加表单',
-							content: form,
-							btn: ['保存', '取消'],
-							area: ['600px', '400px'],
-							maxmin: true,
-							yes: function(index) {
-								console.log(index);
-							},
-							full: function(elem) {
-								var win = window.top === window.self ? window : parent.window;
-								$(win).on('resize', function() {
-									var $this = $(this);
-									elem.width($this.width()).height($this.height()).css({
-										top: 0,
-										left: 0
-									});
-									elem.children('div.layui-layer-content').height($this.height() - 95);
+			 });
+			 
+			 // 增加
+			 function _add(){
+				 parent.open_window('添加企业经济', '/enterprise/getEconomy', 540, 370);
+			 }
+			 
+			 // 编辑
+			 function _edit(id){
+				 parent.open_window('编辑企业经济', '/enterprise/getEconomy/'+id, 540, 370);
+			 }
+			 
+			 // 删除
+			 function _delete(id){
+				 layui.use('layer', function(){
+					 var layer = layui.layer;
+					 parent.actconfirm('确认要删除吗？', function(){
+						$.post('/systom/delRole/'+id, function(data){
+							if(data){
+								layer.msg('删除成功', {time: 1000}, function(){
+									location.replace(location.href);
 								});
+							}else{
+								layer.msg('删除失败', {time: 1000});
 							}
 						});
-					});
-				});
+					});				 
+				});    
+			 }
 
-				$('#import').on('click', function() {
-					var that = this;
-					var index = layer.tips('只想提示地精准些', that,{tips: [1, 'white']});
-					$('#layui-layer'+index).children('div.layui-layer-content').css('color','#000000');
-				});
-
-				$('.site-table tbody tr').on('click', function(event) {
-					var $this = $(this);
-					var $input = $this.children('td').eq(0).find('input');
-					$input.on('ifChecked', function(e) {
-						$this.css('background-color', '#EEEEEE');
-					});
-					$input.on('ifUnchecked', function(e) {
-						$this.removeAttr('style');
-					});
-					$input.iCheck('toggle');
-				}).find('input').each(function() {
-					var $this = $(this);
-					$this.on('ifChecked', function(e) {
-						$this.parents('tr').css('background-color', '#EEEEEE');
-					});
-					$this.on('ifUnchecked', function(e) {
-						$this.parents('tr').removeAttr('style');
-					});
-				});
-				$('#selected-all').on('ifChanged', function(event) {
-					var $input = $('.site-table tbody tr td').find('input');
-					$input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
-				});
-			});
 		</script>
-	</body>
+</body>
 
 </html>

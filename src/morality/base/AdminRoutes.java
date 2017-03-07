@@ -41,7 +41,5 @@ public class AdminRoutes extends Routes{
 
 		//查询统计
 		add("/statistic",StatisticController.class,"/manage/statistic");
-		
-
 	}
 }

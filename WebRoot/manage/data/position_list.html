@@ -42,7 +42,7 @@
 							<tr>
 								<td>${position_index+1}</td>
 								<td>${position.position_name}</td>
-								<td>${position.create_time}</td>
+								<td>${position.create_time?substring(0,10)}</td>
 								<td><a onclick="_edit(${position.id})"
 									class="layui-btn layui-btn-mini">编辑</a> <a
 									onclick="_delete(${position.id})"
@@ -97,11 +97,11 @@
 					 parent.actconfirm('确认要删除吗？', function(){
 						$.post('/data/delPosition/'+id, function(data){
 							if(data){
-								layer.msg('删除成功', {time: 1000}, function(){
+								parent.layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);
 								});
 							}else{
-								layer.msg('删除失败', {time: 1000});
+								parent.layer.msg('删除失败', {time: 1000});
 							}
 						});
 					});				 

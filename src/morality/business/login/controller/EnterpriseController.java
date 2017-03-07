@@ -1,5 +1,6 @@
 package morality.business.login.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import com.jfinal.aop.Before;
@@ -19,10 +20,6 @@ import morality.util.interceptor.ManageInterceptor;
 
 @Before(ManageInterceptor.class)
 public class EnterpriseController extends Controller {
-
-	public void index() {
-		render("");
-	}
 
 	// *******************************行业代码管理*******************************/
 	// 入驻企业列表
@@ -48,6 +45,16 @@ public class EnterpriseController extends Controller {
 		}
 
 		render("in_detail.html");
+	}
+
+	// 企业离驻
+	public void saveRetreat() {
+		Integer id = getParaToInt("id");
+		String retreatreason = getPara("retreatreason");
+
+		boolean result = EnterpriseService.saveRetreat(id, retreatreason);
+
+		renderJson("result", result);
 	}
 
 	// *******************************离驻企业管理*******************************/
@@ -123,7 +130,7 @@ public class EnterpriseController extends Controller {
 	public void getPractitioner() {
 		Integer id = getParaToInt();
 		if (null != id) {
-			setAttr("practitioner", Db.findById("t_practitioner", id));
+			setAttr("practitioner", Db.findById("t_practitioners", id));
 		}
 
 		render("practitioner_detail.html");
@@ -155,4 +162,28 @@ public class EnterpriseController extends Controller {
 		render("property_right_detail.html");
 	}
 
+	// 保存数据
+	public void savePropertyRight() {
+		Record record = new Record();
+		record.set("id", getParaToInt("id"));
+		record.set("company_name", getPara("companyname"));
+		record.set("the_date", getPara("thedate"));
+		record.set("apply", getPara("apply"));
+		record.set("approval", getPara("approval"));
+		record.set("patent", getPara("patent"));
+		record.set("copyright", getPara("copyright"));
+		record.set("software_product", getPara("software"));
+		record.set("modify_time", new Date());
+
+		boolean result = EnterpriseService.savePropertyRight(record);
+
+		renderJson("result", result);
+	}
+
+	// 删除数据
+	public void delPropertyRight() {
+		Integer id = getParaToInt();
+		boolean result = Db.deleteById("t_property_right", id);
+		renderJson(result);
+	}
 }

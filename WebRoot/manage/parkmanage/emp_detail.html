@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if emp??>
+				<input type="hidden" id="v0" name="id" value="">
+				<div class="layui-form-item">
+					<label class="layui-form-label">姓名：</label>
+					<div class="layui-input-block">
+						<input type="text" name="empname" id="v1"  lay-verify="required|rolename" value="${emp.name}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">员工号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="empno" id="v2"  lay-verify="required|rolename" value="${emp.empno}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">手机号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="emphone" id="v3"  lay-verify="required|rolename" value="${emp.phone}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所在部门：</label>
+					<div class="layui-input-block">
+						<select name="department" id="v4" lay-verify="depart">
+					    	<option value="0" selected>--选择部门--</option>
+							<#list departs as depart>
+							<option value="${depart.id}"<#if emp.department_id=depart.id>selected</#if>>${depart.department_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">职位：</label>
+					<div class="layui-input-block">
+						<select name="position" id="v5" lay-verify="depart">
+					    	<option value="0" selected>--选择职位--</option>
+							<#list positions as position>
+							<option value="${position.id}"<#if emp.role_id=position.id>selected</#if>>${position.position_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">在职状态：</label>
+					<div class="layui-input-block">
+						<input type="text" name="status" id="v6"  lay-verify="required|rolename" value="${emp.status}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">姓名：</label>
+					<div class="layui-input-block">
+						<input type="text" name="empname" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">员工号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="empno" id="v2"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">手机号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="emphone" id="v3"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所在部门：</label>
+					<div class="layui-input-block">
+						<select name="department" id="v4" lay-verify="depart">
+					    	<option value="0" selected>--选择部门--</option>
+							<#list departs as depart>
+							<option value="${depart.id}">${depart.department_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">职位：</label>
+					<div class="layui-input-block">
+						<select name="position" id="v5" lay-verify="depart">
+					    	<option value="0" selected>--选择部门--</option>
+							<#list positions as position>
+							<option value="${position.id}">${position.position_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">在职状态：</label>
+					<div class="layui-input-block">
+						<input type="text" name="status" id="v6"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					title: function(value) {
+						if(value.length < 5) {
+							return '标题至少得5个字符啊';
+						}
+					}
+				});
+				
+				form.verify({
+					empname: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '不能有特殊字符';
+					    }
+					  }
+					  ,depart: function(value){
+						  if(value==0){
+							  return '请选择部门';
+						  }
+					  }
+					  ,position: function(value){
+						  if(value==0){
+							  return '请选择职位';
+						  }
+					  }
+					  ,
+					  empphone: [/^1[3|4|5|7|8]\d{9}$/, '手机必须11位，只能是数字！']
+					  
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/systom/saveRole', data.field, function(data){
+							lock = false;
+							if(data.result){
+								layer.msg("保存成功", {time: 2000}, function(){
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

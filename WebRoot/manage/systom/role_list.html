@@ -38,12 +38,12 @@
 							<tr>
 								<td>${role_index+1}</td>
 								<td>${role.role_name}</td>
-								<td>${role.department_name}</td>
+								<td>${role.department_name!}</td>
 								<td>${role.role_desc}</td>
 								<td>${role.create_time}</td>
 								<td>
 									<a onclick="_edit(${role.id})" class="layui-btn layui-btn-mini">编辑</a>
-									<a onclick="_edit(${role.id})" class="layui-btn layui-btn-normal layui-btn-mini">权限</a>
+									<a onclick="_authority(${role.id})" class="layui-btn layui-btn-normal layui-btn-mini">权限</a>
 									<a onclick="_delete(${role.id})" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
 								</td>
 							</tr>
@@ -86,6 +86,11 @@
 			 // 编辑
 			 function _edit(id){
 				 parent.open_window('编辑角色', '/systom/getRole/'+id, 540, 370);
+			 }
+			 
+			 // 权限
+			 function _authority(rid){
+				 parent.open_window('分配权限', '/systom/getAuthority/'+rid, 540, 370);
 			 }
 			 
 			 // 删除

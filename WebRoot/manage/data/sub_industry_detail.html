@@ -20,23 +20,23 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="industrycode" id="v1"  lay-verify="required|industrycode" value="${subindustry.sub_industry_code}" autocomplete="off" class="layui-input">
+						<input type="text" name="industrycode" id="v1"  lay-verify="required|code" value="${subindustry.sub_industry_code}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v2" name="industryname" lay-verify="required|industryname" value="${subindustry.sub_industry_name}" autocomplete="off" class="layui-input">
+						<input type="text" name="industryname" id="v2" lay-verify="required|industryname" value="${subindustry.sub_industry_name}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业：</label>
 					<div class="layui-input-block">
-						<select name="superiorindustrylist" id="v3" lay-verify="superiorindustrylist">
-<!-- 					    	<option value="0">--选择父级行业--</option>
+						<select name="superiorindustryid" id="v3" lay-verify="superiorindustryid">
+					    	<option value="0">--选择父级行业--</option>
 							<#list superiorindustrylist as superiorindustry>
-							<option value="${superiorindustry.id}" <#if subindustry.superior_industry_id==superiorindustry.industry_code>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
-							</#list> -->
+							<option value="${superiorindustry.id}" <#if subindustry.superior_industry_id=superiorindustry.id>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
 						</select>
 					</div>
 				</div>
@@ -44,16 +44,26 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业代码：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v1"  name="industrycode" lay-verify="required|industrycode" autocomplete="off" class="layui-input">
+						<input type="text" id="v1"  name="industrycode" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v2" name="industryname" autocomplete="off" class="layui-input">
+						<input type="text" id="v2" name="industryname" lay-verify="required|name" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-
+				<div class="layui-form-item">
+					<label class="layui-form-label">父级行业：</label>
+					<div class="layui-input-block">
+						<select name="superiorindustryid" id="v3" lay-verify="superiorindustryid">
+							<option value="0">--选择父级行业--</option>
+							<#list superiorindustrylist as superiorindustry>
+								<option value="${superiorindustry.id}">${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
 				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
@@ -71,37 +81,21 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				
-				form.verify({
-					industrycode: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
+					superiorindustryid: function(value){
 						  if(value==0){
-							  return '请选择部门';
+							  return '请选择父级行业';
 						  }
 					  }
-				});     
+				});
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/data/saveSubIndustry', data.field, function(data){
 							lock = false;
 							if(data.result){
+								parent.refresh_iframe();
 								layer.msg("保存成功", {time: 2000}, function(){
 									layer_close();
 								});

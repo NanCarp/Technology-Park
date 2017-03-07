@@ -36,4 +36,50 @@ public class SystomService {
 			return Db.save("t_role", record);
 		}
 	}
+
+	public static Page<Record> getMenuList(Integer pageno, int pagesize) {
+		return Db.paginate(pageno, pagesize, " SELECT a.id, a.name,b.name AS pname,a.url,a.remarks ", " FROM t_menu a LEFT JOIN t_menu b ON a.pid = b.id ORDER BY a.id");
+	}
+
+	public static List<Record> getMenu() {
+		return Db.find("select id,name,url,pid from t_menu");
+	}
+
+	public static boolean saveMenu(Integer id, String name, Integer pid, String url, String desc) {
+		Record record = new Record();
+		record.set("name", name);
+		record.set("url", url);
+		record.set("pid", pid);
+		record.set("remarks", desc);
+		record.set("modify_time", new Date());
+		if(id != null){
+			record.set("id", id);
+			return Db.update("t_menu", record);
+		}else{
+			record.set("create_time", new Date());
+			return Db.save("t_menu", record);
+		}
+	}
+
+	public static boolean saveAuthority(Integer id, String mid, int rid) {
+		boolean result = false;
+		String[] mlist = new String[]{};
+		if(rid == 1){
+			mid = Db.queryStr("SELECT GROUP_CONCAT(id) FROM t_menu");
+		}
+		mlist = mid.split(",");
+		Db.update("delete from t_role_details where role_id=?", rid);
+		for(int i=0;i<mlist.length;i++){
+			Record record = new Record();
+			record.set("role_id", rid);
+			record.set("menu_id", mlist[i]);
+			record.set("create_time", new Date());
+			record.set("modify_time", new Date());
+			result = Db.save("t_role_details", record);
+			if(!result){
+				return result;
+			}
+		}
+		return result;
+	}
 }

@@ -20,7 +20,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="industrycode" id="v1"  lay-verify="required|industrycode" value="${superiorindustry.industry_code}" autocomplete="off" class="layui-input">
+						<input type="text" name="industrycode" id="v1"  lay-verify="required|number" value="${superiorindustry.industry_code}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -33,13 +33,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业代码：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v1"  name="industrycode" lay-verify="required|industrycode" autocomplete="off" class="layui-input">
+						<input type="text" id="v1"  name="industrycode" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v2" name="industryname" autocomplete="off" class="layui-input">
+						<input type="text" id="v2" name="industryname" lay-verify="required|industryname" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -59,37 +59,16 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
 				});
-				
-				form.verify({
-					industrycode: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
-				});     
-				
+
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/data/saveSuperiorIndustry', data.field, function(data){
 							lock = false;
 							if(data.result){
+								parent.refresh_iframe();
 								layer.msg("保存成功", {time: 2000}, function(){
 									layer_close();
 								});

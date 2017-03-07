@@ -26,28 +26,26 @@
 							<tr>
 								<th>序列</th>
 								<th>菜单名称</th>
-								<th>父级ID</th>
-								<th>页面地址</th>
-								<th>操作权限</th>
-								<th>排序ID</th>
-								<th>是否启用</th>
+								<th>父级菜单名称</th>
+								<th>地址</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
+							<#if menulist?? && menulist?size gt 0>
+							<#list menulist as menu>
 							<tr>
-								<td>1</td>
-								<td>a</td>
-								<td>b</td>
-								<td>c</td>
-								<td>d</td>
-								<td>d</td>
-								<td>e</td>
+								<td>${menu_index+1}</td>
+								<td>${menu.name}</td>
+								<td>${menu.pname!'无'}</td>
+								<td>${menu.url!'无'}</td>
 								<td>
-									<a onclick="_edit()" class="layui-btn layui-btn-mini">编辑</a>
-									<a onclick="_delete()" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+									<a onclick="_edit(${menu.id})" class="layui-btn layui-btn-mini">编辑</a>
+									<a onclick="_delete(${menu.id})" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
 								</td>
 							</tr>
+							</#list>
+							</#if>
 						</tbody>
 					</table>
 					<div class="forpage" id="forpage"></div>
@@ -75,12 +73,12 @@
 			 
 			 // 增加角色
 			 function _add(){
-				 parent.open_window('添加角色', '/systom/getRole', 540, 370);
+				 parent.open_window('添加菜单', '/systom/getMenu', 540, 370);
 			 }
 			 
 			 // 编辑
 			 function _edit(id){
-				 parent.open_window('编辑角色', '/systom/getRole/'+id, 540, 370);
+				 parent.open_window('编辑角色', '/systom/getMenu/'+id, 540, 370);
 			 }
 			 
 			 // 删除
@@ -88,7 +86,7 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delRole/'+id, function(data){
+						$.post('/systom/delMenu/'+id, function(data){
 							if(data){
 								layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);

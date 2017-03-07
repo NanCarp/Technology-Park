@@ -17,21 +17,14 @@
 			<form class="layui-form">
 				<input type="hidden" id="v0" name="id" value="">
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">离驻时间：</label>
-					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
 					<label class="layui-form-label">离驻理由：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="retreatreason" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layi-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-filter"save">保存</button>
 					</div>
 				</div>
 			</form>
@@ -61,15 +54,15 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/enterprise/saveRetreat', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();
-								layer.msg("保存成功", {time: 2000}, function(){
+								layer.msg("离驻成功", {time: 2000}, function(){
 									layer_close();
 								});
 							}else{
-								layer.msg("保存失败");
+								layer.msg("离驻失败");
 							}
 						});
 					}

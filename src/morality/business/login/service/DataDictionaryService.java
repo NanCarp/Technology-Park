@@ -1,5 +1,6 @@
 package morality.business.login.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
@@ -7,31 +8,96 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
 /**
-* 数据字典管理
-* @author liyu
-*/
+ * 数据字典管理
+ * 
+ * @author liyu
+ */
 
 public class DataDictionaryService {
+	/*********************** 职位管理 ************************/
 	// 职位分页查询
 	public static Page<Record> getPositionList(Integer pageno, int pagesize) {
 		return Db.paginate(pageno, pagesize, "SELECT id,position_name,create_time ", "FROM t_position");
 	}
 
+	// 保存职位
+	public static boolean savePosition(Integer id, String positionname) {
+		Record record = new Record();
+		record.set("position_name", positionname);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_position", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_position", record);
+		}
+	}
+
+	/*********************** 部门管理 ************************/
 	// 部门分页查询
 	public static Page<Record> getDepartmentList(Integer pageno, int pagesize) {
 		return Db.paginate(pageno, pagesize, "SELECT id,department_name,create_time,`describe` ", "FROM t_department ");
 	}
 
+	// 保存部门
+	public static boolean saveDepartment(Integer id, String departmentname, String description) {
+		Record record = new Record();
+		record.set("department_name", departmentname);
+		record.set("describe", description);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_department", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_department", record);
+		}
+	}
+
+	/*********************** 大楼编号管理 ************************/
 	// 大楼编号分页查询
 	public static Page<Record> getBuildingNoList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize, "SELECT id,building_no,sort_id,create_time ", "FROM t_building_number ");
 	}
 
+	// 保存大楼编号
+	public static boolean saveBuildingNo(Integer id, String buildingNo, Integer sortId) {
+		Record record = new Record();
+		record.set("building_no", buildingNo);
+		record.set("sort_id", sortId);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_building_number", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_building_number", record);
+		}
+	}
+
+	/*********************** 大楼性质管理 ************************/
 	// 大楼性质分页查询
 	public static Page<Record> getBuildingNatureList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize, "SELECT id,name,sort_id,create_time ", "FROM t_building_nature ");
 	}
 
+	// 保存大楼性质
+	public static boolean saveBuildingNature(Integer id, String name, Integer sortId) {
+		Record record = new Record();
+		record.set("name", name);
+		record.set("sort_id", sortId);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_building_nature", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_building_nature", record);
+		}
+	}
+
+	/*********************** 父级行业管理 ************************/
 	// 父级行业分页查询
 	public static Page<Record> getSuperiorIndustryList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize, "SELECT id,industry_code,industry_name,create_time ",
@@ -43,6 +109,22 @@ public class DataDictionaryService {
 		return Db.find("SELECT id,industry_code,industry_name FROM t_superior_industry ");
 	}
 
+	// 保存父级行业
+	public static boolean saveSuperiorIndustry(Integer id, String industryCode, String industryName) {
+		Record record = new Record();
+		record.set("industry_code", industryCode);
+		record.set("industry_name", industryName);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_superior_industry", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_superior_industry", record);
+		}
+	}
+
+	/*********************** 子级行业管理 ************************/
 	// 子级行业分页查询
 	public static Page<Record> getSubIndustryList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize,
@@ -52,9 +134,27 @@ public class DataDictionaryService {
 
 	// 查询子级行业列表
 	public static List<Record> getSubIndustryList() {
-		return Db.find("SELECT id,sub_industry_code,sub_industry_name FROM t_sub_industry ");
+		return Db.find("SELECT a.id,a.sub_industry_code,a.sub_industry_name,b.industry_name AS super_industry_name FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id ");
 	}
-	
+
+	// 保存子级行业数据
+	public static boolean saveSubIndustry(Integer id, String industrycode, String industryname,
+			int superiorindustryid) {
+		Record record = new Record();
+		record.set("sub_industry_code", industrycode);
+		record.set("sub_industry_name", industryname);
+		record.set("superior_industry_id", superiorindustryid);
+		record.set("modify_time", new Date());
+		if (null != id) {
+			record.set("id", id);
+			return Db.update("t_sub_industry", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_sub_industry", record);
+		}
+	}
+
+	/*********************** 行业代码管理 ************************/
 	// 行业代码分页查询
 	public static Page<Record> getIndustryCodeList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize,
@@ -62,6 +162,14 @@ public class DataDictionaryService {
 				"FROM t_industry_code ");
 	}
 
-
+	//保存行业代码数据
+	public static boolean saveIndustryCode(Record record) {
+		if (null != record.getInt("id")) {
+			return Db.update("t_industry_code", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_industry_code", record);
+		}
+	}
 
 }

@@ -91,13 +91,13 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delRole/'+id, function(data){
+						$.post('/data/delSubIndustry/'+id, function(data){
 							if(data){
-								layer.msg('删除成功', {time: 1000}, function(){
+								parent.layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);
 								});
 							}else{
-								layer.msg('删除失败', {time: 1000});
+								parent.layer.msg('删除失败', {time: 1000});
 							}
 						});
 					});				 

@@ -55,8 +55,7 @@
 }
 
 .beg-pull-left {
-	float: left;
-	width: 100%;
+	float: left !important;
 }
 
 .beg-pull-right {

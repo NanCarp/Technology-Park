@@ -20,14 +20,14 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">职位名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="${position.position_name}" autocomplete="off" class="layui-input">
+						<input type="text" name="positionname" id="v1"  lay-verify="required|positionname" value="${position.position_name}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
-					<label class="layui-form-label">角色名称：</label>
+					<label class="layui-form-label">职位名称：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v1"  name="rolename" lay-verify="required|rolename" autocomplete="off" class="layui-input">
+						<input type="text" id="v1"  name="positionname" lay-verify="required|positionname" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -47,24 +47,17 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
+					positionname: [/^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$/, '不能有特殊字符'],
 				});
 				   			
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/data/savePosition', data.field, function(data){
 							lock = false;
 							if(data.result){
+								parent.refresh_iframe();
 								layer.msg("保存成功", {time: 2000}, function(){
 									layer_close();
 								});

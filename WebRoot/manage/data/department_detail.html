@@ -26,7 +26,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">部门描述：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc"  lay-verify="pass" id="v3" value="${department.describe}" autocomplete="off" class="layui-input">
+						<input type="text" name="description"  lay-verify="required|description" id="v2" value="${department.describe}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
@@ -39,7 +39,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">部门描述：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v3" name="desc" autocomplete="off" class="layui-input">
+						<input type="text" id="v2" name="description" lay-verify="required|description" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -59,37 +59,20 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
+					/* description: function(value) {
 						layedit.sync(editIndex);
-					}
+					} */
 				});
-				
-				form.verify({
-					departmentname: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
-				});     
+				     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/savedepartment', data.field, function(data){
+						$.post('/data/saveDepartment', data.field, function(data){
 							lock = false;
 							if(data.result){
+								parent.refresh_iframe();
 								layer.msg("保存成功", {time: 2000}, function(){
 									layer_close();
 								});

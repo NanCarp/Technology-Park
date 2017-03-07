@@ -27,23 +27,18 @@
 						<li class="layui-nav-item" style="display: none;">
 							<a href="javascript:;">浏览网站</a>
 						</li>
-						<li class="layui-nav-item" id="video1"" style="display: none;">
-							<a href="javascript:;">视频</a>
-						</li>
+						<li class="layui-nav-item" style="color: #999;"><i class="layui-icon">&#xe613;</i>&nbsp;&nbsp;${department!}</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
-								<span>${department!}-${role!}-${name!}</span>
+								<span><i class="layui-icon">&#xe612;</i>&nbsp;&nbsp;${role!}-${name!}</span>
 							</a>
 							<dl class="layui-nav-child">
-								<dd>
-									<a href="javascript:;"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
-								</dd>
-								<dd>
+								<dd style="display: none;">
 									<a href="javascript:;"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
 								</dd>
 								<dd id="lock">
 									<a href="javascript:;">
-										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 锁屏 (Alt+L)
+										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 修改密码
 									</a>
 								</dd>
 								<dd>
@@ -67,7 +62,7 @@
 					<ul class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>控制面板</cite>
+							<cite>我的桌面</cite>
 						</li>
 					</ul>
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
@@ -80,7 +75,7 @@
 			<div class="layui-footer footer footer-demo" id="admin-footer">
 				<div class="layui-main">
 					<p>2017 &copy;
-						<a href="#">品德网络</a> HA license
+						<a href="#">启迪(海安)软件科技园--管理系统</a> HA license
 					</p>
 				</div>
 			</div>
@@ -119,7 +114,6 @@
 							area: ['800px', '500px']
 						});
 					});
-
 				});
 			</script>
 		</div>

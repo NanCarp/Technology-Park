@@ -54,37 +54,36 @@ var navs = [{
 	"spread": false,
 	"children": [{
 		"title": "员工管理",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe613",
 		"href": "/parkmanage"
 	},{
 		"title": "楼宇管理",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe62d",
 		"href": "/parkmanage/building"
 	},{
 		"title": "区域管理",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe632",
 		"href": "/parkmanage/areamanage"
 	},{
 		"title": "缴费管理",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe62a",
 		"href": "/parkmanage/paymanage"
 	},{
 		"title": "安全管理检查记录",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe638",
 		"href": "/parkmanage/safetyagreement"
 	},{
 		"title": "园区安全责任书签订情况",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe60a",
 		"href": "/parkmanage/safetyrecord"
 	},{
 		"title": "通知公告",
-		"icon": "fa-check-square-o",
+		"icon": "&#xe645",
 		"href": "/parkmanage/notice"
 	}]
 }, {
 	"title": "企业管理",
 	"icon": "&#xe629;",
-	"href": "",
 	"spread": false,
 	"children": [{
 		"title": "企业入驻管理",
@@ -110,21 +109,19 @@ var navs = [{
 }, {
 	"title": "文件管理",
 	"icon": "fa-stop-circle",
-	"href": "https://www.baidu.com",
 	"spread": false,
 	"children":  [{
 		"title": "文件传阅管理",
-		"icon": "fa-github",
+		"icon": "&#xe61d",
 		"href": "/filemanage"
 	}, {
 		"title": "项目申报管理",
-		"icon": "fa-qq",
+		"icon": "&#xe622",
 		"href": "/filemanage/projectDeclar"
 	}]
 }, {
 	"title": "查询统计",
 	"icon": "&#xe622;",
-	"href": "https://www.baidu.com",
 	"spread": false,
 	"children":  [{
 		"title": "楼区数据统计",

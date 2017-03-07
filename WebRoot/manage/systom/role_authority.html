@@ -11,11 +11,19 @@
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="../../resource/zTree/css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="../../resource/zTree/css/zTreeStyle/zTreeStyle.css" />
+		<style type="text/css">
+			.container{max-width: 767px;padding: 15px;}
+			.row{margin: 10px 25% 0 25%;}
+			#save{font-family: 'Microsoft Yahei';position: fixed;margin: 10px 10px 0 0;right: 0;top: 0;}
+		</style>
 		<title>角色权限</title>
 	</head>
 	<body>
-		<article>
+		<article class="container">
+			<div class="row">
 	        	<ul id="treeDemo" class="ztree"></ul>
+		    </div>
+		    <input type="button" id="save" class="layui-btn" value="保存" onclick="_save()" />
 		</article>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/zTree/js/jquery.ztree.core-3.5.js"></script>
@@ -38,7 +46,7 @@
 			var menuarr = mid.split(',');
 			init();
 			function init(){
-				$.post('/manage/iframe/systom/allMenu', function(data){
+				$.post('/systom/allMenu', function(data){
 					$(data).each(function(){
 						var str = {};
 						str["id"] = this.id;
@@ -58,43 +66,33 @@
 				});
 			}
 			
-			
-			layui.use(['form'], function() {
-				var form = layui.form(),
-				layer = layui.layer;
-				
-				form.verify({
-					rolename: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
-				});     
-				
-				//监听提交
-				var lock = true;
-				form.on('submit(save)', function(data) {
-					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
-							lock = false;
-							if(data.result){
+			var lock = true;
+			function _save(){
+				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+				var nodes = treeObj.getCheckedNodes(true);
+				var myArray = new Array(nodes.length);
+				for (var a = 0; a < nodes.length; a++) {
+					myArray[a] = nodes[a].id;
+				}
+				if(lock){
+					lock = false;
+					$.post('/systom/saveAuthority', {'id':id,'mid':myArray.join(),'rid':rid}, function(data){
+						layui.use('layer', function(){
+							var layer = layui.layer;
+							if(data){
 								parent.refresh_iframe();
-								layer.msg("保存成功", {time: 2000}, function(){
-									layer_close();
-								});
+									layer.msg('保存成功', {time: 1000}, function(){
+										layer_close();
+									});
 							}else{
-								layer.msg("保存失败");
+								layer.msg('保存失败', {time: 1000}, function(){
+									lock = true;
+								});
 							}
 						});
-					}
-					return false;
-				});
-			});
+					});
+				}
+			}
 		</script>
 	</body>
 </html>

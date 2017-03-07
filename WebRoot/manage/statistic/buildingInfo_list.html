@@ -13,22 +13,23 @@
 			<blockquote class="layui-elem-quote">
 			<form class="layui-form">
 				<div class="layui-input-block buildlist_0">
-					<select name="fstate" id="v2">
+					<select name="fstate" id="v0">
 				    	<option value="9" <#if fstate==9>selected</#if>>--选择楼层状态--</option>
 				    	<option value="1" <#if fstate==1>selected</#if>>已满</option>
 				    	<option value="0" <#if fstate==0>selected</#if>>未满</option>
 					</select>
 				</div>
 				<div class="layui-input-block buildlist_1">
-					<select name="astate" id="v2">
+					<select name="astate" id="v1">
 				    	<option value="9" <#if astate==9>selected</#if>>--选择区域状态--</option>
 				    	<option value="1" <#if astate==1>selected</#if>>已入驻</option>
 				    	<option value="0" <#if astate==0>selected</#if>>未入驻</option>
 					</select>
 				</div>
-				<input type="text" placeholder="请输入楼号" name="floorno" class="layui-input buildlist_2" value="${floorno!}">
-				<input type="text" placeholder="请输入区域编号" name="areano"  class="layui-input buildlist_3" value="${areano!}">
+				<input type="text" placeholder="请输入楼号" id="v2" name="floorno" lay-verify="num" class="layui-input buildlist_2" value="${floorno!}" maxlength="10">
+				<input type="text" placeholder="请输入区域编号" id="v3" name="areano" lay-verify="num" class="layui-input buildlist_3" value="${areano!}"  maxlength="10">
 				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
+				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_export">导出EXCEL</button>
 				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
@@ -57,7 +58,7 @@
 							<#list buildlist as building>
 							<tr>
 								<td>${building_index+1}</td>
-								<td>${building.building_no}</td>
+								<td>${building.building_NO}</td>
 								<td>${building.floor_no}</td>
 								<td>${building.usable_area}</td>
 								<td><#if building.bstate==0>未满<#else>已满</#if></td>
@@ -103,6 +104,16 @@
 				var form = layui.form(),
 				layer = layui.layer;
 				
+				form.verify({
+					num: function(val){
+						if($.trim(val)!=''){
+							if(!new RegExp("^[0-9]*$").test(val)){
+								return '请输入正确格式的编号';
+							}
+						}
+					}
+				});
+				
 				form.on('submit(_search)', function(data){
 					var fstate = data.field.fstate;
 					var astate = data.field.astate;
@@ -111,7 +122,15 @@
 					location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
 					return false;
 				});
-					
+				
+				form.on('submit(_export)', function(data){
+					var fstate = data.field.fstate;
+					var astate = data.field.astate;
+					var floorno = data.field.floorno;
+					var areano = data.field.areano;
+				    window.open('/statistic/exportbuilding/'+fstate+'-'+astate+'-'+floorno+'-'+areano, '_blank');
+					return false;
+				});
 			 })
 		</script>
 	</body>

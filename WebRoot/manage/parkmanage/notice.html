@@ -4,35 +4,47 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-	<link rel="stylesheet" href="../resource/layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="../resource/layui-admin/css/global.css" media="all">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-	<link rel="stylesheet" href="../resource/layui-admin/css/table.css" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
 	<style>
 		.forpage{text-align:right;margin-top: 10px;}
 	</style>
 <body>
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
-			<a href="javascript:;" class="layui-btn layui-btn-small" id="add"><i class="layui-icon">&#xe608;</i> 添加信息</a>
+			<a href="javascript:;" class="layui-btn layui-btn-small" id="add" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加通知公告</a>
 			<a href="javascript:;" class="layui-btn layui-btn-small" id="search"><i class="layui-icon">&#xe615;</i> 搜索</a>
 			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
 		</blockquote>
 		<fieldset class="layui-elem-field">
-			<legend class="layui-field-box">数据列表</legend>
+			<legend class="layui-field-box">通知公告列表</legend>
 			<div class="layui-field-box">
 				<table class="site-table table-hover">
 					<thead>
 						<tr>
-							<th><input type="checkbox" id="selected-all"></th>
+							<th>序列</th>
 							<th>标题</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
+					<#if noticelist?? && noticelist?size gt 0>
+					<#list noticelist as notice>
 						<tr>
-							<td><input type="checkbox"></td>
-							<td>欢迎各位领导参加本次系统评测</td>
+							<td>${notice_index+1}</td>
+							<td>${notice.title!}</td>
+							<td>
+								<a href="javascript:" class="layui-btn layui-btn-mini" onclick="_edit()">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+							</td>
 						</tr>
+					</#list>
+					<#else>
+						<td colspan="6" style="text-align: center"><span>没有数据信息</span></td>
+					</#if>	
 					</tbody>
 				</table>
 				<div id="forpage" class="forpage"></div>
@@ -48,16 +60,23 @@
 	$(function(){
 		laypage({
 		    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
-		    pages: 10, //总页数
+		    pages: ${totalpage}, //总页数
 		    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
 		    groups: 5, //连续显示分页数
-		    curr: 1,
+		    curr: ${pageno},
 		    jump: function(e, first){ //触发分页后的回调
 		        if(!first){ //一定要加此判断，否则初始时会无限刷新
-		            location.replace( );
+		            location.replace("/parkmanage/notice/"+e.curr);
 		        }
 		    }
 		});
-	})
+	});
+	function _add(){
+		parent.open_window("添加通知公告","/parkmanage/getNotice",700,500);
+	}
+	
+	function _edit(){
+		parent.open_window("修改通知公告","/parkmanage/getNotice",700,500);
+	}
 	</script>
 </html>

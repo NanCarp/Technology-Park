@@ -14,26 +14,18 @@
 <body>
 	<div class="admin-main">
 			<blockquote class="layui-elem-quote">
-				<a href="javascript:;" class="layui-btn layui-btn-small" id="add">
-					<i class="layui-icon">&#xe608;</i> 添加信息
-				</a>
-				<a href="#" class="layui-btn layui-btn-small" id="import">
-					<i class="layui-icon">&#xe608;</i> 导入信息
-				</a>
-				<a href="#" class="layui-btn layui-btn-small">
-					<i class="fa fa-shopping-cart" aria-hidden="true"></i> 导出信息
-				</a>
-				<a href="javascript:;" class="layui-btn layui-btn-small" id="search">
-					<i class="layui-icon">&#xe615;</i> 搜索
-				</a>
+				<a href="javascript:;" class="layui-btn layui-btn-small" id="add" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加项目</a>
+				<a href="javascript:;" class="layui-btn layui-btn-small" id="search"><i class="layui-icon">&#xe615;</i> 搜索</a>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>66</strong> 条</span>
 			</blockquote>
 			<fieldset class="layui-elem-field">
-				<legend>数据列表</legend>
+				<legend>项目申报列表</legend>
 				<div class="layui-field-box">
 					<table class="site-table table-hover">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="selected-all"></th>
+								<th>序列</th>
 								<th>项目名称</th>
 								<th>原项目名称</th>
 								<th>申报人</th>
@@ -43,14 +35,13 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><input type="checkbox"></td>
+								<td>1</td>
 								<th>测试文件</th>
 								<th>原测试文件</th>
 								<th>超级管理员上传</th>
 								<th>2017.1.1</th>
 								<td>
-									<a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
-									<a href="/manage/article_edit_1" class="layui-btn layui-btn-mini">编辑</a>
+									<a href="javascript:" class="layui-btn layui-btn-mini" onclick="_edit()">编辑</a>
 									<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
 								</td>
 							</tr>
@@ -79,6 +70,13 @@
 		        }
 		    }
 		});
-	})
+	});
+	function _add(){
+		parent.open_window('添加项目申报','/filemanage/getProject',540, 370);
+		
+	}
+	function _edit(){
+		parent.open_window('编辑项目申报','/filemanage/getProject',540, 370);
+	}
 	</script>
 </html>

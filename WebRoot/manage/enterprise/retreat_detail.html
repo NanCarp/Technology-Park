@@ -15,18 +15,40 @@
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
-				<input type="hidden" id="v0" name="id" value="">
+				<#if enterpriseretreat.is_retreat==false>
+				<input type="hidden" id="v0" name="id" value="${enterpriseretreat.id}">
 				<div class="layui-form-item">
 					<label class="layui-form-label">离驻理由：</label>
 					<div class="layui-input-block">
-						<input type="text" name="retreatreason" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="retreatreason" id="v1"  lay-verify="required|retreatreason" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<div class="layi-form-item">
+				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" style="width: 100%;" lay-filter"save">保存</button>
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
 					</div>
 				</div>
+				<#else>
+					<div class="layui-form-item">
+						<label class="layui-form-label">企业名称：</label>
+						<div class="layui-input-block">
+							<input type="text" name="retreatreason" id="v1" value="${enterpriseretreat.enterprise_name}" autocomplete="off" class="layui-input" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">离驻时间：</label>
+						<div class="layui-input-block">
+							<input type="text" name="retreatreason" id="v1" value="${enterpriseretreat.retreat_time}" autocomplete="off" class="layui-input" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">离驻理由：</label>
+						<div class="layui-input-block">
+							<input type="text" name="retreatreason" id="v1" value="${enterpriseretreat.retreat_reason}" autocomplete="off" class="layui-input" readonly="readonly">
+						</div>
+					</div>
+				</#if>
+				
 			</form>
 		</div>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
@@ -38,15 +60,10 @@
 				layer = layui.layer;
 				
 				form.verify({
-					rolename: function(value){
+					name: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
 					  }
 				});     
 				
@@ -54,7 +71,7 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/enterprise/saveRetreat', data.field, function(data){
+						$.post('/enterprise/enterpriseRetreat', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();

@@ -1,5 +1,6 @@
 package morality.business.login.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,7 +107,12 @@ public class DataDictionaryService {
 
 	// 查询父级行业列表
 	public static List<Record> getSuperiorIndustryList() {
-		return Db.find("SELECT id,industry_code,industry_name FROM t_superior_industry ");
+		return Db.find("SELECT id,industry_code,industry_name,'0' AS pid FROM t_superior_industry ");
+	}
+
+	// 通过子级行业代码，找到父级行业
+	public static List<Record> getSuperIndustryBySubId(Integer id) {
+		return Db.find("SELECT * FROM t_superior_industry WHERE id= " + id);
 	}
 
 	// 保存父级行业
@@ -134,7 +140,16 @@ public class DataDictionaryService {
 
 	// 查询子级行业列表
 	public static List<Record> getSubIndustryList() {
-		return Db.find("SELECT a.id,a.sub_industry_code,a.sub_industry_name,b.industry_name AS super_industry_name FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id ");
+		return Db.find(
+				"SELECT a.id,a.sub_industry_code,a.sub_industry_name,a.superior_industry_id,b.industry_name AS super_industry_name FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id ");
+	}
+
+	// 查询子级行业列表，通过父级ID
+	public static List<Record> getSubIndustryBySuperId(Integer superId) {
+		return Db
+				.find("SELECT a.id,a.sub_industry_code,a.sub_industry_name,a.superior_industry_id,b.industry_name AS super_industry_name "
+						+ "FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id "
+						+ "WHERE a.superior_industry_id = " + superId);
 	}
 
 	// 保存子级行业数据
@@ -162,7 +177,26 @@ public class DataDictionaryService {
 				"FROM t_industry_code ");
 	}
 
-	//保存行业代码数据
+	// 行业代码列表
+	public static List<Record> getIndustryCodeList() {
+		return Db.find("SELECT id,industry_code,industry_name,superior_industry,sub_industry FROM t_industry_code ");
+	}
+	
+	// 查询行业列表，通过子级ID
+	public static List<Record> getIndustryBySubId(Integer subId) {
+		return Db.find("SELECT a.id,a.industry_code,a.industry_name "
+				+ "FROM t_industry_code a LEFT JOIN t_sub_industry b ON a.sub_industry=b.sub_industry_name "
+				+ "WHERE b.id=" + subId);
+	}
+
+	
+	// 行业代码列表，增加父级行业id
+	public static List<Record> getIndustryList() {
+		return Db.find("SELECT a.id,a.industry_code,a.industry_name,a.superior_industry,a.sub_industry,b.industry_code "
+				+ "FROM t_industry_code AS a LEFT JOIN t_sub_industry AS b ON a.sub_industry=b.sub_industry_name");
+	}
+	
+	// 保存行业代码数据
 	public static boolean saveIndustryCode(Record record) {
 		if (null != record.getInt("id")) {
 			return Db.update("t_industry_code", record);
@@ -171,5 +205,15 @@ public class DataDictionaryService {
 			return Db.save("t_industry_code", record);
 		}
 	}
+
+	// 获取所有行业数据，
+	public static List<Record> getAllIndustries() {
+		return Db.find("");
+	}
+	
+
+
+
+
 
 }

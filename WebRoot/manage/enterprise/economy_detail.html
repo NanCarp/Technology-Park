@@ -10,84 +10,94 @@
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-		<title>角色详情</title>
+		<title>企业经济情况</title>
 	</head>
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
-				<#if enterprisein??>
-				<input type="hidden" id="v0" name="id" value="">
+				<#if economy??>
+				<input type="hidden" id="v0" name="id" value="${economy.id}">
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}" <#if economy.company_id==enterprisein.id>selected</#if>>${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v2" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" value="${economy.the_date}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业总收入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v3"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="income" id="v3"  lay-verify="required|number" value="${economy.income}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业净利润：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v4" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|number" value="${economy.net_profit}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业上缴税费：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v5"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|number" value="${economy.taxation}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业R&D投入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v6" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="investment" id="v6" lay-verify="required|number" value="${economy.investment}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}">${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v2" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业总收入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v3"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="income" id="v3"  lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业净利润：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v4" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业上缴税费：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v5"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业R&D投入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v6" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="investment" id="v6" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -116,9 +126,9 @@
 					      return '不能有特殊字符';
 					    }
 					  }
-					  ,depart: function(value){
+					  ,enterpriseid: function(value){
 						  if(value==0){
-							  return '请选择部门';
+							  return '请选择企业';
 						  }
 					  }
 				});     
@@ -127,7 +137,7 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/enterprise/saveEconomy', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();
@@ -142,6 +152,10 @@
 					return false;
 				});
 			});
+			
+			function _change(){
+				alert("1234");
+			}
 		</script>
 	</body>
 </html>

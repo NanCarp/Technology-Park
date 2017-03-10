@@ -1,5 +1,6 @@
 package morality.business.login.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +20,23 @@ import morality.util.interceptor.ManageInterceptor;
 @Before(ManageInterceptor.class)
 public class DataDictionaryController extends Controller {
 
-	// *******************************职位管理*******************************/
+	/******************************* 职位管理 *******************************/
 	// 职位列表
 	public void position_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("110") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("111") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("112") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Page<Record> page = DataDictionaryService.getPositionList(pageno, 16);
 
@@ -58,9 +73,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************部门管理*******************************/
+	/******************************* 部门管理 *******************************/
 	// 部门列表
 	public void department_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("113") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("114") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("115") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 
 		Page<Record> page = DataDictionaryService.getDepartmentList(pageno, 16);
@@ -99,9 +128,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************大楼编号管理*******************************/
+	/******************************* 大楼编号管理 *******************************/
 	// 大楼编号列表
 	public void building_no_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("116") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("117") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("118") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Integer pagesize = 16;
 
@@ -141,9 +184,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************大楼性质管理*******************************/
+	/******************************* 大楼性质管理 *******************************/
 	// 大楼性质列表
 	public void building_nature_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("119") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("120") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("121") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Integer pagesize = 16;
 
@@ -183,9 +240,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************行业代码父级管理*******************************/
+	/******************************* 行业代码父级管理 *******************************/
 	// 行业代码父级列表
 	public void superior_industry_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("122") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("123") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("124") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Integer pagesize = 16;
 
@@ -225,9 +296,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************行业代码子级管理*******************************/
+	/******************************* 行业代码子级管理 *******************************/
 	// 行业代码子级列表
 	public void sub_industry_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("125") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("126") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("127") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Integer pagesize = 16;
 
@@ -255,6 +340,14 @@ public class DataDictionaryController extends Controller {
 		render("sub_industry_detail.html");
 	}
 
+	// 通过父级行业ID，获得其子级行业列表，以Json格式返回
+	public void getIndustryBySubId() {
+		Integer subId = getParaToInt("subindustryid");// 父级行业ID
+		List<Record> industrylist = DataDictionaryService.getIndustryBySubId(subId);
+
+		renderJson(industrylist);
+	}
+
 	// 保存数据
 	public void saveSubIndustry() {
 		Integer id = getParaToInt("id");
@@ -273,9 +366,23 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
-	// *******************************行业代码管理*******************************/
+	/******************************* 行业代码管理 *******************************/
 	// 行业代码列表
 	public void industry_code_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("128") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("129") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("130") != -1) {
+			setAttr("_edit", true);
+		}
+
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Integer pagesize = 16;
 
@@ -292,32 +399,49 @@ public class DataDictionaryController extends Controller {
 	// 获得单条记录
 	public void getIndustryCode() {
 		Integer id = getParaToInt();
+		List<Record> subindustrylist = DataDictionaryService.getSubIndustryList();
+
 		if (null != id) {
-			setAttr("industrycode", Db.findById("t_industry_code", id));
+			setAttr("industrycode", Db.findById("t_industry_code", id));// 父级行业代码
 		}
 
 		// 获得父级行业列表
 		List<Record> superiorindustrylist = DataDictionaryService.getSuperiorIndustryList();
-		setAttr("superiorindustrylist", superiorindustrylist);
 
-		// 获得子级行业列表
-		List<Record> subindustrylist = DataDictionaryService.getSubIndustryList();
-		setAttr("subindustrylist", subindustrylist);
+		setAttr("superiorindustrylist", superiorindustrylist);// 父级行业列表
+		setAttr("subindustrylist", subindustrylist);// 子级行业列表
 
 		render("industry_code_detail.html");
 	}
 
+	// 通过父级行业ID，获得其子级行业列表，以Json格式返回
+	public void getSubIndustryBySuperId() {
+		Integer superId = getParaToInt("superiorindustryid");// 父级行业ID
+		List<Record> subindustrylist = DataDictionaryService.getSubIndustryBySuperId(superId);
+
+		renderJson(subindustrylist);
+	}
+
 	// 保存数据
 	public void saveIndustryCode() {
+		// 获取父级行业名称
+		Integer superiorId = getParaToInt("superiorindustryid");
+		Record superiorIndustry = Db.findById("t_superior_industry", superiorId);
+		String superiorIndustryName = superiorIndustry.getStr("industry_name");
 
-		Record record = new Record()
-				.set("id", getParaToInt("id"))
-				.set("industry_code", getPara("industrycode"))
-				.set("industry_name", getPara("industryname"))
-				.set("superior_industry", getPara("superiorindustryname"))
-				.set("sub_industry", getPara("subindustryname"))
-				.set("modify_time", new Date());
-				
+		// 获取子级行业名称
+		Integer subId = getParaToInt("subindustryid");
+		Record subIndustry = Db.findById("t_sub_industry", subId);
+		String subIndustryName = subIndustry.getStr("sub_industry_name");
+
+		Record record = new Record();
+		record.set("id", getParaToInt("id"));
+		record.set("industry_code", getPara("industrycode"));
+		record.set("industry_name", getPara("industryname"));
+		record.set("superior_industry", superiorIndustryName);
+		record.set("sub_industry", subIndustryName);
+		record.set("modify_time", new Date());
+
 		boolean result = DataDictionaryService.saveIndustryCode(record);
 
 		renderJson("result", result);
@@ -330,4 +454,12 @@ public class DataDictionaryController extends Controller {
 		renderJson(result);
 	}
 
+	/*********************** 树型菜单 ************************/
+	public void industryTree() {
+		// 合并list
+		List<Record> allIndustries = DataDictionaryService.getAllIndustries();
+
+		// renderJson
+		renderJson(allIndustries);
+	}
 }

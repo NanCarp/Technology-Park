@@ -10,12 +10,14 @@
 <body>
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
-			<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3" value="${enterprisename!}">
+		<form class="layui-form">
+			<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3" lay-filter="enterprisename" lay-verify="enterprisename" value="${enterprisename!}" id="enterprisename">
 			<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
 			<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加企业经济情况</a>
 			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 			<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+		</form>
 		</blockquote>
 		<fieldset class="layui-elem-field">
 			<legend>企业列表</legend>
@@ -38,8 +40,8 @@
 						<#list economylist as economy>
 						<tr>
 							<td>${economy_index+1}</td>
-							<td>${economy.company_name}</td>
 							<td>${economy.the_date}</td>
+							<td>${economy.company_name}</td>
 							<td>${economy.income}</td>
 							<td>${economy.net_profit}</td>
 							<td>${economy.taxation}</td>
@@ -95,7 +97,7 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delRole/'+id, function(data){
+						$.post('/enterprise/delEconomy/'+id, function(data){
 							if(data){
 								layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);
@@ -107,7 +109,29 @@
 					});				 
 				});    
 			 }
-
+			 
+			 layui.use(['form'], function() {
+					var form = layui.form(),
+					layer = layui.layer;
+					
+					form.verify({
+						enterprisename: function(val){
+							if($.trim(val)!=''){
+								if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+									return '不能有特殊字符';
+								}
+							}
+						}
+					});
+					
+					form.on('submit(_search)', function(data){
+						var enterprisename = data.field.enterprisename;
+						location.replace('/enterprise/economy_list?pageno=1&enterprisename='+enterprisename);
+						return false;
+					});					
+				})
+			 
+			 
 		</script>
 </body>
 

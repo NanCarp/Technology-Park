@@ -11,12 +11,14 @@
 	<body>
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
-				<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3" value="${enterprisename!}">
-				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
-				<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加企业知识产权</a>
-				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
-				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
-				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+				<form class="layui-form">
+					<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3" lay-verify="enterprisename" value="${enterprisename!}">
+					<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
+					<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加知识产权</a>
+					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+				</form>
 			</blockquote>
 			<fieldset class="layui-elem-field">
 				<legend>知识产权列表</legend>
@@ -111,6 +113,29 @@
 					});				 
 				});    
 			 }
+			 
+
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					enterprisename: function(val){
+						if($.trim(val)!=''){
+							if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+								return '不能有特殊字符';
+							}
+						}
+					}
+				});
+				
+				form.on('submit(_search)', function(data){
+					var enterprisename = data.field.enterprisename;
+					location.replace('/enterprise/property_right_list?pageno=1&enterprisename='+enterprisename);
+					return false;
+				});					
+			})
+		 
 		</script>
 	</body>
 

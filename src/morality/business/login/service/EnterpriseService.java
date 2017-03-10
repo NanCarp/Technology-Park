@@ -1,54 +1,136 @@
 package morality.business.login.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
+/**
+ * @desc 企业管理
+ * @author liyu
+ */
+
 public class EnterpriseService {
-	/***********************入驻企业管理************************/
+	/*********************** 入驻企业管理 ************************/
 	// 入驻企业分页查询
-	public static Page<Record> getEnterpriseInList(Integer pageno, Integer pagesize) {
-		// return Db.paginate(pageno, pagesize,
-		// "SELECT
-		// id,enterprise_name,industry,organizational_code,registration_number,representative,contact,registered_address
-		// ",
-		// "FROM t_enterprise_in");
-		return Db.paginate(pageno, pagesize, "SELECT * ", "FROM t_enterprise_in ");
-	}
-	
-	public static boolean saveRetreat(Integer id, String retreatreason) {
-		Record record = new Record();
-		record.set("retreat_reason", retreatreason);
-		return Db.update("t_enterprise_in", record);
+	public static Page<Record> getEnterpriseInListByPage(Integer pageno, Integer pagesize, String enterprisename) {
+		String sqlExceptSelect = "FROM t_enterprise_in WHERE is_retreat='0' ";
+		if ("" != enterprisename) {
+			sqlExceptSelect += "AND enterprise_name LIKE '%" + enterprisename + "%' ";
+		}
+
+		return Db.paginate(pageno, pagesize, "SELECT * ", sqlExceptSelect);
 	}
 
-	/***********************离驻企业管理************************/
+	// 查询入驻企业列表
+	public static List<Record> getEnterpriseInList() {
+		return Db.find("SELECT * FROM t_enterprise_in WHERE is_retreat='0' ");
+	}
+
+	// 保存入驻企业
+	public static boolean saveEnterprise(Record record) {
+		if (null != record.getInt("id")) {
+			return Db.update("t_enterprise_in", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_enterprise_in", record);
+		}
+	}
+	
+	//获取企业的行业、子级行业、父级行业ID
+	public static List<Record> getIndustryIds(Integer id) {
+		return Db.find(" SELECT a.*,b.industry_name,b.id as industry_id,c.id AS sub_industry_id,d.id AS superior_industry_id "
+				+ " FROM  t_enterprise_in a LEFT JOIN t_industry_code b ON a.industry=b.industry_code "
+				+ " LEFT JOIN t_sub_industry c ON b.sub_industry=c.sub_industry_name "
+				+ " LEFT JOIN t_superior_industry d ON c.superior_industry_id=d.id "
+				+ " WHERE a.id=" + id);
+	}
+
+	/*********************** 离驻企业管理 ************************/
 	// 离驻企业分页查询
-	public static Page<Record> getEnterpriseRetreatList(Integer pageno, Integer pagesize) {
-		return Db.paginate(pageno, pagesize, "SELECT * ", "FROM t_enterprise_in ");
+	public static Page<Record> getEnterpriseRetreatList(Integer pageno, Integer pagesize, String enterprisename,
+			String start, String end) {
+		String sqlExceptSelect = "FROM t_enterprise_in WHERE is_retreat='1' ";
+		if ("" != enterprisename) {
+			sqlExceptSelect += "AND enterprise_name LIKE '%" + enterprisename + "%' ";
+		}
+		if ("" != start) {
+			sqlExceptSelect += "AND retreat_time >= '" + start + "'";
+		}
+		if ("" != end) {
+			sqlExceptSelect += "AND retreat_time <= '" + end + "'";
+		}
+
+		return Db.paginate(pageno, pagesize, "SELECT * ", sqlExceptSelect);
 	}
 
-	/***********************企业经济情况管理************************/
+	/*********************** 企业经济情况管理 ************************/
 	// 企业经济情况分页查询
-	public static Page<Record> getEconomyList(Integer pageno, Integer pagesize) {
+	public static Page<Record> getEconomyList(Integer pageno, Integer pagesize, String enterprisename) {
+		String sqlExceptSelect = "FROM t_enterprise_economy WHERE 1=1 ";
+		if ("" != enterprisename) {
+			sqlExceptSelect += "AND company_name LIKE '%" + enterprisename + "%' ";
+		}
+
 		return Db.paginate(pageno, pagesize, "SELECT id,company_name,the_date,income,net_profit,taxation,investment ",
-				"FROM t_enterprise_economy ");
+				sqlExceptSelect);
 	}
 
-	/***********************企业从业人员管理************************/
-	// 企业从业人员分页查询
-	public static Page<Record> getPractitionersList(Integer pageno, Integer pagesize) {
-		return Db.paginate(pageno, pagesize, "SELECT * ",
-				"FROM t_practitioners ");
+	// 保存企业经济情况
+	public static boolean saveEconomy(Record record) {
+		if (null != record.getInt("id")) {
+			return Db.update("t_enterprise_economy", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_enterprise_economy", record);
+		}
 	}
-	
-	/***********************企业知识产权管理************************/
+
+	/***********************
+	 * 企业从业人员管理
+	 * 
+	 * @param enterprisename
+	 ************************/
+	// 企业从业人员分页查询
+	public static Page<Record> getPractitionersList(Integer pageno, Integer pagesize, String enterprisename) {
+		String sqlExceptSelect = "FROM t_practitioners WHERE 1=1 ";
+		if ("" != enterprisename) {
+			sqlExceptSelect += "AND company_name LIKE '%" + enterprisename + "%' ";
+		}
+
+		return Db.paginate(pageno, pagesize, "SELECT * ", sqlExceptSelect);
+	}
+
+	// 保存企业从业人员
+	public static boolean savePractitioner(Record record) {
+		if (null != record.getInt("id")) {
+			return Db.update("t_practitioners", record);
+		} else {
+			record.set("create_time", new Date());
+			return Db.save("t_practitioners", record);
+		}
+	}
+
+	/*********************** 企业知识产权管理 ************************/
 	// 企业知识产权分页查询
 	public static Page<Record> getPropertyRightList(Integer pageno, Integer pagesize) {
-		return Db.paginate(pageno, pagesize, "SELECT id,company_name,the_date,apply,approval,patent,copyright,software_product",
+		return Db.paginate(pageno, pagesize,
+				"SELECT id,company_name,the_date,apply,approval,patent,copyright,software_product",
 				"FROM t_property_right ");
+	}
+
+	public static Page<Record> getPropertyRightList(Integer pageno, Integer pagesize, String enterprisename) {
+		String sqlExceptSelect = "FROM t_property_right WHERE 1=1 ";
+		if ("" != enterprisename) {
+			sqlExceptSelect += "AND company_name LIKE '%" + enterprisename + "%' ";
+		}
+
+		return Db.paginate(pageno, pagesize,
+				"SELECT id,company_name,the_date,apply,approval,patent,copyright,software_product ", sqlExceptSelect);
 	}
 
 	// 保存企业知识产权
@@ -60,7 +142,5 @@ public class EnterpriseService {
 			return Db.save("t_property_right", record);
 		}
 	}
-
-
 
 }

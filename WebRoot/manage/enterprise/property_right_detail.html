@@ -20,7 +20,12 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="companyname" id="v1"  lay-verify="required|companyname" value="${propertyright.company_name}" autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}" <#if propertyright.company_id==enterprisein.id>selected</#if>>${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -63,7 +68,12 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="companyname" id="v1"  lay-verify="required|companyname"  autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}">${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -122,7 +132,7 @@
 				layer = layui.layer;
 				
 				form.verify({
-					companyname: function(value){
+					name: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }

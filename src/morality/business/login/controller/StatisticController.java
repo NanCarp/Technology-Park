@@ -1,7 +1,5 @@
 package morality.business.login.controller;
-
-import javax.servlet.http.HttpServletResponse;
-
+import java.io.IOException;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
@@ -53,11 +51,30 @@ public class StatisticController  extends Controller{
 	
 	/***********************企业数据总览************************/
 	public void companylist(){
+		Integer pageno = getParaToInt("pageno")==null?1:getParaToInt("pageno");
+		Page<Record> page = StatisticService.getCompanyInfoList(pageno, 16);
+		setAttr("pageno", page.getPageNumber());
+		setAttr("totalpage", page.getTotalPage());
+		setAttr("totalrow", page.getTotalRow());
+		setAttr("companylist", page.getList());
 		render("company_list.html");
 	}
 	
-	/***********************园区缴费情况总表************************/
+	// 导出word
+	public void exportWord() throws IOException{
+		Integer id = getParaToInt();
+		StatisticService.excWord(getResponse(), getRequest(), id);
+		renderNull();
+	}
+	
+	/***********************园区缴费情况总表**********************/
 	public void parkpaylist(){
+//		Integer pageno = getParaToInt("pageno")==null?1:getParaToInt("pageno");
+//		Page<Record> page = StatisticService.getParkpayList(pageno, 16);
+//		setAttr("pageno", page.getPageNumber());
+//		setAttr("totalpage", page.getTotalPage());
+//		setAttr("totalrow", page.getTotalRow());
+//		setAttr("parkpaylist", page.getList());
 		render("parkpay_list.html");
 	}
 }

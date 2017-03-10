@@ -3,23 +3,25 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>科技园企业管理模板</title>
+		<title>科技园企业管理系统</title>
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 	</head>
 	<body>
 		<div class="layui-layout layui-layout-admin">
+			<input type="hidden" id="id" value="${id!}">
 			<div class="layui-header header header-demo">
-				<div class="layui-main">
-					<div class="admin-login-box">
+				<div class="layui-main" style="margin: 0;">
+					<div class="admin-login-box" style="background-color: #e96388;height: 65px;width: 200px;">
 						<a class="logo" style="left: 0;" href="#">
-							<span style="font-size: 22px;">园区管理系统</span>
+							<span style="font-size: 22px;color: #fff;margin-left: 15px;">园区管理系统</span>
 						</a>
-						<div class="admin-side-toggle">
+						<div class="admin-side-toggle" style="left: 215px;">
 							<i class="fa fa-bars" aria-hidden="true"></i>
 						</div>
 					</div>
+					<img src="/resource/morality/images/top_name.png" style="position: absolute;top: 5px;left: 300px;">
 					<ul class="layui-nav admin-header-item">
 						<li class="layui-nav-item" style="display: none;">
 							<a href="javascript:;">清除缓存</a>
@@ -36,7 +38,7 @@
 								<dd style="display: none;">
 									<a href="javascript:;"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
 								</dd>
-								<dd id="lock">
+								<dd id="cpsw">
 									<a href="javascript:;">
 										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 修改密码
 									</a>
@@ -54,7 +56,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="layui-side layui-bg-black" id="admin-side">
+			<div class="layui-side layui-bg-white" id="admin-side">
 				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side"></div>
 			</div>
 			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
@@ -85,36 +87,11 @@
 			<div class="site-mobile-shade"></div>
 			<!--锁屏模板 end -->
 			<script type="text/javascript" src="../../resource/layui/layui.js"></script>
-			<script type="text/javascript" src="../../resource/layui-admin/datas/nav.js"></script>
 			<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 			<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
 			<script src="../../resource/layui-admin/js/index.js"></script>
-			<!--锁屏模板 start-->
-			<script type="text/template" id="lock-temp">
-				<div class="admin-header-lock" id="lock-box">
-					<div class="admin-header-lock-img">
-						<img src="../resource/layui-admin/images/0.jpg"/>
-					</div>
-					<div class="admin-header-lock-name" id="lockUserName">beginner</div>
-					<input type="text" class="admin-header-lock-input" value="输入密码解锁.." name="lockPwd" id="lockPwd" />
-					<button class="layui-btn layui-btn-small" id="unlock">解锁</button>
-				</div>
-			</script>
 			<script>
-				layui.use('layer', function() {
-					var $ = layui.jquery,
-						layer = layui.layer;
-
-					$('#video1').on('click', function() {
-						layer.open({
-							title: 'YouTube',
-							maxmin: true,
-							type: 2,
-							content: 'video.html',
-							area: ['800px', '500px']
-						});
-					});
-				});
+				var navs = ${navs!};
 			</script>
 		</div>
 	</body>

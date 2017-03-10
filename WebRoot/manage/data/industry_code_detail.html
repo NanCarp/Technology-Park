@@ -32,10 +32,10 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业：</label>
 					<div class="layui-input-block">
-						<select name="superiorindustryname" id="v3" lay-verify="superiorindustryname">
+						<select name="superiorindustryid" id="v3" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
 					    	<option value="0">--选择父级行业--</option>
 					    	<#list superiorindustrylist as superiorindustry>
-					    		<option value="${superiorindustry.industry_name}" <#if industrycode.superior_industry=superiorindustry.industry_name>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+					    		<option value="${superiorindustry.id}" <#if industrycode.superior_industry==superiorindustry.industry_name>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
 					    	</#list>
 						</select>
 					</div>
@@ -43,12 +43,10 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业：</label>
 					<div class="layui-input-block">
-						<select name="subindustryname" id="v4" lay-verify="subindustryname">
+						<select name="subindustryid" id="v4" lay-verify="subindustryid">
 					    	<option value="0">--选择子级行业--</option>
 					    	<#list subindustrylist as subindustry>
-					    		<#if (sname)!"" = subindustry.super_industry_name>
-					    		<option value="${subindustry.sub_industry_name}" <#if industrycode.sub_industry=subindustry.sub_industry_name>selected</#if>>${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
-					    		</#if>
+					    		<option class="${subindustry.superior_industry_id}" value="${subindustry.id}" <#if industrycode.sub_industry=subindustry.sub_industry_name>selected</#if>>${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
 					    	</#list>
 						</select>
 					</div>
@@ -69,10 +67,10 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">父级行业：</label>
 					<div class="layui-input-block">
-						<select name="superiorindustryname" id="v3" lay-verify="superiorindustryname" onchange="change(this)">
+						<select name="superiorindustryid" id="v3" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
 					    	<option value="0">--选择父级行业--</option>
 					    	<#list superiorindustrylist as superiorindustry>
-					    		<option value="${superiorindustry.industry_name}">${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+					    		<option value="${superiorindustry.id}">${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
 					    	</#list>
 						</select>
 					</div>
@@ -80,13 +78,10 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业：</label>
 					<div class="layui-input-block">
-						<select name="subindustryname" id="v4" lay-verify="subindustryname">
+						<select name="subindustryid" id="v4" lay-verify="subindustryid">
 					    	<option value="0">--选择子级行业--</option>
 					    	<#list subindustrylist as subindustry>
-					    		<#if (sname)!"" = subindustry.super_industry_name>
-					    			<option value="${subindustry.sub_industry_name}" >${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
-					    		</#if>
-					    		
+					    		<option class="${subindustry.superior_industry_id}" value="${subindustry.id}" >${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
 					    	</#list>
 						</select>
 					</div>
@@ -102,27 +97,29 @@
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
-		<script>
-			function change(obj){
-				var sname = obj.value;
-			}
-		
-			layui.use(['form'], function() {
+		<script type="text/javascript">
+			var $;
+			var $form;
+			
+			layui.use(['jquery','form'], function() {
+				$ = layui.jquery;
+				$form = $('form');
+				
 				var form = layui.form(),
 				layer = layui.layer;
 				
 				form.verify({
-					rolename: function(value){
+					industryname: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }
 					  }
-					  ,superiorindustryname: function(value){
+					  ,superiorindustryid: function(value){
 						  if(value==0){
 							  return '请选择父级行业';
 						  }
 					  }
-					  ,subindustryname: function(value){
+					  ,subindustryid: function(value){
 						  if(value==0){
 							  return '请选择子级行业';
 						  }
@@ -142,12 +139,33 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}
 					return false;
 				});
+				
+ 				form.on('select(superiorindustryid)', function(data){
+					$.post('/data/getSubIndustryBySuperId',{superiorindustryid : data.value}, function(subindustry){
+						var content = "";
+						$('#v4 option').remove();
+						$('#v4').append("<option value='0' selected>--选择子级行业--</option>");
+						
+						for(var i = 0; i < subindustry.length; i++){
+							content += '<option value="' + subindustry[i].id +'">' + 
+										subindustry[i].sub_industry_code + 
+										subindustry[i].sub_industry_name +
+									   '</option>';
+						}//或者$(data).each(function(){} 实现
+						
+						$('#v4').append(content);
+						form.render('select');
+					});
+				});
+ 				
 			});
+			
 		</script>
 	</body>
 </html>

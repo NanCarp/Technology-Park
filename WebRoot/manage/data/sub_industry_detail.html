@@ -20,7 +20,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">子级行业代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="industrycode" id="v1"  lay-verify="required|code" value="${subindustry.sub_industry_code}" autocomplete="off" class="layui-input">
+						<input type="text" name="industrycode" id="v1"  lay-verify="required|number" value="${subindustry.sub_industry_code}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -86,6 +86,11 @@
 							  return '请选择父级行业';
 						  }
 					  }
+					,industryname: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+						      return '不能有特殊字符';
+						}
+					}
 				});
 				
 				//监听提交
@@ -101,6 +106,7 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}

@@ -10,39 +10,24 @@
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-		<title>大楼编号详情</title>
+		<title>修改密码</title>
 	</head>
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
-				<#if buildingno??>
-				<input type="hidden" id="v0" name="id" value="${buildingno.id}">
+				<input type="hidden" id="id" name="id" value="${id!}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">大楼编号：</label>
+					<label class="layui-form-label">新密码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="buildingno" id="v1"  lay-verify="required|buildingno" value="${buildingno.building_NO}" autocomplete="off" class="layui-input">
+						<input type="password" name="oldpsw" id="v1"  lay-verify="required|password" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">排序ID：</label>
+					<label class="layui-form-label">确认密码：</label>
 					<div class="layui-input-block">
-						<input type="text" id="v2" name="sortid" lay-verify="required|number" value="${buildingno.sort_id}" autocomplete="off" class="layui-input">
+						<input type="password" name="newpsw" id="v2" lay-verify="required|password|newpsword" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<#else>
-				<div class="layui-form-item">
-					<label class="layui-form-label">大楼编号：</label>
-					<div class="layui-input-block">
-						<input type="text" id="v1"  name="buildingno" lay-verify="required|buildingno" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">排序ID：</label>
-					<div class="layui-input-block">
-						<input type="text" id="v2" name="sortid" lay-verify="required|number" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
@@ -58,27 +43,33 @@
 				var form = layui.form(),
 				layer = layui.layer;
 				
-/* 				form.verify({
-					sortid: [/^[0-9]*$/, '只能为数字']
-					,
-					content: function(value) {
-						layedit.sync(editIndex);
+				form.verify({
+					password: function(psw){
+						if(!new RegExp("^[a-zA-Z0-9_!@#$%^&*]{6,11}$").test(psw)){
+							return '6到11位数字,字母,特殊字符';
+						}
+					},
+					newpsword: function(newpsw){
+						var oldpsw = $('#v1').val();
+						if(newpsw != oldpsw){
+							return '两次密码输入不相同';
+						}
 					}
-				}); */
+				});     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/data/saveBuildingNo', data.field, function(data){
+						$.post('/manage/savePsw', data.field, function(data){
 							lock = false;
-							if(data.result){
+							if(data){
 								parent.refresh_iframe();
-								layer.msg("保存成功", {time: 2000}, function(){
+								layer.msg("修改成功", {time: 2000}, function(){
 									layer_close();
 								});
 							}else{
-								layer.msg("保存失败");
+								layer.msg("修改失败", {time: 2000});
 								lock = true;
 							}
 						});

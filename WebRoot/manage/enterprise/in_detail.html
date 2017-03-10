@@ -10,7 +10,9 @@
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-		<title>角色详情</title>
+		<link rel="stylesheet" type="text/css" href="/resource/zTree/css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="/resource/zTree/css/zTreeStyle/zTreeStyle.css" />
+		<title>企业入驻详情</title>
 	</head>
 	<body>
 		<div style="margin: 15px;">
@@ -20,195 +22,232 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="enterprisename" id="v1"  lay-verify="required|enterprisename" value="${enterprisein.enterprise_name}" autocomplete="off" class="layui-input">
+						<input type="text" name="enterprisename" id="v1"  lay-verify="required|name" value="${enterprisein.enterprise_name}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">所属行业：</label>
 					<div class="layui-input-block">
-						<input type="text" name="industry" id="v2" value="${enterprisein.industry}" autocomplete="off" class="layui-input">
+						<select name="superiorindustryid" id="v1_1" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
+					    	<option value="0">--选择父级行业--</option>
+							<#list superiorindustrylist as superiorindustry>
+								<option value="${superiorindustry.id}"<#if superiorindustry.id=enterprisein.superior_industry_id>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+					<div class="layui-input-block">
+						<select name="subindustryid" id="v1_2" lay-verify="subindustryid" lay-filter="subindustryid">
+							<option value="0">--选择子级行业--</option>
+							<#list subindustrylist as subindustry>
+								<option value="${subindustry.id}" <#if subindustry.id=enterprisein.sub_industry_id>selected</#if> >${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
+					    	</#list>
+						</select>
+					</div>
+					<div class="layui-input-block">
+						<select name="industrycode" id="v1_3" lay-verify="industrycode">
+							<option value="0">--选择行业--</option>
+					    	<#list industrycodelist as industrycode>
+								<option value="${industrycode.industry_code}" <#if industrycode.industry_code?number==enterprisein.industry>selected</#if> >${industrycode.industry_code}${industrycode.industry_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">组织机构代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="code" id="v3"  lay-verify="required|code" value="有问题" autocomplete="off" class="layui-input">
+						<input type="text" name="organizationalcode" id="v3"  lay-verify="required|number" value="${enterprisein.organizational_code}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">工商注册号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="number" id="v4" value="${enterprisein.registration_number}" autocomplete="off" class="layui-input">
+						<input type="text" name="registrationnumber" id="v4" lay-verify="required|number" value="${enterprisein.registration_number}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">法人代表：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v5"  lay-verify="required|rolename" value="${enterprisein.representative}" autocomplete="off" class="layui-input">
+						<input type="text" name="representative" id="v5"  lay-verify="required|name" value="${enterprisein.representative}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">联系方式：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v6" value="${enterprisein.contact}" autocomplete="off" class="layui-input">
+						<input type="text" name="contact" id="v6" lay-verify="required|number" value="${enterprisein.contact}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册地址：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v7"  lay-verify="required|rolename" value="${enterprisein.contact}" autocomplete="off" class="layui-input">
+						<input type="text" name="registeredaddress" id="v7"  lay-verify="required|registeredaddress" value="${enterprisein.registered_address}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册类型：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v8" value="${enterprisein.registration_type}" autocomplete="off" class="layui-input">
+						<input type="text" name="registrationtype" lay-verify="required|number" id="v8" value="${enterprisein.registration_type}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v9"  lay-verify="required|rolename" value="${enterprisein.registration_time}" autocomplete="off" class="layui-input">
+						<input type="text" name="registrationtime" id="v9"  lay-verify="required|date" value="${enterprisein.registration_time?substring(0,10)}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册资本(万元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v10" value="${enterprisein.registered_capital}" autocomplete="off" class="layui-input">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|number" value="${enterprisein.registered_capital}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业入驻时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v11"  lay-verify="required|rolename" value="${enterprisein.in_time}" autocomplete="off" class="layui-input">
+						<input type="text" name="intime" id="v11"  lay-verify="required|date" value="${enterprisein.in_time?substring(0,10)}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">是否软件企业：</label>
 					<div class="layui-input-block">
-						<input type="text" name="" id="v12" value="!!" autocomplete="off" class="layui-input">
+						<input type="radio" name="issoftware" value="1" title="是"<#if enterprisein.is_software==true>checked=""</#if>>
+      					<input type="radio" name="issoftware" value="0" title="否"<#if enterprisein.is_software==false>checked=""</#if>>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">办公房间号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v13"  lay-verify="required|rolename" value="${enterprisein.room_number}" autocomplete="off" class="layui-input">
+						<input type="text" name="roomnumber" id="v13"  lay-verify="required|number" value="${enterprisein.room_number}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">办公面积：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v14" value="${enterprisein.office_space}" autocomplete="off" class="layui-input">
+						<input type="text" name="officespace" id="v14" lay-verify="required|number" value="${enterprisein.office_space}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租单价：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v15"  lay-verify="required|rolename" value="${enterprisein.unit_price}" autocomplete="off" class="layui-input">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|number" value="${enterprisein.unit_price}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业类型：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v16" value="字段多空格!!" autocomplete="off" class="layui-input">
+						<input type="text" name="enterprisetype" id="v16" lay-verify="required|number" value="${enterprisein.enterprise_type}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
-				<input type="hidden" id="v0" name="id" value="">
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="enterprisename" id="v1"  lay-verify="required|name" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">所属行业：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v2" value="" autocomplete="off" class="layui-input">
+						<select name="superiorindustryid" id="v1_1" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
+					    	<option value="0">--选择父级行业--</option>
+							<#list superiorindustrylist as superiorindustry>
+								<option value="${superiorindustry.id}">${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+					<div class="layui-input-block">
+						<select name="subindustryid" id="v1_2" lay-verify="subindustryid" lay-filter="subindustryid">
+					    	<option value="0">--选择子级行业--</option>
+						</select>
+					</div>
+					<div class="layui-input-block">
+						<select name="industrycode" id="v1_3" lay-verify="industrycode">
+					    	<option value="0">--选择行业--</option>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">组织机构代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="organizationalcode" id="v3"  lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">工商注册号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="registrationnumber" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">法人代表：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="representative" id="v5"  lay-verify="required|name" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">联系方式：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="contact" id="v6" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册地址：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="registeredaddress" id="v7"  lay-verify="required|registeredaddress" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册类型：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="registrationtype" lay-verify="required|number" id="v8" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="vx"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+						<input type="text" name="registrationtime" id="v9"  lay-verify="required|date" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册资本(万元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业入驻时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="intime" id="v11"  lay-verify="required|date" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">是否软件企业：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="radio" name="issoftware" value="1" title="是" checked="">
+      					<input type="radio" name="issoftware" value="0" title="否">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">办公房间号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="roomnumber" id="v13"  lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">办公面积：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="officespace" id="v14" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租单价：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业类型：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v3" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="enterprisetype" id="v16" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -222,32 +261,42 @@
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script type="text/javascript" src="/resource/zTree/js/jquery.ztree.core-3.5.js"></script>
+		<script type="text/javascript" src="/resource/zTree/js/jquery.ztree.excheck-3.5.js"></script>
 		<script>
-			layui.use('laydate', function(){
-			});
-		
-			layui.use(['form'], function() {
+			layui.use(['laydate','form','jquery'], function() {
+				var $ = layui.jquery;
 				var form = layui.form(),
 				layer = layui.layer;
 				
 				form.verify({
-					rolename: function(value){
+					name: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
+					}
+					,superiorindustryid: function(value){
+						if(value==0){
+							return '请选择父级行业';
+						}
+					}
+					,subindustryid: function(value){
+						if(value==0){
+							return '请选择子级行业';
+						}
+					}
+					,industrycode: function(value){
+						if(value==0){
+							return '请选择行业';
+						}
+					}
 				});     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/enterprise/saveEnterpriseIn', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();
@@ -260,6 +309,44 @@
 						});
 					}
 					return false;
+				});
+				
+				form.on('select(superiorindustryid)', function(data){
+					$.post('/data/getSubIndustryBySuperId',{superiorindustryid : data.value}, function(subindustry){
+						var content = "";
+						$('#v1_2 option').remove();
+						$('#v1_3 option').remove();
+						$('#v1_2').append("<option value='0' selected>--选择子级行业--</option>");
+						$('#v1_3').append("<option value='0' selected>--选择行业--</option>");
+						
+						for(var i = 0; i < subindustry.length; i++){
+							content += '<option value="' + subindustry[i].id +'">' + 
+										subindustry[i].sub_industry_code + 
+										subindustry[i].sub_industry_name +
+									   '</option>';
+						}
+						
+						$('#v1_2').append(content);
+						form.render('select');
+					});
+				});
+					
+				form.on('select(subindustryid)', function(data){
+					$.post('/data/getIndustryBySubId',{subindustryid : data.value}, function(industry){
+						var content = "";
+						$('#v1_3 option').remove();
+						$('#v1_3').append("<option value='0' selected>--选择行业--</option>");
+						
+						for(var i = 0; i < industry.length; i++){
+							content += '<option value="' + industry[i].industry_code +'">' + 
+										industry[i].industry_code + 
+										industry[i].industry_name +
+									   '</option>';
+						}
+						
+						$('#v1_3').append(content);
+						form.render('select');
+					});
 				});
 			});
 		</script>

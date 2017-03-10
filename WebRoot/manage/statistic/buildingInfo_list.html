@@ -28,8 +28,8 @@
 				</div>
 				<input type="text" placeholder="请输入楼号" id="v2" name="floorno" lay-verify="num" class="layui-input buildlist_2" value="${floorno!}" maxlength="10">
 				<input type="text" placeholder="请输入区域编号" id="v3" name="areano" lay-verify="num" class="layui-input buildlist_3" value="${areano!}"  maxlength="10">
-				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
-				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_export">导出EXCEL</button>
+				<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_search"><i class="layui-icon">&#xe615;</i> 查询</button>
+				<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
 				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
@@ -119,6 +119,7 @@
 					var astate = data.field.astate;
 					var floorno = data.field.floorno;
 					var areano = data.field.areano;
+					alert(fstate);
 					location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
 					return false;
 				});

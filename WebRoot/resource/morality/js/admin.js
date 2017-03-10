@@ -49,38 +49,12 @@ function open_schedule(url, w, h){
 		content: url
 	});
 }
-//展示图片
-function showimgage(imgurl){
-	$('#yulanimg').empty().append('<img src="'+imgurl+'" width="100%">');
-	layer.open({
-		type: 1,
-		title: false,
-		closeBtn: 0,
-		area: '516px',
-		skin: 'layui-layer-nobg', //没有背景色
-		shadeClose: true,
-		content: $('#yulanimg')
-	});
-}
 
 //全屏询问框{
 function actconfirm(title, next){
 	layer.confirm(title, function(index){
 		layer.close(index);
 		next();
-	});
-}
-
-// 打印
-function print_show(title,url,w,h){
-	layer.open({
-		type: 2,
-		area: [w, h],
-		fix: false, //不固定
-		maxmin: true,
-		shade:0.4,
-		title: title,
-		content: url
 	});
 }
 

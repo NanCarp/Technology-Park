@@ -20,7 +20,12 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="companyname" id="v1"  lay-verify="required|companyname" value="${practitioner.company_name}" autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}" <#if practitioner.company_id==enterprisein.id>selected</#if>>${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -56,86 +61,91 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">千人计划人数：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v7" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="thousand" id="v7" lay-verify="required|number" value="${practitioner.thousand_talents_program}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">吸纳应届大学毕业生：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v8" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="freshgraduates" id="v8" lay-verify="required|number" value="${practitioner.fresh_graduates}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">缴纳保险情况：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v9" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="insurance" id="v9" lay-verify="required|number" value="${practitioner.insurance}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">当年新增保险：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v10" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="addinsurance" id="v10" lay-verify="required|number" value="${practitioner.add_insurance}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}">${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">时间：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v2" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业从业人员：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v3"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="quantity" id="v3" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">博士：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v4" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="doctor" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">大专以上：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v5"  lay-verify="required|rolename" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="juniorcollege" id="v5" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">留学人员：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v6" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="returnees" id="v6" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">千人计划人数：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v7" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="thousand" id="v7" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">吸纳应届大学毕业生：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v8" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="freshgraduates" id="v8" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">缴纳保险情况：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v9" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="insurance" id="v9" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">当年新增保险：</label>
 					<div class="layui-input-block">
-						<input type="text" name="desc" id="v10" value=" " autocomplete="off" class="layui-input">
+						<input type="text" name="addinsurance" id="v10" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -158,14 +168,14 @@
 				layer = layui.layer;
 				
 				form.verify({
-					rolename: function(value){
+					 name: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }
 					  }
-					  ,depart: function(value){
+					  ,enterpriseid: function(value){
 						  if(value==0){
-							  return '请选择部门';
+							  return '请选择企业';
 						  }
 					  }
 				});     
@@ -174,7 +184,7 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/enterprise/savePractitioner', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();

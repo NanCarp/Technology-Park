@@ -1,9 +1,15 @@
 package morality.business.login.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -18,6 +24,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
+import morality.util.tool.DocUtil;
 import morality.util.tool.EncordUtil;
 
 /**
@@ -195,4 +202,67 @@ public class StatisticService {
 		}
 		return true;
 	}
+
+	// 获得公司信息
+	public static Page<Record> getCompanyInfoList(Integer pageno, int pageSize) {
+		String sqlExceptSelect = " FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
+				+ "LEFT JOIN t_property_right d ON a.id = d.company_id";
+		String select = "SELECT a.id, a.enterprise_name, a.industry,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees,"
+				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product";
+		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
+	}
+
+	// 根据ID获得公司信息
+	public static Record getComInfoById(Integer id){
+		return Db.findFirst("SELECT a.id, a.enterprise_name, a.industry,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees, "
+				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product "
+				+ "FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
+				+ "LEFT JOIN t_property_right d ON a.id = d.company_id where a.id=?", id);
+	}
+
+	// 导出Word
+    public static void excWord(HttpServletResponse response, HttpServletRequest request, Integer id) throws IOException{
+    	Map<String, Object> dataMap = new HashMap<>();
+    	Record comInfo = getComInfoById(id);
+    	dataMap.put("name", comInfo.getStr("enterprise_name"));
+    	dataMap.put("income", comInfo.getBigDecimal("income"));
+    	dataMap.put("np", comInfo.getBigDecimal("net_profit"));
+    	dataMap.put("taxa", comInfo.getBigDecimal("taxation"));
+    	dataMap.put("inv", comInfo.getBigDecimal("investment"));
+    	dataMap.put("qua", comInfo.getLong("quantity"));
+    	dataMap.put("doctor", comInfo.getInt("doctor"));
+    	dataMap.put("jc", comInfo.getInt("junior_college"));
+    	dataMap.put("returnees", comInfo.getInt("returnees"));
+    	dataMap.put("ttp", comInfo.getInt("thousand_talents_program"));
+    	dataMap.put("fg", comInfo.getInt("fresh_graduates"));
+    	dataMap.put("ins", comInfo.getInt("insurance"));
+    	dataMap.put("ai", comInfo.getInt("add_insurance"));
+    	dataMap.put("apply", comInfo.getInt("apply"));
+    	dataMap.put("approval", comInfo.getInt("approval"));
+    	dataMap.put("patent", comInfo.getInt("patent"));
+    	dataMap.put("copyright", comInfo.getInt("copyright"));
+    	dataMap.put("sp", comInfo.getInt("software_product"));
+    	DocUtil.toPreview(request, DocUtil.WORD_TEMPLATE, dataMap);
+	    try {
+    	    File previewFile = new File(request.getSession().getServletContext().getRealPath(DocUtil.PREVIEW_DOC));   
+	        InputStream is = new FileInputStream(previewFile);
+	        response.reset();
+	        response.setContentType("application/vnd.ms-word;charset=UTF-8");
+	        response.addHeader("Content-Disposition","attachment; filename=" + EncordUtil.toUtf8String("企业数据总览-"+comInfo.getStr("enterprise_name"))+ ".doc");
+	        byte[] b = new byte[1024];
+	        int len;
+	        while ((len=is.read(b)) >0) {
+	        	response.getOutputStream().write(b,0,len);
+	        }
+	        response.getOutputStream().flush();
+	        response.getOutputStream().close();
+	        is.close();
+	    } catch (Exception e) {
+	       	e.printStackTrace();
+	    }
+	}
+    
+    public static Page<Record> getParkpayList(Integer pageno, int pageSize) {
+    	return null;
+    }
 }

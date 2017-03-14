@@ -28,6 +28,26 @@ public class EnterpriseController extends Controller {
 	/******************************* 入驻企业管理 *******************************/
 	// 入驻企业列表
 	public void in_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("158") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("159") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("160") != -1) {
+			setAttr("_edit", true);
+		}
+		if (mopids.indexOf("161") != -1) {
+			setAttr("_search", 1);
+		}
+		if (mopids.indexOf("162") != -1) {
+			setAttr("_retreat", true);
+		}
+
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
 		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
@@ -45,9 +65,9 @@ public class EnterpriseController extends Controller {
 
 	// 获得单条记录
 	public void getEnterpriseIn() {
-		//企业ID
+		// 企业ID
 		Integer id = getParaToInt();
-		
+
 		// 获得父级行业列表
 		List<Record> superiorindustrylist = DataDictionaryService.getSuperiorIndustryList();
 		setAttr("superiorindustrylist", superiorindustrylist);
@@ -56,14 +76,14 @@ public class EnterpriseController extends Controller {
 			// 查询相应id的企业，并设置父级行业、子级行业、行业id
 			Record enterprisein = EnterpriseService.getIndustryIds(id).get(0);
 			setAttr("enterprisein", enterprisein);
-			//相应父级行业下的子级行业列表
+			// 相应父级行业下的子级行业列表
 			Integer superId = enterprisein.getInt("superior_industry_id");
 			setAttr("subindustrylist", DataDictionaryService.getSubIndustryBySuperId(superId));
-			//相应子级行业下的行业列表
+			// 相应子级行业下的行业列表
 			Integer subId = enterprisein.getInt("sub_industry_id");
 			setAttr("industrycodelist", DataDictionaryService.getIndustryBySubId(subId));
 		}
-		
+
 		render("in_detail.html");
 	}
 
@@ -120,6 +140,14 @@ public class EnterpriseController extends Controller {
 	/******************************* 离驻企业管理 *******************************/
 	// 离驻企业列表
 	public void retreat_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("164") != -1) {
+			setAttr("_detail", true);
+		}
+
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		String start = getPara("start") == null ? "" : getPara("start");
@@ -152,6 +180,23 @@ public class EnterpriseController extends Controller {
 	/******************************* 企业经济情况管理 *******************************/
 	// 企业经济情况列表
 	public void economy_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("165") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("166") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("167") != -1) {
+			setAttr("_edit", true);
+		}
+		if (mopids.indexOf("168") != -1) {
+			setAttr("_search", true);
+		}
+
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
 		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
@@ -214,6 +259,23 @@ public class EnterpriseController extends Controller {
 	/******************************* 企业从业人员管理 *******************************/
 	// 企业从业人员列表
 	public void practitioners_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("169") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("170") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("171") != -1) {
+			setAttr("_edit", true);
+		}
+		if (mopids.indexOf("172") != -1) {
+			setAttr("_search", true);
+		}
+
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
 		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
@@ -280,6 +342,23 @@ public class EnterpriseController extends Controller {
 	/******************************* 企业知识产权管理 *******************************/
 	// 企业知识产权列表
 	public void property_right_list() {
+		// 验证权限
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("173") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("174") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("175") != -1) {
+			setAttr("_edit", true);
+		}
+		if (mopids.indexOf("176") != -1) {
+			setAttr("_search", true);
+		}
+
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
 		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");

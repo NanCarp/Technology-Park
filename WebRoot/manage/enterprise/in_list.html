@@ -12,9 +12,10 @@
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 				<form class="layui-form">
+					<input type="hidden" name="_search"  value="${_search!}">
 					<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3"  lay-verify="enterprisename" value="${enterprisename!}">
-					<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
-					<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加企业</a>
+					<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
+					<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加企业</a>
 					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
@@ -52,9 +53,9 @@
 								<td>${enterprisein.in_time}</td>
 								<td>${enterprisein.room_number}</td>
 								<td>
-									<a onclick="_edit(${enterprisein.id})" class="layui-btn layui-btn-mini">编辑</a>
-									<a onclick="_delete(${enterprisein.id})" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
-									<a onclick="_retreat(${enterprisein.id})" class="layui-btn layui-btn-normal layui-btn-mini">离驻</a>
+									<a onclick="<#if _edit??>_edit(${enterprisein.id})</#if>" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>">编辑</a>
+									<a onclick="<#if _delete??>_delete(${enterprisein.id})</#if>" class="layui-btn layui-btn-danger layui-btn-mini <#if _delete??><#else>layui-btn-disabled</#if>">删除</a>
+									<a onclick="<#if _retreat??>_retreat(${enterprisein.id})</#if>" class="layui-btn layui-btn-normal layui-btn-mini <#if _retreat??><#else>layui-btn-disabled</#if>">离驻</a>
 								</td>
 							</tr>
 							</#list>
@@ -82,7 +83,7 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/enterprise/in_list/'+e.curr);
+				            location.replace('/enterprise/in_list?pageno='+e.curr);
 				        }
 				    }
 				});
@@ -134,13 +135,6 @@
 							}
 						}
 					});
-					
-					form.on('submit(_search)', function(data){
-						var enterprisename = data.field.enterprisename;
-						location.replace('/enterprise/in_list?pageno=1&enterprisename='+enterprisename);
-						return false;
-					});
-					
 			})
 		</script>
 	</body>

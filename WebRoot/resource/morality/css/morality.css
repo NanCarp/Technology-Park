@@ -1,3 +1,4 @@
+/* 楼区数据统计 */
 .forpage{text-align: right;margin-top: 10px;}
 .buildlist_0{width: 150px;margin: 0px;padding: 0;position: absolute;}
 .buildlist_0 input{height: 32px;}
@@ -6,3 +7,8 @@
 .buildlist_2{width: 150px;height: 32px;margin-left: 320px;float: left;}
 .buildlist_3{width: 150px;height: 32px;margin-left: 10px;float: left;}
 .buildlist_4{margin-left: 10px;}
+
+/* 企业数据总览 */
+.comlist_1{width: 150px;height: 32px;float: left;}
+.comlist_2{width: 150px;height: 32px;margin-left: 10px;float: left;}
+.comlist_3{margin-left: 10px;}

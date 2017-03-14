@@ -5,21 +5,25 @@
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
 		<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
-		<style type="text/css">
-			.forpage{text-align: right;margin-top: 10px;}
-		</style>
-		<title>查询统计 - 园区缴费情况总表</title>
+		<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+		<title>企业管理 - 企业入驻管理</title>
 	</head>
 	<body>
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
-			<a href="javascript:;" class="layui-btn layui-btn-small" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加菜单信息</a>
-			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
-			<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
-			<span style="float: right;line-height:30px;">共有数据：<strong>1</strong> 条</span>
+				<form class="layui-form">
+				<span>
+					<input type="text" placeholder="请输入年份" name="year" class="layui-input buildlist_3"  lay-verify="year" value="${year!}">
+					<input type="text" placeholder="请输入企业名称" name="companyname" class="layui-input buildlist_3"  lay-verify="companyname" value="${companyname!}">
+					<button class="layui-btn buildlist_4 layui-btn-small " lay-submit="" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
+					<button class="layui-btn buildlist_4 layui-btn-small"  lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+				</form>
 			</blockquote>
 			<fieldset class="layui-elem-field">
-				<legend>园区缴费情况</legend>
+				<legend>企业列表</legend>
 				<div class="layui-field-box">
 					<table class="site-table table-hover">
 						<thead>
@@ -54,35 +58,43 @@
 							</tr>
 						</thead>
 						<tbody>
+							<#if parkpaylist?? && parkpaylist?size gt 0>
+							<#list parkpaylist as parkpay>
 							<tr>
-								<td>1</td>
-								<td>江苏品德</td>
-								<td>2017-10-20 12:00:00</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
-								<td>8888</td>
+								<td>${parkpay_index+1}</td>
+								<td>${parkpay.company_name}</td>
+								<td>${parkpay.year}</td>
+								<td>${parkpay.should_pay_rent1}</td>
+								<td>${parkpay.paid_rent1}</td>
+								<td>${parkpay.property_costs1}</td>
+								<td>${parkpay.paid_property_charges1}</td>
+								<td>${parkpay.should_pay_water1}</td>
+								<td>${parkpay.real_water_fee1}</td>
+								<td>${parkpay.should_pay_rent2}</td>
+								<td>${parkpay.paid_rent2}</td>
+								<td>${parkpay.property_costs2}</td>
+								<td>${parkpay.paid_property_charges2}</td>
+								<td>${parkpay.should_pay_water2}</td>
+								<td>${parkpay.real_water_fee2}</td>
+								<td>${parkpay.should_pay_rent3}</td>
+								<td>${parkpay.paid_rent3}</td>
+								<td>${parkpay.property_costs3}</td>
+								<td>${parkpay.paid_property_charges3}</td>
+								<td>${parkpay.should_pay_water3}</td>
+								<td>${parkpay.real_water_fee3}</td>
+								<td>${parkpay.should_pay_rent4}</td>
+								<td>${parkpay.paid_rent4}</td>
+								<td>${parkpay.property_costs4}</td>
+								<td>${parkpay.paid_property_charges4}</td>
+								<td>${parkpay.should_pay_water4}</td>
+								<td>${parkpay.real_water_fee4}</td>
 							</tr>
+							</#list>
+							<#else>
+							<tr>
+								<td colspan="6" style="text-align: center;"><span>没有数据信息</span></td>
+							</tr>
+							</#if>
 						</tbody>
 					</table>
 					<div class="forpage" id="forpage"></div>
@@ -96,45 +108,46 @@
 			 $(function(){
 				 laypage({
 				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
-				    pages: 2, //总页数
+				    pages: ${totalpage}, //总页数
 				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
 				    groups: 5, //连续显示分页数
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/systom/rolelist/'+e.curr);
+				            location.replace('/statistic/parkpaylist?pageno='+e.curr);
 				        }
 				    }
 				});
 			 });
-			 
-			 // 增加角色
-			 function _add(){
-				 parent.open_window('添加角色', '/systom/getRole', 540, 370);
-			 }
-			 
-			 // 编辑
-			 function _edit(id){
-				 parent.open_window('编辑角色', '/systom/getRole/'+id, 540, 370);
-			 }
-			 
-			 // 删除
-			 function _delete(id){
-				 layui.use('layer', function(){
-					 var layer = layui.layer;
-					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delRole/'+id, function(data){
-							if(data){
-								layer.msg('删除成功', {time: 1000}, function(){
-									location.replace(location.href);
-								});
-							}else{
-								layer.msg('删除失败', {time: 1000});
-							}
-						});
-					});				 
-				});    
-			 }
+			 layui.use(['form','laydate'], function() {
+					var form = layui.form(),
+					layer = layui.layer;
+					
+					form.verify({
+						companyname: function(value){
+						    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+						      return '不能有特殊字符';
+						    }
+						}
+					});   
+					
+					form.on('submit(_search)', function(data){
+						var fstate = data.field.fstate;
+						var astate = data.field.astate;
+						var floorno = data.field.floorno;
+						var areano = data.field.areano;
+						alert(fstate);
+						location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
+						return false;
+					});
+					
+					form.on('submit(_export)', function(data){
+						var year = data.field.year;
+						var companyname = data.field.companyname;
+					    window.open('/statistic/exportPayment/'+year+'-'+companyname, '_blank');
+						return false;
+					});
+				});
 		</script>
 	</body>
 

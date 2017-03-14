@@ -11,14 +11,10 @@
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
 			<form class="layui-form">
-				<div class="layui-input buildlist_0">	
-					<input type="text" placeholder="开始时间" name="start" class="layui-input" lay-verify="mydate" value="${start!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
-				</div>
-				<div class="layui-input buildlist_1">
-					<input type="text" placeholder="结束时间" name="end" class="layui-input" lay-verify="mydate" value="${end!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" >
-				</div>
-				<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_2"  lay-verify="enterprisename" value="${enterprisename!}">
-				<button class="layui-btn buildlist_4" lay-submit="" lay-filter="_search">搜索</button>
+				<input type="text" placeholder="开始时间" name="start" class="layui-input buildlist_3" lay-verify="mydate" value="${start!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+				<input type="text" placeholder="结束时间" name="end" class="layui-input buildlist_3" lay-verify="mydate" value="${end!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" >
+				<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3"  lay-verify="enterprisename" value="${enterprisename!}">
+				<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
 				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
@@ -45,8 +41,8 @@
 							<td>${enterpriseretreat.enterprise_name}</td>
 							<td>${enterpriseretreat.in_time}</td>
 							<td>${enterpriseretreat.retreat_time}</td>
-							<td><a onclick="_details(${enterpriseretreat.id})"
-								class="layui-btn layui-btn-mini">查看</a></td>
+							<td><a onclick="<#if _detail??>_details(${enterpriseretreat.id})</#if>"
+								class="layui-btn layui-btn-mini <#if _detail??><#else>layui-btn-disabled</#if>">查看</a></td>
 						</tr>
 						</#list> <#else>
 						<tr>
@@ -76,7 +72,7 @@
 		    curr: ${pageno},
 		    jump: function(e, first){ //触发分页后的回调
 		        if(!first){ //一定要加此判断，否则初始时会无限刷新
-		            location.replace('/enterprise/retreat_list/'+e.curr);
+		            location.replace('/enterprise/retreat_list?pageno='+e.curr);
 		        }
 		    }
 		});

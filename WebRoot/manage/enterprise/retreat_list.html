@@ -14,7 +14,7 @@
 				<input type="text" placeholder="开始时间" name="start" class="layui-input buildlist_3" lay-verify="mydate" value="${start!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 				<input type="text" placeholder="结束时间" name="end" class="layui-input buildlist_3" lay-verify="mydate" value="${end!}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" >
 				<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3"  lay-verify="enterprisename" value="${enterprisename!}">
-				<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
+				<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
 				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>

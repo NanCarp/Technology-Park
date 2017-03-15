@@ -15,9 +15,10 @@
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 			<form class="layui-form">
-				<button class="layui-btn comlist_3 layui-btn-small" onclick="_search()"><i class="layui-icon">&#xe615;</i> 查询</button>
+				<input type="hidden" name="company_name" value="${company_name!}">
+				<a class="layui-btn comlist_3 layui-btn-small" onclick="_search()"><i class="layui-icon">&#xe615;</i> 查询</a>
 				<button class="layui-btn comlist_3 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
-				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<a href="javascript:location.replace('/statistic/comfind?type=2');" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
 			</form>
@@ -68,8 +69,8 @@
 								<td>${company.returnees!0}</td>
 								<td>${company.thousand_talents_program!0}</td>
 								<td>${company.fresh_graduates!0}</td>
-								<td>${company.insurance!0}</td>
 								<td>${company.add_insurance!0}</td>
+								<td>${company.insurance!0}</td>
 								<td>${company.apply!0}</td>
 								<td>${company.approval!0}</td>
 								<td>${company.patent!0}</td>
@@ -82,7 +83,7 @@
 							</#list>
 							<#else>
 							<tr>
-								<td colspan="19" style="text-align: center;"><span>没有数据信息</span></td>
+								<td colspan="21" style="text-align: center;"><span>没有数据信息</span></td>
 							</tr>
 							</#if>
 						</tbody>
@@ -104,7 +105,7 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/statistic/companylist/'+e.curr);
+				            location.replace('/statistic/companylist?pageno='+e.curr+'&company_name='+company_name);
 				        }
 				    }
 				});

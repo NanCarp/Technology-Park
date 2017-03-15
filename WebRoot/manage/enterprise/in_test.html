@@ -14,12 +14,13 @@
 				<form class="layui-form">
 					<input type="hidden" name="_search"  value="${_search!}">
 					<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3"  lay-verify="enterprisename" value="${enterprisename!}">
-					<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+					<button class="layui-btn buildlist_4 layui-btn-small " lay-submit="" lay-filter="_search"><i class="layui-icon">&#xe615;</i> 查询</button>
 					<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加企业</a>
 					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
 				</form>
+				<input type="submit" class="layui-btn layui-btn-small" id="click" value="打开子页面"/>
 			</blockquote>
 			<fieldset class="layui-elem-field">
 				<legend>企业列表</legend>
@@ -87,6 +88,35 @@
 				        }
 				    }
 				});
+				 
+				 //
+				 layui.use(['form'], function() {
+				 	var form = layui.form(),
+				 	layer = layui.layer;
+				 	
+				 	var data = {'text': '阿里'};
+					 if(data){
+						 var a = layer.open({
+								type : 2,
+								style : 'background:#fff;width:300px;height:200px; top:-50px;',
+								btn: ['确定','关闭'],
+								content : '/child2.html',
+								tipsMore: true,
+								yes: function( index, layero){
+								    //layer.close(index);
+								    //var data = $(layero).find("iframe")[0].contentWindow.formData();
+								    //if(data){
+								    //	fun(data);
+								    //}
+								},
+								btn2:function(index){
+									layer.close(index);
+								},
+								
+							});
+					 }
+				 });
+				 
 			 });
 			 
 			 // 增加
@@ -135,7 +165,55 @@
 							}
 						}
 					});
+					
+					//监听提交
+					form.on('submit()', function(data) {
+						console.log("asdf");
+						$.post('/enterprise/in_list', data.field, function(data){
+							if(data){
+								//parent.refresh_iframe();
+								layer.msg('success', {time: 2000});
+								//window.parent.frame.location.reload();
+							}else{
+								layer.msg('fail', {time: 2000});
+							}
+						});
+					});
 			})
+			
+		/* 	//弹出一个层
+			function getpara (fun) {
+				var a = layer.open({
+					type : 2,
+					style : 'background:#fff;width:300px;height:200px; top:-50px;',
+					//btn: ['确定','关闭'],
+					content : '/child.html',
+					tipsMore: true,
+					 yes: function( index, layero){
+					    //layer.close(index);
+					    var data = $(layero).find("iframe")[0].contentWindow.formData();
+					    if(data){
+					    	fun(data);
+					    }
+					},btn2:function(index){
+						layer.close(index);
+					} 
+					
+				});
+			}
+			
+			$('#click').on('click', function (){
+				getpara(function(data){
+					console.log(data);
+					if(data){
+						console.log(data.text);
+						var enterprisename = data.text;
+						location.replace('/enterprise/in_list?enterprisename='+enterprisename);
+						//$.post('/enterprise/in_list',data);
+					}
+				});
+			}); */
+			
 		</script>
 	</body>
 

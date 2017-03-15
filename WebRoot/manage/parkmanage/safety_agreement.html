@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>园区安全责任书签订</title>
 </head>
 	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
@@ -15,7 +15,6 @@
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
 			<a href="javascript:;" class="layui-btn layui-btn-small" id="add" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加协议</a>
-			<a href="javascript:;" class="layui-btn layui-btn-small" id="search"><i class="layui-icon">&#xe615;</i> 搜索</a>
 			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
 		</blockquote>
@@ -26,7 +25,7 @@
 					<thead>
 						<tr>
 							<th>序列</th>
-							<th>安全生产工作检查</th>
+							<th>公司名</th>
 							<th>签订情况</th>
 							<th>签订时间</th>
 							<th>相关 附件</th>
@@ -38,13 +37,13 @@
 						<#list safeprolist as protocol>
 						<tr>
 							<td>${protocol_index+1}</td>
-							<td>(未从数据库取值)</td>
+							<td>${protocol.enterprise_name}</td>
 							<td>${protocol.status?string('已检查','未检查')}</td>
 							<td>${protocol.create_time}</td>
 							<td>${protocol.attachment}</td>
 							<td>
-								<a href="javascript:" class="layui-btn layui-btn-mini" onclick="_edit()">编辑</a>
-								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${protocol.id})</#if>">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${protocol.id})</#if>">删除</a>
 							</td>
 						</#list>
 						<#else>
@@ -60,7 +59,6 @@
 </body>
 	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
-	<script type="text/javascript" src="../../resource/layer/layer.js"></script>
 	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
 	<script>
 	$(function(){
@@ -80,8 +78,24 @@
 	function _add(){
 		parent.open_window("添加安全责任书签订情况","/parkmanage/getSaftyAgree",540,370);
 	}
-	function _edit(){
-		parent.open_window("添加安全责任书签订情况","/parkmanage/getSaftyAgree",540,370);
+	function _edit(id){
+		parent.open_window("添加安全责任书签订情况","/parkmanage/getSaftyAgree/"+id,540,370);
 	}
+	 function _delete(id){
+		 layui.use('layer', function(){
+			 var layer = layui.layer;
+			 parent.actconfirm('确认要删除吗？', function(){
+				$.post('/parkmanage/delSafeAgree/'+id, function(data){
+					if(data){
+						parent.layer.msg('删除成功', {time: 1000}, function(){
+							location.replace(location.href);
+						});
+					}else{
+						parent.layer.msg('删除失败', {time: 1000});
+					}
+				});
+			});				 
+		});    
+	 }
 	</script>
 </html>

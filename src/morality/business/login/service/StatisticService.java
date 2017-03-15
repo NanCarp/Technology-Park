@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,14 +208,29 @@ public class StatisticService {
 	}
 
 	// 获得公司信息
-	public static Page<Record> getCompanyInfoList(Integer pageno, int pageSize) {
+	public static Page<Record> getCompanyInfoList(Integer pageno, int pageSize, String company_name) {
 		String sqlExceptSelect = " FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
-				+ "LEFT JOIN t_property_right d ON a.id = d.company_id";
+				+ "LEFT JOIN t_property_right d ON a.id = d.company_id where  1=1";
+		if(company_name != "" && company_name != null){
+			sqlExceptSelect += " and enterprise_name like '%"+company_name+"%'";
+		}
 		String select = "SELECT a.id, a.enterprise_name, a.industry,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees,"
 				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product";
 		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
 	}
 
+	//查询公司信息
+	public static Page<Record> getCompanyInfosearch(Integer pageno, int pageSize,String enterprise_name) {
+		String sqlExceptSelect = " FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
+				+ "LEFT JOIN t_property_right d ON a.id = d.company_id where 1=1";
+		if(enterprise_name!=null&&enterprise_name!=""){
+			sqlExceptSelect += sqlExceptSelect+" enterprise_name='"+enterprise_name+"'";
+		}
+		String select = "SELECT a.id, a.enterprise_name, a.industry,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees,"
+				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product";
+		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
+	}
+	
 	// 根据ID获得公司信息
 	public static Record getComInfoById(Integer id) {
 		return Db.findFirst(
@@ -280,59 +296,59 @@ public class StatisticService {
 	// 查询园区缴费情况列表
 	public static Page<Record> getParkpayList(Integer pageno, Integer pagesize, String companyname, String year) {
 		String select = "SELECT company_id, company_name,year, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN should_pay_rent ELSE 0 END) should_pay_rent1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN should_pay_rent ELSE 0 END) should_pay_rent2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN should_pay_rent ELSE 0 END) should_pay_rent3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN should_pay_rent ELSE 0 END) should_pay_rent4, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN paid_rent ELSE 0 END) paid_rent1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN paid_rent ELSE 0 END) paid_rent2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN paid_rent ELSE 0 END) paid_rent3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN paid_rent ELSE 0 END) paid_rent4, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN property_costs ELSE 0 END) property_costs1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN property_costs ELSE 0 END) property_costs2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN property_costs ELSE 0 END) property_costs3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN property_costs ELSE 0 END) property_costs4, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN paid_property_charges ELSE 0 END) paid_property_charges1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN paid_property_charges ELSE 0 END) paid_property_charges2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN paid_property_charges ELSE 0 END) paid_property_charges3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN paid_property_charges ELSE 0 END) paid_property_charges4, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN should_pay_water ELSE 0 END) should_pay_water1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN should_pay_water ELSE 0 END) should_pay_water2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN should_pay_water ELSE 0 END) should_pay_water3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN should_pay_water ELSE 0 END) should_pay_water4, "
-						+"SUM(CASE WHEN quarterly = '第一季度' THEN real_water_fee ELSE 0 END) real_water_fee1, "
-						+"SUM(CASE WHEN quarterly = '第二季度' THEN real_water_fee ELSE 0 END) real_water_fee2, "
-						+"SUM(CASE WHEN quarterly = '第三季度' THEN real_water_fee ELSE 0 END) real_water_fee3, "
-						+"SUM(CASE WHEN quarterly = '第四季度' THEN real_water_fee ELSE 0 END) real_water_fee4 ";
-//		String sqlExceptSelect = "FROM t_payment GROUP BY company_id, company_name HAVING 1=1 ";
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN should_pay_rent ELSE 0 END) should_pay_rent1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN should_pay_rent ELSE 0 END) should_pay_rent2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN should_pay_rent ELSE 0 END) should_pay_rent3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN should_pay_rent ELSE 0 END) should_pay_rent4, "
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN paid_rent ELSE 0 END) paid_rent1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN paid_rent ELSE 0 END) paid_rent2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN paid_rent ELSE 0 END) paid_rent3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN paid_rent ELSE 0 END) paid_rent4, "
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN property_costs ELSE 0 END) property_costs1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN property_costs ELSE 0 END) property_costs2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN property_costs ELSE 0 END) property_costs3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN property_costs ELSE 0 END) property_costs4, "
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN paid_property_charges ELSE 0 END) paid_property_charges1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN paid_property_charges ELSE 0 END) paid_property_charges2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN paid_property_charges ELSE 0 END) paid_property_charges3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN paid_property_charges ELSE 0 END) paid_property_charges4, "
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN should_pay_water ELSE 0 END) should_pay_water1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN should_pay_water ELSE 0 END) should_pay_water2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN should_pay_water ELSE 0 END) should_pay_water3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN should_pay_water ELSE 0 END) should_pay_water4, "
+				+ "SUM(CASE WHEN quarterly = '第一季度' THEN real_water_fee ELSE 0 END) real_water_fee1, "
+				+ "SUM(CASE WHEN quarterly = '第二季度' THEN real_water_fee ELSE 0 END) real_water_fee2, "
+				+ "SUM(CASE WHEN quarterly = '第三季度' THEN real_water_fee ELSE 0 END) real_water_fee3, "
+				+ "SUM(CASE WHEN quarterly = '第四季度' THEN real_water_fee ELSE 0 END) real_water_fee4 ";
 		String sqlExceptSelect = " FROM t_payment WHERE 1=1 ";
 		if ("" != companyname) {
 			sqlExceptSelect += " AND company_name LIKE '%" + companyname + "%' ";
 		}
-		if ("" != year) {
-			sqlExceptSelect += " AND year >= " + year;
+		if ("" == year) {
+			Calendar now = Calendar.getInstance();
+			year = "" + now.get(Calendar.YEAR);
 		}
-		sqlExceptSelect += " GROUP BY company_id, company_name ";
-		
+		sqlExceptSelect += " AND year = " + year + " GROUP BY company_id, company_name ";
+
 		return Db.paginate(pageno, pagesize, select, sqlExceptSelect);
 	}
 
 	// 导出列表
 	public static boolean getPaymentForExcel(HttpServletResponse response, String companyname, String year) {
-
+		String time = year == "" ? "2017" : year;
 		List<Record> list = getParkpayList(1, 100000000, companyname, year).getList();
 		HSSFWorkbook wbook = new HSSFWorkbook();
 		HSSFSheet sheet = wbook.createSheet();
 		wbook.setSheetName(0, "海安软件科技园缴费情况汇总表", (short) 1);
-		sheet.addMergedRegion(new Region(0, (short) 0, 0, (short) 8));
+		sheet.addMergedRegion(new Region(0, (short) 0, 0, (short) 25));
 		// 设置列宽
-		sheet.setColumnWidth((short) 0, (short) 3000);
-		sheet.setColumnWidth((short) 1, (short) 3000);
-		sheet.setColumnWidth((short) 2, (short) 5500);
-		sheet.setColumnWidth((short) 3, (short) 3000);
-		sheet.setColumnWidth((short) 4, (short) 8000);
-		sheet.setColumnWidth((short) 5, (short) 3000);
-		sheet.setColumnWidth((short) 6, (short) 3000);
+		sheet.setColumnWidth((short) 0, (short) 4000);
+		sheet.setColumnWidth((short) 1, (short) 4000);
+		sheet.setColumnWidth((short) 2, (short) 4000);
+		sheet.setColumnWidth((short) 3, (short) 4000);
+		sheet.setColumnWidth((short) 4, (short) 4000);
+		sheet.setColumnWidth((short) 5, (short) 4000);
+		sheet.setColumnWidth((short) 6, (short) 4000);
 		sheet.setColumnWidth((short) 7, (short) 4000);
 		sheet.setColumnWidth((short) 9, (short) 4000);
 		sheet.setColumnWidth((short) 10, (short) 4000);
@@ -375,9 +391,54 @@ public class StatisticService {
 				HSSFCell cell0 = row.createCell((short) 0);
 				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell0.setCellStyle(cellStyle);
-				cell0.setCellValue("海安软件科技园缴费情况汇总表");
+				cell0.setCellValue("海安软件科技园"+time+"年缴费情况汇总表");
 			}
 			if (i == 1) {
+				row = sheet.createRow(i);
+				
+				for(short j=0;j<=25;j++){
+					HSSFCell cell = row.createCell(j);
+					cell.setCellStyle(cellBorder);
+				}
+				
+				HSSFCell cell0 = row.createCell((short) 0);
+				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell0.setCellStyle(cellStyle);
+				cell0.setCellStyle(cellBorder);
+				cell0.setCellValue(time+"年（单位：元）");
+
+				HSSFCell cell2 = row.createCell((short) 2);
+				cell2.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell2.setCellStyle(cellStyle);
+				cell2.setCellStyle(cellBorder);
+				cell2.setCellValue("第一季度");
+
+				HSSFCell cell8 = row.createCell((short) 8);
+				cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell8.setCellStyle(cellStyle);
+				cell8.setCellStyle(cellBorder);
+				cell8.setCellValue("第二季度");
+
+				HSSFCell cell14 = row.createCell((short) 14);
+				cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell14.setCellStyle(cellStyle);
+				cell14.setCellStyle(cellBorder);
+				cell14.setCellValue("第三季度");
+
+				HSSFCell cell20 = row.createCell((short) 20);
+				cell20.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell20.setCellStyle(cellStyle);
+				cell20.setCellStyle(cellBorder);
+				cell20.setCellValue("第四季度");
+
+				sheet.addMergedRegion(new Region(1, (short) 0, 0, (short) 1));
+				sheet.addMergedRegion(new Region(1, (short) 2, 0, (short) 7));
+				sheet.addMergedRegion(new Region(1, (short) 8, 0, (short) 13));
+				sheet.addMergedRegion(new Region(1, (short) 14, 0, (short) 19));
+				sheet.addMergedRegion(new Region(1, (short) 20, 0, (short) 25));
+			
+			}
+			if (i == 2) {
 				row = sheet.createRow(i);
 				HSSFCell cell0 = row.createCell((short) 0);
 				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
@@ -417,100 +478,100 @@ public class StatisticService {
 				HSSFCell cell7 = row.createCell((short) 7);
 				cell7.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell7.setCellStyle(cellBorder);
-				cell7.setCellValue("水费实缴)");
-				
+				cell7.setCellValue("水费实缴");
+
 				HSSFCell cell8 = row.createCell((short) 8);
 				cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell8.setCellStyle(cellBorder);
 				cell8.setCellValue("房租应缴");
-				
+
 				HSSFCell cell9 = row.createCell((short) 9);
 				cell9.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell9.setCellStyle(cellBorder);
 				cell9.setCellValue("房租实收");
-				
+
 				HSSFCell cell10 = row.createCell((short) 10);
 				cell10.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell10.setCellStyle(cellBorder);
 				cell10.setCellValue("物业应缴");
-				
+
 				HSSFCell cell11 = row.createCell((short) 11);
 				cell11.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell11.setCellStyle(cellBorder);
 				cell11.setCellValue("物业实缴");
-				
+
 				HSSFCell cell12 = row.createCell((short) 12);
 				cell12.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell12.setCellStyle(cellBorder);
 				cell12.setCellValue("水费应缴");
-				
+
 				HSSFCell cell13 = row.createCell((short) 13);
 				cell13.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell13.setCellStyle(cellBorder);
-				cell13.setCellValue("水费实缴)");
-				
+				cell13.setCellValue("水费实缴");
+
 				HSSFCell cell14 = row.createCell((short) 14);
 				cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell14.setCellStyle(cellBorder);
 				cell14.setCellValue("房租应缴");
-				
+
 				HSSFCell cell15 = row.createCell((short) 15);
 				cell15.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell15.setCellStyle(cellBorder);
 				cell15.setCellValue("房租实收");
-				
+
 				HSSFCell cell16 = row.createCell((short) 16);
 				cell16.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell16.setCellStyle(cellBorder);
 				cell16.setCellValue("物业应缴");
-				
+
 				HSSFCell cell17 = row.createCell((short) 17);
 				cell17.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell17.setCellStyle(cellBorder);
 				cell17.setCellValue("物业实缴");
-				
+
 				HSSFCell cell18 = row.createCell((short) 18);
 				cell18.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell18.setCellStyle(cellBorder);
 				cell18.setCellValue("水费应缴");
-				
+
 				HSSFCell cell19 = row.createCell((short) 19);
 				cell19.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell19.setCellStyle(cellBorder);
-				cell19.setCellValue("水费实缴)");
-				
+				cell19.setCellValue("水费实缴");
+
 				HSSFCell cell20 = row.createCell((short) 20);
 				cell20.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell20.setCellStyle(cellBorder);
 				cell20.setCellValue("房租应缴");
-				
+
 				HSSFCell cell21 = row.createCell((short) 21);
 				cell21.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell21.setCellStyle(cellBorder);
 				cell21.setCellValue("房租实收");
-				
+
 				HSSFCell cell22 = row.createCell((short) 22);
 				cell22.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell22.setCellStyle(cellBorder);
 				cell22.setCellValue("物业应缴");
-				
+
 				HSSFCell cell23 = row.createCell((short) 23);
 				cell23.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell23.setCellStyle(cellBorder);
 				cell23.setCellValue("物业实缴");
-				
+
 				HSSFCell cell24 = row.createCell((short) 24);
 				cell24.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell24.setCellStyle(cellBorder);
 				cell24.setCellValue("水费应缴");
-				
+
 				HSSFCell cell25 = row.createCell((short) 25);
 				cell25.setEncoding(HSSFCell.ENCODING_UTF_16);
 				cell25.setCellStyle(cellBorder);
-				cell25.setCellValue("水费实缴)");
+				cell25.setCellValue("水费实缴");
 
 			}
-			row = sheet.createRow(i + 2);
+			row = sheet.createRow(i + 3);
 			Record r = list.get(i);
 
 			HSSFCell cell0 = row.createCell((short) 0);
@@ -526,125 +587,126 @@ public class StatisticService {
 			HSSFCell cell2 = row.createCell((short) 2);
 			cell2.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell2.setCellStyle(cellBorder);
-			cell2.setCellValue(r.getBigDecimal("should_pay_rent").toString());
+			cell2.setCellValue(r.getBigDecimal("should_pay_rent1").doubleValue());
 
 			HSSFCell cell3 = row.createCell((short) 3);
 			cell3.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell3.setCellStyle(cellBorder);
-			cell3.setCellValue(r.getBigDecimal("paid_rent").toString());
+			cell3.setCellValue(r.getBigDecimal("paid_rent1").doubleValue());
 
 			HSSFCell cell4 = row.createCell((short) 4);
 			cell4.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell4.setCellStyle(cellBorder);
-			cell4.setCellValue(r.getBigDecimal("property_costs").toString());
+			cell4.setCellValue(r.getBigDecimal("property_costs1").doubleValue());
 
 			HSSFCell cell5 = row.createCell((short) 5);
 			cell5.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell5.setCellStyle(cellBorder);
-			cell5.setCellValue(r.getBigDecimal("paid_property_charges").toString());
+			cell5.setCellValue(r.getBigDecimal("paid_property_charges1").doubleValue());
 
 			HSSFCell cell6 = row.createCell((short) 6);
 			cell6.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell6.setCellStyle(cellBorder);
-			cell6.setCellValue(r.getBigDecimal("should_pay_water").toString());
+			cell6.setCellValue(r.getBigDecimal("should_pay_water1").doubleValue());
 
 			HSSFCell cell7 = row.createCell((short) 7);
 			cell7.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell7.setCellStyle(cellBorder);
-			cell7.setCellValue(r.getBigDecimal("real_water_fee").toString());
-			
+			cell7.setCellValue(r.getBigDecimal("real_water_fee1").doubleValue());
+
 			HSSFCell cell8 = row.createCell((short) 8);
 			cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell8.setCellStyle(cellBorder);
-			cell8.setCellValue(r.getBigDecimal("should_pay_rent").toString());
-			
+			cell8.setCellValue(r.getBigDecimal("should_pay_rent2").doubleValue());
+
 			HSSFCell cell9 = row.createCell((short) 9);
 			cell9.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell9.setCellStyle(cellBorder);
-			cell9.setCellValue(r.getBigDecimal("paid_rent").toString());
-			
+			cell9.setCellValue(r.getBigDecimal("paid_rent2").doubleValue());
+
 			HSSFCell cell10 = row.createCell((short) 10);
 			cell10.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell10.setCellStyle(cellBorder);
-			cell10.setCellValue(r.getBigDecimal("property_costs").toString());
-			
+			cell10.setCellValue(r.getBigDecimal("property_costs2").doubleValue());
+
 			HSSFCell cell11 = row.createCell((short) 11);
 			cell11.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell11.setCellStyle(cellBorder);
-			cell11.setCellValue(r.getBigDecimal("paid_property_charges").toString());
-			
+			cell11.setCellValue(r.getBigDecimal("paid_property_charges2").doubleValue());
+
 			HSSFCell cell12 = row.createCell((short) 12);
 			cell12.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell12.setCellStyle(cellBorder);
-			cell12.setCellValue(r.getBigDecimal("should_pay_water").toString());
-			
+			cell12.setCellValue(r.getBigDecimal("should_pay_water2").doubleValue());
+
 			HSSFCell cell13 = row.createCell((short) 13);
 			cell13.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell13.setCellStyle(cellBorder);
-			cell13.setCellValue(r.getBigDecimal("real_water_fee").toString());
-			
+			cell13.setCellValue(r.getBigDecimal("real_water_fee2").doubleValue());
+
 			HSSFCell cell14 = row.createCell((short) 14);
 			cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell14.setCellStyle(cellBorder);
-			cell14.setCellValue(r.getBigDecimal("should_pay_rent").toString());
-			
+			cell14.setCellValue(r.getBigDecimal("should_pay_rent3").doubleValue());
+
 			HSSFCell cell15 = row.createCell((short) 15);
 			cell15.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell15.setCellStyle(cellBorder);
-			cell15.setCellValue(r.getBigDecimal("paid_rent").toString());
-			
+			cell15.setCellValue(r.getBigDecimal("paid_rent3").doubleValue());
+
 			HSSFCell cell16 = row.createCell((short) 16);
 			cell16.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell16.setCellStyle(cellBorder);
-			cell16.setCellValue(r.getBigDecimal("property_costs").toString());
-			
+			cell16.setCellValue(r.getBigDecimal("property_costs3").doubleValue());
+
 			HSSFCell cell17 = row.createCell((short) 17);
 			cell17.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell17.setCellStyle(cellBorder);
-			cell17.setCellValue(r.getBigDecimal("paid_property_charges").toString());
-			
+			cell17.setCellValue(r.getBigDecimal("paid_property_charges3").doubleValue());
+
 			HSSFCell cell18 = row.createCell((short) 18);
 			cell18.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell18.setCellStyle(cellBorder);
-			cell18.setCellValue(r.getBigDecimal("should_pay_water").toString());
-			
+			cell18.setCellValue(r.getBigDecimal("should_pay_water3").doubleValue());
+
 			HSSFCell cell19 = row.createCell((short) 19);
 			cell19.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell19.setCellStyle(cellBorder);
-			cell19.setCellValue(r.getBigDecimal("real_water_fee").toString());
-			
+			cell19.setCellValue(r.getBigDecimal("real_water_fee3").doubleValue());
+
 			HSSFCell cell20 = row.createCell((short) 20);
 			cell20.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell20.setCellStyle(cellBorder);
-			cell20.setCellValue(r.getBigDecimal("should_pay_rent").toString());
-			
+			cell20.setCellValue(r.getBigDecimal("should_pay_rent4").doubleValue());
+
 			HSSFCell cell21 = row.createCell((short) 21);
 			cell21.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell21.setCellStyle(cellBorder);
-			cell21.setCellValue(r.getBigDecimal("paid_rent").toString());
-			
+			cell21.setCellValue(r.getBigDecimal("paid_rent4").doubleValue());
+
 			HSSFCell cell22 = row.createCell((short) 22);
 			cell22.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell22.setCellStyle(cellBorder);
-			cell22.setCellValue(r.getBigDecimal("property_costs").toString());
-			
+			cell22.setCellValue(r.getBigDecimal("property_costs4").doubleValue());
+
 			HSSFCell cell23 = row.createCell((short) 23);
 			cell23.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell23.setCellStyle(cellBorder);
-			cell23.setCellValue(r.getBigDecimal("paid_property_charges").toString());
-			
+			cell23.setCellValue(r.getBigDecimal("paid_property_charges4").doubleValue());
+
 			HSSFCell cell24 = row.createCell((short) 24);
 			cell24.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell24.setCellStyle(cellBorder);
-			cell24.setCellValue(r.getBigDecimal("should_pay_water").toString());
-			
+			cell24.setCellValue(r.getBigDecimal("should_pay_water4").doubleValue());
+
 			HSSFCell cell25 = row.createCell((short) 25);
 			cell25.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell25.setCellStyle(cellBorder);
-			cell25.setCellValue(r.getBigDecimal("real_water_fee").toString());
+			cell25.setCellValue(r.getBigDecimal("real_water_fee4").doubleValue());
 
 		}
-		response.addHeader("Content-Disposition", "attachment;filename=" + EncordUtil.toUtf8String("海安软件科技园缴费情况汇总表") + ".xls");
+		response.addHeader("Content-Disposition",
+				"attachment;filename=" + EncordUtil.toUtf8String("海安软件科技园" + time + "年缴费情况汇总表") + ".xls");
 		response.setContentType("application/vnd.ms-excel;charset=utf-8");
 		try {
 			ServletOutputStream out = response.getOutputStream();

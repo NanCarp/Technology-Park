@@ -15,8 +15,8 @@
 				<span>
 					<input type="text" placeholder="请输入年份" name="year" class="layui-input buildlist_3"  lay-verify="year" value="${year!}">
 					<input type="text" placeholder="请输入企业名称" name="companyname" class="layui-input buildlist_3"  lay-verify="companyname" value="${companyname!}">
-					<button class="layui-btn buildlist_4 layui-btn-small " lay-submit="" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
-					<button class="layui-btn buildlist_4 layui-btn-small"  lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+					<button class="layui-btn buildlist_4 layui-btn-small " lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+					<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
 					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
 					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
@@ -125,19 +125,18 @@
 					
 					form.verify({
 						companyname: function(value){
-						    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-						      return '不能有特殊字符';
-						    }
-						}
+							if($.trim(value)!=""){
+								if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+								      return '不能有特殊字符';
+								    }
+							}
+						},
 					});   
 					
 					form.on('submit(_search)', function(data){
-						var fstate = data.field.fstate;
-						var astate = data.field.astate;
-						var floorno = data.field.floorno;
-						var areano = data.field.areano;
-						alert(fstate);
-						location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
+						var year = data.field.year;
+						var companyname = data.field.companyname;
+						location.replace('/statistic/parkpaylist?pageno=1&fstate='+fstate+'&year='+year+'&companyname='+companyname);
 						return false;
 					});
 					

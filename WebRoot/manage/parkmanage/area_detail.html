@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>区域管理详情</title>
 </head>
 <meta charset="utf-8">
 	<meta name="renderer" content="webkit">
@@ -17,54 +17,119 @@
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
+				<#if Area??>
+				<input type="hidden" value="${Area.id}" id="id" name="id">
 				<div class="layui-form-item">
 					<label class="layui-form-label">区域名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="areaname" id="v1"  lay-verify="required|areaname" value="${Area.area_name}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">朝向：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<!-- <input type="text" name="areadirect" id="v2"  lay-verify="required|areadirect" value="${Area.direction}" autocomplete="off" class="layui-input"> -->
+					<select name="areadirect" id="v1">
+				    	<option value="朝向" >--朝向--</option>
+				    	<option value="东" <#if Area.direction=="东">selected</#if>>东</option>
+				    	<option value="南" <#if Area.direction=="南">selected</#if>>南</option>
+				    	<option value="西" <#if Area.direction=="西">selected</#if>>西</option>
+				    	<option value="北" <#if Area.direction=="北">selected</#if>>北</option>
+					</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">区域编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="areano" id="v3"  lay-verify="required|areano" value="${Area.area_no}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">楼号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<select name="buildNo" id="v4" lay-verify="buildNo">
+					    	<option value="0" selected>--选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}"<#if buildNo.id?string=Area.building_no>selected</#if>>${buildNo.building_NO}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">层号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="areafloorno" id="v5"  lay-verify="required|areafloorno" value="${Area.floor_no}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="${Area.area}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">区域状态：</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="areastatus" value="false" title="未入驻"<#if Area.status=false>checked</#if>>
+      					<input type="radio" name="areastatus" value="true" title="已入驻"<#if Area.status=true>checked</#if>>
+      				</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="areaname" id="v1"  lay-verify="required|areaname" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">入驻公司：</label>
+					<label class="layui-form-label">朝向：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+					<select name="areadirect" id="v1">
+				    	<option value="朝向" >--朝向--</option>
+				    	<option value="东" >东</option>
+				    	<option value="南" >南</option>
+				    	<option value="西" >西</option>
+				    	<option value="北" >北</option>
+					</select>
 					</div>
 				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域编号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areano" id="v3"  lay-verify="required|areano" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼号：</label>
+					<div class="layui-input-block">
+						<select name="buildNo" id="v4" lay-verify="buildNo">
+							<option value="0">--请选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}">${buildNo.building_NO}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">层号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areafloorno" id="v5"  lay-verify="required|areafloorno" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">面积/平方米：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域状态：</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="areastatus" value="false" title="未入驻" checked="checked">
+      					<input type="radio" name="areastatus" value="true" title="已入驻">
+      				</div>
+				</div>
+				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
@@ -81,35 +146,38 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				
-				form.verify({
-					rolename: function(value){
+					areaname: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
 					    }
 					  }
-					  ,depart: function(value){
+					  ,buildNo: function(value){
 						  if(value==0){
-							  return '请选择部门';
+							  return '请选择楼号';
 						  }
 					  }
+					  ,areano: function(value){
+						 if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							  return '不能有特殊字符';
+							 }
+					 }
+					  ,areasize:function(value){
+							if(!new RegExp("^[0-9]*$").test(value)){
+								return '请输入数字';
+							}
+					}
+					 ,the_company: function(value){
+						    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							      return '不能有特殊字符';
+							}
+					}
 				});     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/parkmanage/saveArea', data.field, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
@@ -117,6 +185,7 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}

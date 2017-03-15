@@ -2,6 +2,4 @@ jdbcUrl = jdbc:mysql://192.168.2.78:3306/softwarepark?characterEncoding=utf8&zer
 user = root
 password = 123456
 
-<<<<<<< .mine
-=======
-imgpath = D:/upload/park/image/>>>>>>> .r5
+filepath = D:/upload/morality/file/

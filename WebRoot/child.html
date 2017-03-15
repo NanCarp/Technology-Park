@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../resource/layui/css/layui.css"
+	media="all" />
+<link rel="stylesheet" href="../../resource/layui-admin/css/global.css"
+	media="all">
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+	<link rel="stylesheet" href="../../resource/morality/css/morality.css" />
+<title>-选择分类-</title>
+</head>
+<body>
+<form class="layui-form" id="form">
+	<div class="layui-form-item">
+			<input type="lay-input" id="text" name="value" value="阿里" />
+			<!-- <button  class="lay-btn lay-btn-small" id="transmit">给父层传值</button> -->
+			<button  class="lay-btn lay-btn-small" id="p">父层</button>
+	</div>
+</form>
+</body>
+<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+<script type="text/javascript"
+	src="../../resource/morality/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+<script>
+	layui.use([ 'form' ], function() {
+		var form = layui.form(), layer = layui.layer;
+	})
+	
+	var val = $('#text').val();
+	//给父层传值
+	$(document).on("click", "#transmit", function() {
+		parent.$('#shuzhi').val(val);
+		layer.closeAll();
+	});
+	
+	//刷新父层
+	$(document).on("click", "#p", function() {
+		parent.$('input[name="enterprisename"]').val(val);
+		parent.$('form').submit();
+	});
+	
+	//返回数据
+	var formData = function(){
+		var data,value;
+		value = $('#text').val();
+		data = {'text':value};
+		return data;
+	}
+</script>
+</html>

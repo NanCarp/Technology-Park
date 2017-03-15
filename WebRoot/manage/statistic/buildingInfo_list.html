@@ -84,6 +84,15 @@
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
 		<script>
+			//定义callback方法，用于回调
+			function callback(){
+				refreshWin();
+			}
+			//刷新当前页面
+			function refreshWin(){
+				window.location.href = location.replace(location.href);	
+			}
+			
 			 var fstate='${fstate!}', astate='${astate!}', floorno='${floorno!}', areano='${areano!}';
 			 $(function(){
 				 laypage({
@@ -119,7 +128,6 @@
 					var astate = data.field.astate;
 					var floorno = data.field.floorno;
 					var areano = data.field.areano;
-					alert(fstate);
 					location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
 					return false;
 				});

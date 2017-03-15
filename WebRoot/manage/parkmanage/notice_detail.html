@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>通知公告详情</title>
 </head>
 <meta charset="utf-8">
 	<meta name="renderer" content="webkit">
@@ -16,22 +16,38 @@
 
 	<body>
 		<div style="margin: 15px;">
-			<form class="layui-form">
+			<form class="layui-form" id="from1" action="/parkmanage/saveNotice">
+				<#if notice??>
+				<input type="hidden" value="${notice.id}" name="id">
 				<div class="layui-form-item">
 					<label class="layui-form-label">标题：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  placeholder="请输入标题" lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="title" id="v1"  placeholder="请输入标题" lay-verify="required|title" value="${notice.title}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item layui-form-text">
     				<label class="layui-form-label">编辑器</label>
     				 <div class="layui-input-block">
-      					<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
+      					<textarea class="layui-textarea layui-hide" name="cont" lay-verify="cont" id="LAY_demo_editor">${notice.content}</textarea>
    					 </div>
   				</div>
+  				<#else>
+  				<div class="layui-form-item">
+					<label class="layui-form-label">标题：</label>
+					<div class="layui-input-block">
+						<input type="text" name="title" id="v1"  placeholder="请输入标题" lay-verify="required|title" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+    				<label class="layui-form-label">编辑器</label>
+    				 <div class="layui-input-block">
+      					<textarea class="layui-textarea layui-hide" name="cont" lay-verify="cont" id="LAY_demo_editor"></textarea>
+   					 </div>
+  				</div>
+  				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save" id="savemess">保存</button>
 					</div>
 				</div>
 			</form>
@@ -46,37 +62,14 @@
 				layer = layui.layer,
 				layedit = layui.layedit;
 				var editIndex = layedit.build('LAY_demo_editor');//创建一个编辑器
-				
-				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				
-				form.verify({
-					rolename: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
-				});     
+				//layedit.sync(editIndex);
 				
 				//监听提交
-				var lock = true;
+                var lock = true;
+                layedit.sync(editIndex);
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/parkmanage/saveNotice', data.field, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
@@ -84,12 +77,21 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}
 					return false;
 				});
-			});
+			}); 
+			/*
+	 		$('#savemess').click(function(){
+				layedit.sync(editIndex);
+				if(checkForm('textForm')) {
+					sendForm('textForm');
+				}
+			});  		
+		});*/
 		</script>
 	</body>
 </html>

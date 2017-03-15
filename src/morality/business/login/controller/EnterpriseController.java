@@ -144,6 +144,9 @@ public class EnterpriseController extends Controller {
 		Record admin = getSessionAttr("admin");
 		Integer rid = admin.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("163") != -1) {
+			setAttr("_search", true);
+		}
 		if (mopids.indexOf("164") != -1) {
 			setAttr("_detail", true);
 		}

@@ -12,7 +12,7 @@
 		<blockquote class="layui-elem-quote">
 		<form class="layui-form">
 			<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3 " lay-filter="enterprisename" lay-verify="enterprisename" value="${enterprisename!}" id="enterprisename">
-			<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>>搜索</button>
+			<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
 			<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" onclick="<#if _add??>_add()</#if>"><i class="layui-icon ">&#xe608;</i> 添加企业经济情况</a>
 			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
 			<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>

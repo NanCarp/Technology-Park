@@ -6,8 +6,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-
-import morality.business.login.service.EnterpriseService;
 import morality.business.login.service.StatisticService;
 import morality.util.interceptor.ManageInterceptor;
 
@@ -17,7 +15,8 @@ import morality.util.interceptor.ManageInterceptor;
  */
 @Before(ManageInterceptor.class)
 public class StatisticController extends Controller {
-
+	static String company_name = "";
+	
 	/*********************** 楼区数据统计 ************************/
 	// 楼区列表
 	public void buildinglist() {
@@ -56,7 +55,8 @@ public class StatisticController extends Controller {
 	/*********************** 企业数据总览 ************************/
 	public void companylist() {
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		Page<Record> page = StatisticService.getCompanyInfoList(pageno, 16);
+		Page<Record> page = StatisticService.getCompanyInfoList(pageno, 16, company_name);
+		setAttr("company_name", company_name);
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
@@ -64,6 +64,18 @@ public class StatisticController extends Controller {
 		render("company_list.html");
 	}
 
+	public void comfind(){
+		company_name = getPara("company_name");
+		Integer type = getParaToInt("type");
+		type = type == null ? 1 : type;
+		if(type != 1){
+			company_name = "";
+			companylist();
+		}else{
+			renderJson(true);
+		}
+	}
+	
 	// 导出word
 	public void exportWord() throws IOException {
 		Integer id = getParaToInt();
@@ -85,8 +97,8 @@ public class StatisticController extends Controller {
 		}
 
 		Integer pagesize = 16;
-		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
-		String year = getPara("year") == null ? "" : getPara("year");
+		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
+		String year = getPara("year") == null ? "": getPara("year");
 		String companyname = getPara("companyname") == null ? "" : getPara("companyname");
 
 		Page<Record> page = StatisticService.getParkpayList(pageno, pagesize, companyname, year);
@@ -103,14 +115,14 @@ public class StatisticController extends Controller {
 	}
 	
 	// 园区缴费情况导出Excel
-		public void exportPayment() {
-			String year = getPara(0) == null ? "" : getPara(0);
-			String companyname = getPara(1) == null ? "" : getPara(1);
-			boolean result = StatisticService.getPaymentForExcel(getResponse(), companyname, year );
-			if (result) {
-				renderNull();
-			} else {
-				renderText("导出失败");
-			}
+	public void exportPayment() {
+		String year = getPara(0) == null ? "" : getPara(0);
+		String companyname = getPara(1) == null ? "" : getPara(1);
+		boolean result = StatisticService.getPaymentForExcel(getResponse(), companyname, year );
+		if (result) {
+			renderNull();
+		} else {
+			renderText("导出失败");
 		}
+	}
 }

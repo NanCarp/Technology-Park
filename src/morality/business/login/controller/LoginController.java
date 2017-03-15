@@ -15,6 +15,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import morality.business.login.service.LoginService;
+import morality.business.login.service.ParkManageService;
 import morality.util.interceptor.ManageInterceptor;
 import morality.util.tool.MD5Util;
 
@@ -106,6 +107,22 @@ public class LoginController extends Controller{
 		responseMap.put("msg", msg);
 		renderJson(responseMap);
 	}
+
+	
+	//显示通知公告在我的桌面
+	public void getNoticeToDesk(){
+		List<Record> Notices = ParkManageService.getNoticeList();
+		setAttr("Notices", Notices);
+		render("main.html");
+	}
+	//显示通知公告内容在跳出界面
+	public void getNoticeMessage(){
+		Integer id = getParaToInt();
+		String content = ParkManageService.getsingleNotice(id).getStr("content");
+		setAttr("content", content);
+		render("Noticeshow_detail.html");
+	}
+
 	
 	// 修改密码
 	public void changepsw(){
@@ -124,4 +141,5 @@ public class LoginController extends Controller{
 		boolean result = Db.update("t_employee", user);
 		renderJson(result);
 	}
+
 }

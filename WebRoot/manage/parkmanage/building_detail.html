@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>楼宇管理详情</title>
 </head>
 <meta charset="utf-8">
 	<meta name="renderer" content="webkit">
@@ -17,79 +17,114 @@
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
-				<#if emp??>
+				<#if building??>
+				<input type="hidden" value="${building.id}" name="id">
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildname" id="v1"  lay-verify="required|buildname" value="${building.name}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼性质：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<select name="buildnature" id="v2" lay-verify="nature">
+					    	<option value="0" selected>--选择大楼性质--</option>
+							<#list buildNatures as buildNature>
+							<option value="${buildNature.id}"<#if building.nature=buildNature.id>selected</#if>>${buildNature.name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼号：</label>
+					<div class="layui-input-block">
+						<select name="buildno" id="v3" lay-verify="buildnos">
+					    	<option value="0" selected>--选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}"<#if building.building_no = buildNo.id>selected</#if>>${buildNo.building_NO}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">层编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildfloorno" id="v4"  lay-verify="required|buildfloorno" value="${building.floor_no}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">总面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="${building.total_area}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">可用面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="${building.usable_area}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">大楼状态：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
+    				<label class="layui-form-label" id="v7">大楼状态</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="buildstatus" value="0" title="未满"<#if building.status=0>checked</#if>>
+      					<input type="radio" name="buildstatus" value="1" title="已满"<#if building.status=1>checked</#if>>
+      				</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildname" id="v1"  lay-verify="required|buildname" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼性质：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<select name="buildnature" id="v2" lay-verify="nature">
+							<option value="0" selected="selected">--选择大楼性质--</option>
+							<#list buildNatures as buildNature>
+							<option value="${buildNature.id}">${buildNature.name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼号：</label>
+					<div class="layui-input-block">
+						<select name="buildno" id="v3" lay-verify="buildnos">
+							<option value="0" selected="selected">--选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}">${buildNo.building_NO}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">层编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildfloorno" id="v4"  lay-verify="required|buildfloorno" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">总面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">可用面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">大楼状态：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
+    				<label class="layui-form-label" id="v7">大楼状态</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="buildstatus" value="0" title="未满" checked="checked">
+      					<input type="radio" name="buildstatus" value="1" title="已满">
+      				</div>
 				</div>
 				</#if>
 				<div class="layui-form-item">
@@ -106,37 +141,46 @@
 			layui.use(['form'], function() {
 				var form = layui.form(),
 				layer = layui.layer;
-				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				
-				form.verify({
-					rolename: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
+					nature: function(value){
 						  if(value==0){
-							  return '请选择部门';
+							 return '请选择大楼性质';
 						  }
 					  }
+					,buildnos: function(value){
+						if(value==0){
+							return '请选择楼号';
+						}
+					}
+					,buildname:function(value){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							return '不能有特殊字符';
+						}
+					}
+					,buildtotalarea:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+						
+					}
+					,buildusablearea:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+					,buildfloorno:function(value){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							return '不能有特殊字符';
+						}
+					}
+
 				});     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/parkmanage/saveBuild', data.field, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
@@ -144,6 +188,7 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}

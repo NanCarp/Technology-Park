@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>缴费管理详情</title>
 </head>
 <meta charset="utf-8">
 	<meta name="renderer" content="webkit">
@@ -17,70 +17,45 @@
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
-				<div class="layui-form-item">
-					<label class="layui-form-label">年份：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">季度：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">公司名：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">协议起始日期：</label>
-					<div class="layui-input-block">
-						<input class="layui-input" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
-					</div>
-				</div>
+				<#if payment??>
+				<input value="${payment.id}" name="id" type="hidden">
+				<input value="${payment.year}" name="year" type="hidden">
+				<input value="${payment.quarterly}" name="quarterly" type="hidden">
+				<input value="${payment.company_name}" name="company_name" type="hidden">
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租应缴(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="should_pay_rent" id="v1"  lay-verify="required|should_pay_rent" value="${payment.should_pay_rent}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租实收(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="paid_rent" id="v1"  lay-verify="required|paid_rent" value="${payment.paid_rent}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">物业费应缴(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="property_costs" id="v1"  lay-verify="required|property_costs" value="${payment.property_costs}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">物业费实收(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="paid_property_charges" id="v1"  lay-verify="required|paid_property_charges" value="${payment.paid_property_charges}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">水费应缴(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<input type="text" name="should_pay_water" id="v1"  lay-verify="required|should_pay_water" value="${payment.should_pay_water}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">水费实收(元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">录入日期：</label>
-					<div class="layui-input-block">
-						<input class="layui-input" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="${payment.real_water_fee}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item layui-form-text">
@@ -89,6 +64,79 @@
      				 	<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
     				</div>
   				</div>
+  				<#else>
+  				<div class="layui-form-item">
+					<label class="layui-form-label">年份：</label>
+					<div class="layui-input-block">
+						<input type="text" name="year" id="v1"  lay-verify="required|year" value="" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this,format: 'YYYY'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">季度：</label>
+					<div class="layui-input-block">
+						<select name="quarterly" lay-verify="required|quarterly">
+							<option value="0">--选择季度--</option>
+							<option value="第一季度">第一季度</option>
+							<option value="第二季度">第二季度</option>
+							<option value="第三季度">第三季度</option>
+							<option value="第四季度">第四季度</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司名：</label>
+					<div class="layui-input-block">
+						<select name="company" id="v4" lay-verify="company">
+							<option value="0">--请选择公司--</option>
+							<#list companyList as company>
+							<option value="${company.id}">${company.enterprise_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_rent" id="v1"  lay-verify="required|should_pay_rent" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_rent" id="v1"  lay-verify="required|paid_rent" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="property_costs" id="v1"  lay-verify="required|property_costs" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_property_charges" id="v1"  lay-verify="required|paid_property_charges" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_water" id="v1"  lay-verify="required|should_pay_water" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+    				<label class="layui-form-label">备注:</label>
+    				<div class="layui-input-block">
+     				 	<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+    				</div>
+  				</div>
+  				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
@@ -106,35 +154,53 @@
 				layer = layui.layer;
 				
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
+					should_pay_rent:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
 						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
 					}
-				});
-				
-				form.verify({
-					rolename: function(value){
-					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-					      return '不能有特殊字符';
-					    }
-					  }
-					  ,depart: function(value){
-						  if(value==0){
-							  return '请选择部门';
-						  }
-					  }
+				   ,paid_rent:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,property_costs:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,paid_property_charges:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,should_pay_water:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,real_water_fee:function(value){
+						if(!new RegExp("^[0-9]*$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,quarterly:function(value){
+					   if(value==0){
+						   return '请选择季度';
+					   }
+				   }
+				   ,company:function(value){
+					   if(value==0){
+						   return'请选择公司';
+					   }
+				   }
 				});     
 				
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/parkmanage/savePayment', data.field, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
@@ -142,6 +208,7 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}

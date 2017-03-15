@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../resource/layui/css/layui.css"
+	media="all" />
+<link rel="stylesheet" href="../../resource/layui-admin/css/global.css"
+	media="all">
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+	<link rel="stylesheet" href="../../resource/morality/css/morality.css" />
+<title>-选择分类-</title>
+</head>
+<body>
+	<input type="submit" id="click" value="打开子页面"/>
+	<input id="shuzhi" />
+</body>
+<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+<script type="text/javascript"
+	src="../../resource/morality/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+<script>
+	layui.use([ 'form' ], function() {
+		var form = layui.form(), layer = layui.layer;
+	})
+	//弹出一个层
+	function getpara (fun) {
+		var a = layer.open({
+			type : 2,
+			style : 'background:#fff;width:300px;height:200px; top:-50px;',
+			btn: ['确定','关闭'],
+			content : '/child.html',
+			tipsMore: true,
+			yes: function( index, layero){
+			    //layer.close(index);
+			    var data = $(layero).find("iframe")[0].contentWindow.formData();
+			    if(data){
+			    	fun(data);
+			    }
+			},btn2:function(index){
+				layer.close(index);
+			}
+			
+		});
+	}
+	
+	$('#click').on('click', function (){
+		getpara(function(data){
+			console.log(data);
+			if(data){
+				console.log(data.text);
+				var enterprisename = data.text;
+				location.replace('/enterprise/in_list?enterprisename='+enterprisename);
+				//$.post('/enterprise/in_list',data);
+			}
+		});
+	});
+	
+</script>
+</html>

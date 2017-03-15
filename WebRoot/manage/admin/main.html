@@ -12,21 +12,17 @@
 			<div class="notice_top">
 				<div class="no_1">通知公告</div>
 				<div class="no_2">
-					<span class="no_2_span" onclick="notice_detail()">
-						<span>本次系统测评</span>
+					<#if Notices?? && Notices?size gt 0>
+					<#list Notices as Notice>
+					<span class="no_2_span" onclick="notice_detail(${Notice.id})">
+						<span>${Notice.title}</span>
 						<span>超级管理员</span>
-						<span>2017-02-28</span>
+						<span>${Notice.create_time?substring(0,10)}</span>
 					</span>
-					<span class="no_2_span" onclick="notice_detail()">
-						<span>本次系统测评</span>
-						<span>超级管理员</span>
-						<span>2017-02-28</span>
-					</span>
-					<span class="no_2_span" onclick="notice_detail()">
-						<span>本次系统测评</span>
-						<span>超级管理员</span>
-						<span>2017-02-28</span>
-					</span>
+					</#list>
+					<#else>
+					<span class="no_2_span">暂无通知公告</span>
+					</#if>
 				</div>
 			</div>
 			<div class="notice_down">
@@ -92,8 +88,8 @@
 	});
 	
 	// 公告详情
-	function notice_detail() {
-		parent.open_window('公告详情', '', 970, 540);
+	function notice_detail(id) {
+		parent.open_window('','/manage/getNoticeMessage/'+id, 970, 540);
 	}
 	
 	// 缴费提醒

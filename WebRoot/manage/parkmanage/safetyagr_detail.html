@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>园区安全责任书签订详情</title>
 </head>
 <meta charset="utf-8">
 	<meta name="renderer" content="webkit">
@@ -17,22 +17,29 @@
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
+			<#if safeagree??>
 				<div class="layui-form-item">
 					<label class="layui-form-label">公司名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
+						<select name="company_id" id="v4" lay-verify="company">
+					    	<option value="0" selected>--选择单位--</option>
+							<#list enterprise as prise>
+							<option value="${prise.id}"<#if prise.id=safeagree.company_id>selected</#if>>${prise.enterprise_name}</option>
+							</#list>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">签订情况：</label>
-					<div class="layui-input-block">
-						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="" autocomplete="off" class="layui-input">
-					</div>
+    				<label class="layui-form-label">安全责任书签订情况:</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="status" value="1" title="已签"<#if safeagree.status=true>checked</#if>>
+      					<input type="radio" name="status" value="0" title="未签"<#if safeagree.status=false>checked</#if>>
+      				</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">签订时间：</label>
 					<div class="layui-input-block">
-						<input class="layui-input" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+						<input class="layui-input" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" value="${safeagree.create_time}">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -41,6 +48,38 @@
 						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file" >
 					</div>
 				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司名：</label>
+					<div class="layui-input-block">
+						<select name="company_id" id="v4" lay-verify="company">
+					   	 	<option value="0" selected>--选择单位--</option>
+							<#list enterprise as prise>
+							<option value="${prise.id}">${prise.enterprise_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+    				<label class="layui-form-label">安全责任书签订情况:</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="status" value="1" title="已签">
+      					<input type="radio" name="status" value="0" title="未签" checked="checked">
+      				</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">签订时间：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">相关附件：</label>
+					<div class="layui-input-block">
+						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file" >
+					</div>
+				</div>
+				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
@@ -86,7 +125,7 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveRole', data.field, function(data){
+						$.post('/systom/s', data.field, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
@@ -94,6 +133,7 @@
 								});
 							}else{
 								layer.msg("保存失败");
+								lock = true;
 							}
 						});
 					}

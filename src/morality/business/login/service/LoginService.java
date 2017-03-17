@@ -32,5 +32,22 @@ public class LoginService {
 	public static List<Record> getzMenusById(int pid, int rid){
 		return  Db.find("SELECT a.name, a.url, a.icon FROM t_menu a LEFT JOIN t_role_details b ON a.id = b.menu_id WHERE a.pid = ? AND b.role_id = ?", pid, rid);
 	}
+	
+	// 查询区域消息提醒列表
+	public static List<Record> getNeedAreaList() {
+		return Db.find("SELECT * FROM t_area WHERE status=1 ");
+	}
+
+	// 查询需要缴费列表
+	public static List<Record> getNeedPayList() {
+		return Db.find(
+				"SELECT * FROM t_payment WHERE should_pay_rent > paid_rent OR property_costs > paid_property_charges "
+				+ " OR should_pay_water > real_water_fee ");
+	}
+
+	// 查询需要安全检查列表
+	public static List<Record> getNeedInspectList() {
+		return Db.find("SELECT * FROM t_safety_inspection WHERE is_rectification=0 ");
+	}
 
 }

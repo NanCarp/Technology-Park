@@ -116,7 +116,7 @@
 			});
 			
 			//删除项目
-			function del(id){
+			function del(_obj){
 				$(_obj).parent('p').remove();
 			}
 			
@@ -165,6 +165,7 @@
 					}
 					var id = $("#v0").val();
 					var recipient = myArray.join().replace('9999,', '');
+					console.log(data);
 					var project_name = data.field.project_name;
 					var datajson = {'id': id,'recipient': recipient, 'project_name': project_name, 'file_url': file_url};
 					if(lock){

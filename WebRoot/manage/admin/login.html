@@ -18,8 +18,8 @@
 				<form class="layui-form" method="post">
 					<div class="layui-form-item">
 						<label class="beg-login-icon">
-                        <i class="layui-icon">&#xe612;</i>
-                    </label>
+                        	<i class="layui-icon">&#xe612;</i>
+                    	</label>
 						<input type="text" name="username" id="val1" autocomplete="off" placeholder="请输入帐号" class="layui-input">
 					</div>
 					<div class="layui-form-item">
@@ -45,11 +45,27 @@
 				<p>品德网络 © </p>
 			</footer>
 		</div>
+		<canvas width="1903" height="380" style="position: absolute; top: 0px; left: 0px; z-index: -1;"></canvas>
 		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/canvas-particle.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.cookie.js"></script>
 		<script type="text/javascript">
 			$(function(){
+				var config = {
+					vx: 4,
+					vy:  4,
+					height: 2,
+					width: 2,
+					count: 100,
+					color: "121, 162, 185",
+					stroke: "100,200,180",
+					dist: 6000,
+					e_dist: 20000,
+					max_conn: 10
+				}
+				CanvasParticle(config);
+			
 				if($.cookie("online")=="true"){
 					$("#val1").val($.cookie("username")); 
 					$("#val2").val($.cookie("password")); 

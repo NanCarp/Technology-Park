@@ -18,10 +18,11 @@
 		<div style="margin: 15px;">
 			<form class="layui-form">
 			<#if safeagree??>
+				<input name="id" value="${safeagree.id}" type="hidden" id="v0">
 				<div class="layui-form-item">
 					<label class="layui-form-label">公司名：</label>
 					<div class="layui-input-block">
-						<select name="company_id" id="v4" lay-verify="company">
+						<select name="company_id" id="v1" lay-verify="company">
 					    	<option value="0" selected>--选择单位--</option>
 							<#list enterprise as prise>
 							<option value="${prise.id}"<#if prise.id=safeagree.company_id>selected</#if>>${prise.enterprise_name}</option>
@@ -44,15 +45,16 @@
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">相关附件：</label>
-					<div class="layui-input-block">
+					<div class="layui-input-block" id="fj">
 						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file" >
+        				<div id="url"></div>
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
 					<label class="layui-form-label">公司名：</label>
 					<div class="layui-input-block">
-						<select name="company_id" id="v4" lay-verify="company">
+						<select name="company_id" id="v1" lay-verify="company">
 					   	 	<option value="0" selected>--选择单位--</option>
 							<#list enterprise as prise>
 							<option value="${prise.id}">${prise.enterprise_name}</option>
@@ -75,8 +77,9 @@
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">相关附件：</label>
-					<div class="layui-input-block">
+					<div class="layui-input-block" id="fj">
 						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file" >
+						<div id="url"></div>
 					</div>
 				</div>
 				</#if>
@@ -92,22 +95,24 @@
 		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
 		<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
 		<script>
-			layui.use(['form'], function() {
+		var farr = new Array();
+		$(function(){
+			farr='${attachment!}'.split(",");
+			if(farr.length > 0){
+				for(var i in farr){
+					if(farr[i] != ''){
+					   $('#url').append('<p><span style="width: 90%;float: left;">'+farr[i]+'</span><a href="javascript:;" onclick="del(this)" style="width: 10%;float: left;"><i class="layui-icon" title="删除">&#x1006;</i></a></br></p>');
+					}
+				}
+			}
+		});
+		function del(_obj){
+			$(_obj).parent('p').remove();
+		}
+		layui.use(['form','upload'], function() {
 				var form = layui.form(),
 				layer = layui.layer;
-				
-				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-				
+
 				form.verify({
 					rolename: function(value){
 					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
@@ -119,19 +124,45 @@
 							  return '请选择部门';
 						  }
 					  }
-				});     
-				
+					  ,company:function(value){
+						  if(value==0){
+							  return '请选择单位';
+						  }
+					  }
+				});  
+				var upload = layui.upload({
+					elem: '#file' //指定原始元素，默认直接查找class="layui-upload-file"
+					,url: '/parkmanage/uploadfile'
+					,method: 'post' //上传接口的http类型
+					,success: function(data){
+					   $('#url').append('<p><span style="width: 90%;float: left;">'+data.url+'</span><a href="javascript:;" onclick="del(this)" style="width: 10%;float: left;"><i class="layui-icon" title="删除">&#x1006;</i></a></br></p>');
+					 }
+				});
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {
+					var file_url = "";
+					$('#url p > span').each(function(k, v){
+						if(k + 1 == $('#url p > span').length){
+							file_url += $(this).html();
+						}else{
+							file_url += $(this).html()+',';
+						}
+					});
+					var id = $("#v0").val();
+					var status = $('input[name="status"]').filter(':checked').val();
+					var company_id = $("#v1").val();
+					var datajson = {'id': id,'status': status,'company_id':company_id, 'file_url': file_url};
 					if(lock){
-						$.post('/systom/s', data.field, function(data){
+						$.post('/parkmanage/saveSafeAgree', datajson, function(data){
 							lock = false;
-							if(data.result){
+							if(data){
 								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
 									layer_close();
 								});
 							}else{
+								alert(data.result)
 								layer.msg("保存失败");
 								lock = true;
 							}
@@ -140,16 +171,7 @@
 					return false;
 				});
 			});
-			layui.use('upload', function(){
-				  layui.upload({
-				    url: '/test/upload.json'
-				    ,elem: '#file' //指定原始元素，默认直接查找class="layui-upload-file"
-				    ,method: 'get' //上传接口的http类型
-				    ,success: function(res){
-				      LAY_demo_upload.src = res.url;
-				    }
-				  });
-				});
+				
 		</script>
 	</body>
 </html>

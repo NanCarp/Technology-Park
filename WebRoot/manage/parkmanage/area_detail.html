@@ -181,6 +181,7 @@
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
 									layer_close();
 								});
 							}else{

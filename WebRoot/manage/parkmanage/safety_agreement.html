@@ -36,11 +36,11 @@
 						<#if safeprolist?? && safeprolist?size gt 0>
 						<#list safeprolist as protocol>
 						<tr>
-							<td>${protocol_index+1}</td>
-							<td>${protocol.enterprise_name}</td>
+							<td>${protocol_index+1!}</td>
+							<td>${protocol.enterprise_name!}</td>
 							<td>${protocol.status?string('已检查','未检查')}</td>
-							<td>${protocol.create_time}</td>
-							<td>${protocol.attachment}</td>
+							<td>${protocol.create_time!}</td>
+							<td>${protocol.attachment!}</td>
 							<td>
 								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${protocol.id})</#if>">编辑</a>
 								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${protocol.id})</#if>">删除</a>

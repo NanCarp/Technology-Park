@@ -19,11 +19,24 @@ import morality.util.interceptor.ManageInterceptor;
 @Before(ManageInterceptor.class)
 public class FileManageController extends Controller {
 
+
 	/*********************** 文件传阅管理 ************************/
 	// 文件传阅管理
 	public void filelist() {
+		Record admin = getSessionAttr("admin");
+		Integer rid = admin.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if(mopids.indexOf("177")!=-1){
+			setAttr("_add", true);
+		}
+		if(mopids.indexOf("178")!=-1){
+			setAttr("_delete", true);
+		}
+		if(mopids.indexOf("179")!=-1){
+			setAttr("_edit", true);
+		}
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
-		Page<Record> page = FileManageService.getWjcyList(pageno, 16);
+		Page<Record> page = FileManageService.getWjcyList(pageno, 16,rid);
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
@@ -102,6 +115,7 @@ public class FileManageController extends Controller {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
 		Integer rid = admin.getInt("role_id");
+		Integer recipient_id = admin.getInt("id");//登录者id，用于判断是否有权限
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("181") != -1) {
 			setAttr("_add", true);
@@ -115,9 +129,8 @@ public class FileManageController extends Controller {
 		if (mopids.indexOf("184") != -1) {
 			setAttr("_search", true);
 		}
-
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
-		Page<Record> page = FileManageService.getProjectList(pageno, 16);
+		Page<Record> page = FileManageService.getProjectList(pageno, 16, recipient_id);
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
@@ -135,6 +148,7 @@ public class FileManageController extends Controller {
 			String file_url = record.getStr("file_url");
 			setAttr("farr", file_url);
 		}
+
 		render("projectdeclar_detail.html");
 	}
 

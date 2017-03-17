@@ -20,16 +20,19 @@ import morality.util.tool.EncordUtil;
  */
 public class FileManageService {
 
+	/************************文件传阅管理*****************************/
 	// 获得文件传阅列表
-	public static Page<Record> getWjcyList(Integer pageno, int pageSize) {
+	public static Page<Record> getWjcyList(Integer pageno, int pageSize,Integer rid) {
+		String sqlExceptSelect = " FROM t_file a LEFT JOIN t_employee b ON a.uploader = b.id";
+			sqlExceptSelect += " where FIND_IN_SET("+rid+",recipient)";
 		return Db.paginate(pageno, pageSize, "SELECT a.id,a.recipient, a.file_name, a.file_url,b.name,a.modify_time",
-				" FROM t_file a LEFT JOIN t_employee b ON a.uploader = b.id");
+				sqlExceptSelect);
 	}
 
 	// 获得园区主任
 	public static List<Record> getParkheadInfo() {
 		return Db.find(
-				"SELECT id, name,9999 AS pid FROM t_employee UNION SELECT 9999 AS id, '园区主任' AS name, 0 FROM DUAL");
+				"SELECT id, name,9999 AS pid FROM t_employee UNION SELECT 9999 AS id, '海安科技园' AS name, 0 FROM DUAL");
 	}
 
 	// 文件下载
@@ -60,11 +63,16 @@ public class FileManageService {
 		out.close();
 	}
 
-	/*********************** 项目申报管理 ************************/
+
+
+	/*********************** 项目申报管理 
+	 * @param recipient_id ************************/
 	// 获得项目申报列表
-	public static Page<Record> getProjectList(Integer pageno, Integer pagesize) {
+	public static Page<Record> getProjectList(Integer pageno, Integer pagesize, Integer recipient_id) {
+		String sqlExceptSelect = " FROM t_project a LEFT JOIN t_employee b ON a.uploader = b.id WHERE FIND_IN_SET("+recipient_id+",recipient) "
+				+ "OR uploader= "+recipient_id;
 		return Db.paginate(pageno, pagesize, "SELECT a.id,a.recipient, a.project_name, a.file_url,b.name,a.modify_time",
-				" FROM t_project a LEFT JOIN t_employee b ON a.uploader = b.id");
+				sqlExceptSelect);
 	}
 
 	// 项目下载
@@ -95,3 +103,4 @@ public class FileManageService {
 		out.close();
 	}
 }
+

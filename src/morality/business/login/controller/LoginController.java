@@ -111,8 +111,19 @@ public class LoginController extends Controller{
 	
 	//显示通知公告在我的桌面
 	public void getNoticeToDesk(){
+		//通知公告
 		List<Record> Notices = ParkManageService.getNoticeList();
 		setAttr("Notices", Notices);
+		//缴费提醒
+		List<Record> needPayList = LoginService.getNeedPayList();
+		setAttr("need_pay_list", needPayList);
+		//安全检查提醒
+		List<Record> needInspectList = LoginService.getNeedInspectList();
+		setAttr("need_inspect_list", needInspectList);
+		//区域消息提醒
+		List<Record> needAreaList = LoginService.getNeedAreaList();
+		setAttr("need_area_list", needAreaList);
+		
 		render("main.html");
 	}
 	//显示通知公告内容在跳出界面

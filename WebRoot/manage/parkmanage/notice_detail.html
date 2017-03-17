@@ -50,6 +50,7 @@
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save" id="savemess">保存</button>
 					</div>
 				</div>
+				<input type="hidden" name="conte">
 			</form>
 		</div>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
@@ -62,17 +63,20 @@
 				layer = layui.layer,
 				layedit = layui.layedit;
 				var editIndex = layedit.build('LAY_demo_editor');//创建一个编辑器
-				//layedit.sync(editIndex);
 				
 				//监听提交
                 var lock = true;
                 layedit.sync(editIndex);
 				form.on('submit(save)', function(data) {
+					var title = data.field.title;
+					var id = data.field.id;	
+					var datajson = {'title':title,'cont':layedit.getContent(editIndex),'id':id};
 					if(lock){
-						$.post('/parkmanage/saveNotice', data.field, function(data){
+						$.post('/parkmanage/saveNotice', datajson, function(data){
 							lock = false;
 							if(data.result){
 								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
 									layer_close();
 								});
 							}else{
@@ -83,15 +87,7 @@
 					}
 					return false;
 				});
-			}); 
-			/*
-	 		$('#savemess').click(function(){
-				layedit.sync(editIndex);
-				if(checkForm('textForm')) {
-					sendForm('textForm');
-				}
-			});  		
-		});*/
+		});
 		</script>
 	</body>
 </html>

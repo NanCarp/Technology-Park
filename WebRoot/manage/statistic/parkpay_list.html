@@ -142,7 +142,7 @@
 					
 					form.on('submit(_export)', function(data){
 						var year = data.field.year;
-						var companyname = data.field.companyname;
+						var companyname = encodeURI($.trim(data.field.companyname));
 					    window.open('/statistic/exportPayment/'+year+'-'+companyname, '_blank');
 						return false;
 					});

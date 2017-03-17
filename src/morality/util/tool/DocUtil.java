@@ -18,9 +18,11 @@ import freemarker.template.Template;
 */
 public class DocUtil {
 	public static final String WORD_TEMPLATE = "/model.ftl";
+	public static final String WORD_TEEPLATE = "/saferecord.ftl";
     public static final String TEMPLATE_PATH = "/resource/morality/module";
     public static final String PREVIEW_DOC = "/resource/morality/module/model.docx";
-  
+    public static final String SAFE_DOC ="/resource/morality/module/saferecord.docx";
+    
     public static Template configTemplate(HttpServletRequest request, String temp) throws IOException {
 	    Configuration config = new Configuration();
 	    ServletContext sc = request.getSession().getServletContext();
@@ -42,5 +44,18 @@ public class DocUtil {
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }   
-    }   
+    } 
+    public static void toSafe(HttpServletRequest request, String temp, Map<?, ?> root){
+        try {
+	        String safePath = request.getSession().getServletContext().getRealPath("")+SAFE_DOC;
+		    Template template = configTemplate(request, temp);
+		    FileOutputStream fos = new FileOutputStream(safePath);
+		    Writer out = new OutputStreamWriter(fos, "UTF-8");
+	        template.process(root, out);
+	        out.flush();
+	        out.close();
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }   
+    } 
 }

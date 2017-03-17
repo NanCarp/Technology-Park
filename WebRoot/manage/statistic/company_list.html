@@ -15,7 +15,6 @@
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 			<form class="layui-form">
-				<input type="hidden" name="company_name" value="${company_name!}">
 				<a class="layui-btn comlist_3 layui-btn-small" onclick="_search()"><i class="layui-icon">&#xe615;</i> 查询</a>
 				<button class="layui-btn comlist_3 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
 				<a href="javascript:location.replace('/statistic/comfind?type=2');" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
@@ -96,7 +95,7 @@
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
 		<script>
-			 $(function(){
+ 			 $(function(){
 				 laypage({
 				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
 				    pages: ${totalpage}, //总页数
@@ -105,20 +104,19 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/statistic/companylist?pageno='+e.curr+'&company_name='+company_name);
+				             location.replace('/statistic/companylist?pageno='+e.curr); 
 				        }
 				    }
 				});
-			 });
-			  
+			 });  	 
 			 // 下载
 			 function _download(id){
 				 window.open('/statistic/exportWord/'+id, '_blank');
 			 }
-			 
 			 // 查询
 			 function _search(){
 				 parent.open_window_noshadow('查询企业信息', '/manage/statistic/cominfo_find.html', 1500, 600);
+		
 			 }
 		</script>
 	</body>

@@ -16,7 +16,7 @@
 					<#list Notices as Notice>
 					<span class="no_2_span" onclick="notice_detail(${Notice.id})">
 						<span>${Notice.title}</span>
-						<span>超级管理员</span>
+						<span>${Notice.inputman}</span>
 						<span>${Notice.create_time?substring(0,10)}</span>
 					</span>
 					</#list>
@@ -29,35 +29,49 @@
 				<div class="notice_down_1">
 					<div>
 						<span class="down_1_left">缴费提醒</span>
-						<span class="down_1_right">8</span>
+						<span class="down_1_right">查看更多</span>
+
 					</div>
-					<div class="content" onclick="paymanage()">
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-						<span title="2222">&nbsp;用户admin需要缴费</span>
-						<span title="2222">&nbsp;用户admin需要缴费</span>
-						<span title="2222">&nbsp;用户admin需要缴费</span>
-					</div>
+					<#if need_pay_list?? && need_pay_list?size gt 0>
+						<div class="content">
+							<#list need_pay_list as need_pay>
+							    <input type="hidden" value="${need_pay.year}" id="need_pay"/>
+								<span title="点击查看详细" onclick="paymanage(${need_pay.year},'${need_pay.quarterly}','${need_pay.company_name}')">
+									&nbsp;&nbsp;${need_pay_index+1}.&nbsp;${need_pay.company_name}${need_pay.year}年${need_pay.quarterly}需要缴费。
+								</span>
+							</#list>
+						</div>
+					</#if>
 				</div>
 				<div class="notice_down_2">
 					<div>
 						<span class="down_1_left">园区安全生产检查提醒</span>
-						<span class="down_1_right">6</span>
+						<span class="down_1_right">查看更多</span>
 					</div>
-					<div class="content" onclick="savewarn()">
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-					</div>
+					<#if need_inspect_list?? && need_inspect_list?size gt 0>
+						<div class="content">
+							<#list need_inspect_list as need_inspect>
+								<span title="点击查看详细" onclick="savewarn('${need_inspect.company_name}')">
+									&nbsp;&nbsp;${need_inspect_index+1}.&nbsp;${need_inspect.company_name}需要安全检查。
+								</span>
+							</#list>
+						</div>
+					</#if>
 				</div>
 				<div class="notice_down_3">
 					<div>
 						<span class="down_1_left">区域消息提醒</span>
-						<span class="down_1_right">4</span>
+						<span class="down_1_right">查看更多</span>
 					</div>
-					<div class="content" onclick="areawarn()">
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-						<span title="2222">&nbsp;1231222222222222222222222222222222222222222</span>
-					</div>
+					<#if need_area_list?? && need_area_list?size gt 0>
+						<div class="content">
+							<#list need_area_list as need_area>
+								<span title="点击查看详细" onclick="areawarn('${need_area.direction}','${need_area.area_name}','${need_area.the_company}')">
+									&nbsp;&nbsp;${need_area_index+1}.&nbsp;${need_area.the_company}已通过审核，急需${need_area.area}平方米的入驻区域。
+								</span>
+							</#list>
+						</div>
+					</#if>
 				</div>
 			</div>
 		</div>
@@ -71,6 +85,7 @@
 <script type="text/javascript" src="/resource/morality/js/jquery.e-calendar.js"></script>
 <script type="text/javascript" src="/resource/morality/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript">
+	var data = '${need_area!}';
 	$(function(){
 		$('#calendar').eCalendar();
 		$(".no_2").niceScroll({
@@ -87,24 +102,50 @@
 		});
 	});
 	
+	layui.use('layer', function(){
+		  var layer = layui.layer;
+	}); 
 	// 公告详情
 	function notice_detail(id) {
-		parent.open_window('','/manage/getNoticeMessage/'+id, 970, 540);
+		layer.open({
+			type: 2,
+			area: ['970px','600px'],
+			fix: false, //不固定
+			maxmin: true,
+			shade:0.4,
+			scrollbar: false,
+			title: '',
+			content: '/manage/getNoticeMessage/'+id,
+		});
 	}
 	
-	// 缴费提醒
-	function paymanage(){
+	// 缴费提醒-单条记录
+ 	function paymanage(year, quarterly, company_name){
+		location.href='/parkmanage/paymanage?year='+year+'&quarterly='+quarterly+'&company_name='+company_name;
+	}  
+	// 园区安全生产检查提醒-单条记录
+	function savewarn(company_name,fstate){
+		location.href='/parkmanage/safetyrecord?fstate=0&company_name='+company_name;
+	}
+	
+	// 区域消息提醒-单条记录
+	function areawarn(direction, areaname, company_name){
+		location.href='/parkmanage/areamanage?fstate=1&direction='+direction+'&areaname='+areaname+'&company_name='+company_name;
+	}
+	
+	// 缴费更多提醒-查看更多
+	$('.notice_down_1 .down_1_right').on('click', function(){
 		location.href="/parkmanage/paymanage";
-	}
+	});
+
+	// 园区安全生产检查提醒-查看更多
+	$('.notice_down_2 .down_1_right').on('click', function(){
+		location.href="/parkmanage/safetyrecord";
+	});
 	
-	// 园区安全生产检查提醒
-	function savewarn(){
-		location.href="/parkmanage/safetyagreement";
-	}
-	
-	// 区域消息提醒
-	function areawarn(){
+	// 区域消息提醒-查看更多
+	$('.notice_down_3 .down_1_right').on('click', function(){
 		location.href="/parkmanage/areamanage";
-	}
+	});
 </script>
 </html>

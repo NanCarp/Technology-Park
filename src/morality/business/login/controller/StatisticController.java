@@ -23,7 +23,6 @@ import morality.util.interceptor.ManageInterceptor;
  */
 @Before(ManageInterceptor.class)
 public class StatisticController extends Controller {
-	static Map<String,Object> wholeMap = new HashMap<String, Object>();
  	/*********************** 楼区数据统计 ************************/
 	// 楼区列表
 	public void buildinglist() {
@@ -62,15 +61,15 @@ public class StatisticController extends Controller {
 	/*********************** 企业数据总览 ************************/
 	public void companylist() {
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, wholeMap);
+		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, getSessionAttr("wholeMapp"));
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
 		setAttr("companylist", page.getList());
 		render("company_list.html");
 	}
-
 	public void comfind(){
+		Map<String,Object> wholeMap = new HashMap<String, Object>();
 		wholeMap.put("company_name",getPara("company_name"));
 		wholeMap.put("company_type",getParaToInt("company_type"));
 		wholeMap.put("mindate",getPara("mindate"));//缴费时间
@@ -107,57 +106,74 @@ public class StatisticController extends Controller {
 		wholeMap.put("software_max",getParaToInt("software_max"));
 		wholeMap.put("product_min",getParaToInt("product_min"));//软件产品
 		wholeMap.put("product_max",getParaToInt("product_max"));
+		getSession().setAttribute("wholeMap", wholeMap);
+		
+		Map<String,Object> wholeMapp = new HashMap<String, Object>();
+		wholeMapp.put("company_name",getPara("company_name"));
+		wholeMapp.put("company_type",getParaToInt("company_type"));
+		wholeMapp.put("mindate",getPara("mindate"));//缴费时间
+		wholeMapp.put("maxdate", getPara("maxdate"));
+		wholeMapp.put("minsr",getPara("minsr"));//总收入
+		wholeMapp.put("maxsr",getPara("maxsr"));
+		wholeMapp.put("income_min",getPara("income_min"));//纯利润
+		wholeMapp.put("income_max", getPara("income_max"));
+		wholeMapp.put( "tax_min",getPara("tax_min"));//上缴税费
+		wholeMapp.put("tax_max",getPara("tax_max"));
+		wholeMapp.put("rd_min",getPara("rd_min"));//R&D投入
+		wholeMapp.put("rd_max",getPara("rd_max"));
+		wholeMapp.put("doctor_min",getParaToInt("doctor_min"));//博士生
+		wholeMapp.put("doctor_max",getParaToInt("doctor_max"));
+		wholeMapp.put("junior_min",getParaToInt("junior_min"));//大专生
+		wholeMapp.put("junior_max",getParaToInt("junior_max"));
+		wholeMapp.put("styabroad_min",getParaToInt("styabroad_min"));//留学人数
+		wholeMapp.put("styabroad_max",getParaToInt("styabroad_max"));
+		wholeMapp.put("thousand_min",getParaToInt("thousand_min"));//千人计划
+		wholeMapp.put("thousand_max", getParaToInt("thousand_max"));
+		wholeMapp.put("university_min",getParaToInt("university_min"));//应届大学生毕业生
+		wholeMapp.put("university_max",getParaToInt("university_max"));
+		wholeMapp.put("taxstatus_min",getParaToInt("taxstatus_min"));//保险缴纳情况
+		wholeMapp.put("taxstatus_max",getParaToInt("taxstatus_max"));
+		wholeMapp.put("addtax_min",getParaToInt("addtax_min"));//当年新增保险
+		wholeMapp.put("addtax_max",getParaToInt("addtax_max"));
+		wholeMapp.put("intellapply_min",getParaToInt("intellapply_min"));//申请知识产权
+		wholeMapp.put("intellapply_max",getParaToInt("intellapply_max"));
+		wholeMapp.put("aprintell_min",getParaToInt("aprintell_min"));//批准知识产权
+		wholeMapp.put("aprintell_max",getParaToInt("aprintell_max"));
+		wholeMapp.put("invent_min",getParaToInt("invent_min"));//发明专利
+		wholeMapp.put("invent_max",getParaToInt("invent_max"));
+		wholeMapp.put("software_min",getParaToInt("software_min"));//软件著作权
+		wholeMapp.put("software_max",getParaToInt("software_max"));
+		wholeMapp.put("product_min",getParaToInt("product_min"));//软件产品
+		wholeMapp.put("product_max",getParaToInt("product_max"));
+		getSession().setAttribute("wholeMapp", wholeMapp);
+		
 		Integer type = getParaToInt("type");
 		type = type == null ? 1 : type;
 		if(type != 1){
-			wholeMap.put("company_name",null);
-			wholeMap.put("company_type",null);
-			wholeMap.put("mindate",null);//缴费时间
-			wholeMap.put("maxdate",null);
-			wholeMap.put("minsr",null);//总收入
-			wholeMap.put("maxsr",null);
-			wholeMap.put("income_min",null);//纯利润
-			wholeMap.put("income_max",null);
-			wholeMap.put( "tax_min",null);//上缴税费
-			wholeMap.put("tax_max",null);
-			wholeMap.put("rd_min",null);//R&D投入
-			wholeMap.put("rd_max",null);
-			wholeMap.put("doctor_min",null);//博士生
-			wholeMap.put("doctor_max",null);
-			wholeMap.put("junior_min",null);//大专生
-			wholeMap.put("junior_max",null);
-			wholeMap.put("styabroad_min",null);//留学人数
-			wholeMap.put("styabroad_max",null);
-			wholeMap.put("thousand_min",null);//千人计划
-			wholeMap.put("thousand_max",null);
-			wholeMap.put("university_min",null);//应届大学生毕业生
-			wholeMap.put("university_max",null);
-			wholeMap.put("taxstatus_min",null);//保险缴纳情况
-			wholeMap.put("taxstatus_max",null);
-			wholeMap.put("addtax_min",null);//当年新增保险
-			wholeMap.put("addtax_max",null);
-			wholeMap.put("intellapply_min",null);//申请知识产权
-			wholeMap.put("intellapply_max",null);
-			wholeMap.put("aprintell_min",null);//批准知识产权
-			wholeMap.put("aprintell_max",null);
-			wholeMap.put("invent_min",null);//发明专利
-			wholeMap.put("invent_max",null);
-			wholeMap.put("software_min",null);//软件著作权
-			wholeMap.put("software_max",null);
-			wholeMap.put("product_min",null);//软件产品
-			wholeMap.put("product_max",null);
 			companylist();
 		}else{
 			renderJson(true);
 		}
 	}
-	
-/******测试*********/	
+		
 	// 导出word
 	public void exportWord() throws IOException {
 		Integer id = getParaToInt();
 		StatisticService.excWord(getResponse(), getRequest(), id);
 		renderNull();
+	}
+	
+	//查询界面
+	public void opensearch(){
+		if(getSessionAttr("wholeMap")!=null){
+			if(getAttrForStr("wholeMapp")!=null){
+				Map<String,Object> map = new HashMap<>(getSessionAttr("wholeMap"));
+				for(Map.Entry<String, Object> entry:map.entrySet()){
+					setAttr(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		render("cominfo_find.html");
 	}
 	/*********************** 园区缴费情况总表 **********************/
 	public void parkpaylist() {

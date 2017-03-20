@@ -25,6 +25,7 @@ public class FileManageController extends Controller {
 	public void filelist() {
 		Record admin = getSessionAttr("admin");
 		Integer rid = admin.getInt("role_id");
+		Integer recipient_id = admin.getInt("id");//登录者id，用于判断是否有权限
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if(mopids.indexOf("177")!=-1){
 			setAttr("_add", true);
@@ -36,7 +37,7 @@ public class FileManageController extends Controller {
 			setAttr("_edit", true);
 		}
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
-		Page<Record> page = FileManageService.getWjcyList(pageno, 16,rid);
+		Page<Record> page = FileManageService.getWjcyList(pageno, 16,recipient_id);
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
@@ -148,7 +149,6 @@ public class FileManageController extends Controller {
 			String file_url = record.getStr("file_url");
 			setAttr("farr", file_url);
 		}
-
 		render("projectdeclar_detail.html");
 	}
 

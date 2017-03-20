@@ -24,7 +24,7 @@ public class FileManageService {
 	// 获得文件传阅列表
 	public static Page<Record> getWjcyList(Integer pageno, int pageSize,Integer rid) {
 		String sqlExceptSelect = " FROM t_file a LEFT JOIN t_employee b ON a.uploader = b.id";
-			sqlExceptSelect += " where FIND_IN_SET("+rid+",recipient)";
+			sqlExceptSelect += " where FIND_IN_SET("+rid+",recipient) or a.uploader="+rid;
 		return Db.paginate(pageno, pageSize, "SELECT a.id,a.recipient, a.file_name, a.file_url,b.name,a.modify_time",
 				sqlExceptSelect);
 	}
@@ -65,8 +65,7 @@ public class FileManageService {
 
 
 
-	/*********************** 项目申报管理 
-	 * @param recipient_id ************************/
+	/*********************** 项目申报管理 ************************/
 	// 获得项目申报列表
 	public static Page<Record> getProjectList(Integer pageno, Integer pagesize, Integer recipient_id) {
 		String sqlExceptSelect = " FROM t_project a LEFT JOIN t_employee b ON a.uploader = b.id WHERE FIND_IN_SET("+recipient_id+",recipient) "

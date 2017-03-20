@@ -21,7 +21,7 @@
 				<input value="${payment.id}" name="id" type="hidden">
 				<input value="${payment.year}" name="year" type="hidden">
 				<input value="${payment.quarterly}" name="quarterly" type="hidden">
-				<input value="${payment.company_name}" name="company_name" type="hidden">
+				<input value="${payment.company_id}" name="company_id" type="hidden">
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租应缴(元)：</label>
 					<div class="layui-input-block">
@@ -58,12 +58,6 @@
 						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="${payment.real_water_fee}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-form-item layui-form-text">
-    				<label class="layui-form-label">备注:</label>
-    				<div class="layui-input-block">
-     				 	<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-    				</div>
-  				</div>
   				<#else>
   				<div class="layui-form-item">
 					<label class="layui-form-label">年份：</label>
@@ -130,12 +124,6 @@
 						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-form-item layui-form-text">
-    				<label class="layui-form-label">备注:</label>
-    				<div class="layui-input-block">
-     				 	<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-    				</div>
-  				</div>
   				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">

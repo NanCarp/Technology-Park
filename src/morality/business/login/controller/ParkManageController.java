@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
@@ -331,9 +329,8 @@ public class ParkManageController extends Controller {
 	public void savePayment() {
 		Integer id = getParaToInt("id");
 		String year = getPara("year");
-		String quarterly = getPara("quarterly");
-		
-		Integer company_id = getParaToInt("company");
+		String quarterly = getPara("quarterly");		
+		Integer company_id = getParaToInt("company_id");
 		String company_name = ParkManageService.getCompanyName(company_id).getStr("enterprise_name");
 		Double should_pay_rent = Double.parseDouble(getPara("should_pay_rent"));
 		Double paid_rent = Double.parseDouble(getPara("paid_rent"));
@@ -447,15 +444,16 @@ public class ParkManageController extends Controller {
 			renderNull();
 		} else {
 			renderText("导出失败");
-		}
-
+		}	
 	}
-	//导出安全管理检查记录
+	
+	//导出安全管理检查记录导出word表格
 	public void exportWord() throws IOException {
 		Integer id = getParaToInt();
 		ParkManageService.excWord(getResponse(), getRequest(), id);
 		renderNull();
 	}
+	
 	/***********************园区安全责任书签订************************/
 	//获得安全责任书签订列表
 	public void safetyagreement(){

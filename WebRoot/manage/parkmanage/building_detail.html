@@ -18,11 +18,11 @@
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if building??>
-				<input type="hidden" value="${building.id}" name="id">
+				<input type="hidden" value="${building.id!}" name="id">
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼名：</label>
 					<div class="layui-input-block">
-						<input type="text" name="buildname" id="v1"  lay-verify="required|buildname" value="${building.name}" autocomplete="off" class="layui-input">
+						<input type="text" name="buildname" id="v1"  lay-verify="required|buildname" value="${building.name!}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -50,19 +50,19 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">层编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="buildfloorno" id="v4"  lay-verify="required|buildfloorno" value="${building.floor_no}" autocomplete="off" class="layui-input">
+						<input type="text" name="buildfloorno" id="v4"  lay-verify="required|buildfloorno" value="${building.floor_no!}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">总面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="${building.total_area}" autocomplete="off" class="layui-input">
+						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="${building.total_area!}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">可用面积/平方米：</label>
 					<div class="layui-input-block">
-						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="${building.usable_area}" autocomplete="off" class="layui-input">
+						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="${building.usable_area!}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">

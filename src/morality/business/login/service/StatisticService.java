@@ -249,14 +249,14 @@ public class StatisticService {
 		}
 		if(map.get("income_min")!=null&&map.get("income_min")!=""){
 			if(map.get("income_max")!=null&&map.get("income_max")!=""){
-				sqlExceptSelect +=" and net_profit "+map.get("income_min")+"<=net_profit and net_profit>="+map.get("income_max");
+				sqlExceptSelect +=" and "+map.get("income_min")+"<=net_profit and net_profit>="+map.get("income_max");
 			}else{
 				sqlExceptSelect +=" and net_profit = "+map.get("income_min");
 			}
 		}
 		if(map.get("tax_min")!=null&&map.get("tax_min")!=""){
 			if(map.get("tax_max")!=null && map.get("tax_max")!=""){
-				sqlExceptSelect +=" and "+map.get("tax_min") +"<=taxation and taxtion<=" +map.get("tax_max");
+				sqlExceptSelect +=" and "+map.get("tax_min") +"<=taxation and taxation<=" +map.get("tax_max");
 			}else{
 				sqlExceptSelect +=" and taxation = "+map.get("tax_min");
 			}
@@ -368,7 +368,6 @@ public class StatisticService {
 						+ "LEFT JOIN t_property_right d ON a.id = d.company_id where a.id=?",
 				id);
 	}
-
 	// 导出Word
 	public static void excWord(HttpServletResponse response, HttpServletRequest request, Integer id)
 			throws IOException {

@@ -134,8 +134,8 @@ public class DataDictionaryService {
 	// 子级行业分页查询
 	public static Page<Record> getSubIndustryList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize,
-				"SELECT id,sub_industry_code,sub_industry_name,superior_industry_id,create_time ",
-				"FROM t_sub_industry ");
+				"SELECT a.id,sub_industry_code,sub_industry_name,superior_industry_id,a.create_time,b.industry_code,b.industry_name ",
+				"FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id=b.id ");
 	}
 
 	// 查询子级行业列表
@@ -147,9 +147,10 @@ public class DataDictionaryService {
 	// 查询子级行业列表，通过父级ID
 	public static List<Record> getSubIndustryBySuperId(Integer superId) {
 		return Db
-				.find("SELECT a.id,a.sub_industry_code,a.sub_industry_name,a.superior_industry_id,b.industry_name AS super_industry_name "
-						+ "FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id "
-						+ "WHERE a.superior_industry_id = " + superId);
+				.find(" SELECT a.id,a.sub_industry_code,a.sub_industry_name,a.superior_industry_id,b.industry_name AS super_industry_name "
+						+ " FROM t_sub_industry a LEFT JOIN t_superior_industry b ON a.superior_industry_id = b.id "
+						+ " WHERE a.superior_industry_id = " + superId
+						+ " ORDER BY sub_industry_code");
 	}
 
 	// 保存子级行业数据
@@ -174,7 +175,7 @@ public class DataDictionaryService {
 	public static Page<Record> getIndustryCodeList(Integer pageno, Integer pagesize) {
 		return Db.paginate(pageno, pagesize,
 				"SELECT id,industry_code,industry_name,superior_industry,sub_industry,create_time ",
-				"FROM t_industry_code ");
+				"FROM t_industry_code ORDER BY industry_code ");
 	}
 
 	// 行业代码列表

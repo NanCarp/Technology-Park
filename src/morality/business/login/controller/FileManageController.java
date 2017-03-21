@@ -36,6 +36,9 @@ public class FileManageController extends Controller {
 		if(mopids.indexOf("179")!=-1){
 			setAttr("_edit", true);
 		}
+		if(mopids.indexOf("180")!=-1){
+			setAttr("_download", true);
+		}
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Page<Record> page = FileManageService.getWjcyList(pageno, 16,recipient_id);
 		setAttr("pageno", page.getPageNumber());
@@ -128,7 +131,7 @@ public class FileManageController extends Controller {
 			setAttr("_edit", true);
 		}
 		if (mopids.indexOf("184") != -1) {
-			setAttr("_search", true);
+			setAttr("_download", true);
 		}
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Page<Record> page = FileManageService.getProjectList(pageno, 16, recipient_id);

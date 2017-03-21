@@ -55,9 +55,9 @@
 							<th>${project.name}</th>
 							<th>${project.modify_time}</th>
 							<td>
-								<a href="javascript:" class="layui-btn layui-btn-mini " onclick="_edit(${project.id})">编辑</a>
-								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini" onclick="_delete(${project.id})">删除</a>
-								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-warm layui-btn-mini" onclick="_download(${project.id})">下载</a>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${project.id})</#if>">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini <#if _delete??><#else>layui-btn-disabled</#if>" onclick="<#if _delete??>_delete(${project.id})</#if>">删除</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-warm layui-btn-mini <#if _download??><#else>layui-btn-disabled</#if>" onclick="<#if _download??>_download(${project.id})</#if>">下载</a>
 							</td>
 						</tr>
 						</#list> <#else>

@@ -62,9 +62,7 @@ public class FileManageService {
 		}
 		out.close();
 	}
-
-
-
+	
 	/*********************** 项目申报管理 ************************/
 	// 获得项目申报列表
 	public static Page<Record> getProjectList(Integer pageno, Integer pagesize, Integer recipient_id) {

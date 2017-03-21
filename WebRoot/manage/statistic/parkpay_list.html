@@ -92,7 +92,7 @@
 							</#list>
 							<#else>
 							<tr>
-								<td colspan="6" style="text-align: center;"><span>没有数据信息</span></td>
+								<td colspan="27" style="text-align: center;"><span>没有数据信息</span></td>
 							</tr>
 							</#if>
 						</tbody>
@@ -127,8 +127,15 @@
 						companyname: function(value){
 							if($.trim(value)!=""){
 								if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-								      return '不能有特殊字符';
-								    }
+							    	return '不能有特殊字符';
+							    }
+							}
+						},
+						year: function(value){
+							if($.trim(value)!=""){
+								if(!new RegExp("^[0-9\s·]+$").test(value)){
+									return '请输入正确年份';
+								}
 							}
 						},
 					});   

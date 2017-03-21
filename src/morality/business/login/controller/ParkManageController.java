@@ -294,12 +294,12 @@ public class ParkManageController extends Controller {
 		if (mopids.indexOf("146") != -1) {
 			setAttr("_search", true);
 		}
-
-		Integer year = getParaToInt("year") == null ? 0 : getParaToInt("year");
-		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		String quarterly = getPara("quarterly") == null ? "选择季度" : getPara("quarterly");
-		String company_name = getPara("company_name");
-
+		
+		Integer year = getParaToInt("year");
+		Integer pageno = getParaToInt("pageno")==null?1:getParaToInt("pageno");
+		String quarterly = getPara("quarterly")==null?"选择季度":getPara("quarterly");
+		String company_name= getPara("company_name");
+		
 		setAttr("year", year);
 		setAttr("quarterly", quarterly);
 		setAttr("company_name", company_name);

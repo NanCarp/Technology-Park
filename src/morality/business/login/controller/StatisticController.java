@@ -1,14 +1,8 @@
 package morality.business.login.controller;
-
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.Map;
-
-
 import java.net.URLDecoder;
-
-
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -61,7 +55,7 @@ public class StatisticController extends Controller {
 	/*********************** 企业数据总览 ************************/
 	public void companylist() {
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, getSessionAttr("wholeMapp"));
+		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, (Map<String,Object>)getSessionAttr("wholeMapp"));
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
 		setAttr("totalrow", page.getTotalRow());
@@ -167,7 +161,7 @@ public class StatisticController extends Controller {
 	public void opensearch(){
 		if(getSessionAttr("wholeMap")!=null){
 			if(getAttrForStr("wholeMapp")!=null){
-				Map<String,Object> map = new HashMap<>(getSessionAttr("wholeMap"));
+				Map<String,Object> map = getSessionAttr("wholeMap");
 				for(Map.Entry<String, Object> entry:map.entrySet()){
 					setAttr(entry.getKey(), entry.getValue());
 				}
@@ -202,7 +196,6 @@ public class StatisticController extends Controller {
 		setAttr("totalrow", page.getTotalRow());
 		setAttr("parkpaylist", page.getList());
 		render("parkpay_list.html");	
-
 	}
 	
 	// 园区缴费情况导出Excel

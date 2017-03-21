@@ -45,10 +45,10 @@ public class StatisticService {
 			sqlExceptSelect += " and b.status = " + astate;
 		}
 		if (floorno != null && floorno != "") {
-			sqlExceptSelect += " and a.floor_no = " + floorno;
+			sqlExceptSelect += " and c.building_NO like '%" + floorno +"%'";
 		}
 		if (areano != null && areano != "") {
-			sqlExceptSelect += " and b.area_no = " + areano;
+			sqlExceptSelect += " and b.area_no = '%"+ areano +"'%";
 		}
 		return Db.paginate(pageno, pagesize,
 				"SELECT a.id,a.name,a.nature,a.floor_no,a.building_no,c.building_NO, a.total_area,a.usable_area,a.status AS bstate,b.area_name,b.direction,b.area_no,b.area,b.status AS astate ",

@@ -17,17 +17,7 @@
 		<blockquote class="layui-elem-quote">
 			<form class="layui-form">
 				<div class="layui-input-block buildlist_0">
-					<select name="year" id="v0">
-				    	<option value="0" >--选择年份--</option>
-				    	<option value="2015" <#if year==2015>selected</#if>>2015</option>
-				    	<option value="2016"<#if year==2016>selected</#if>>2016</option>
-				    	<option value="2017"<#if year==2017>selected</#if>>2017</option>
-				    	<option value="2018"<#if year==2018>selected</#if>>2018</option>
-				    	<option value="2019"<#if year==2019>selected</#if>>2019</option>
-				    	<option value="2020"<#if year==2020>selected</#if>>2020</opton>
-				    	<option value="2021"<#if year==2021>selected</#if>>2021</option>
-				    	<option value="2022"<#if year==2022>selected</#if>>2022</option>
-					</select>
+					<input type="text" name="year" id="v0" placeholder="请选择年份" lay-verify="year" value="${year!}" autocomplete="off"  class="layui-input" onclick="layui.laydate({elem: this,format: 'YYYY'})">
 				</div>
 				<div class="layui-input-block buildlist_1">
 					<select name="quarterly" id="v1">
@@ -102,6 +92,7 @@
 	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
 	<script>
 		var year="${year!}",quarterly="${quarterly!}",company_name="${company_name!}";
 		$(function(){
@@ -153,6 +144,14 @@
 							}
 						}
 					}
+	             ,year:function(val){
+	            	 if($.trim(val)!=''){
+	            		 if(!new RegExp("^[0-9]*$").test(val)){
+	            			 return '请输入正确的年份';
+	            		 }
+	            	 }
+	            	 
+	             }
 				});  
 				
 				form.on('submit(_search)', function(data){

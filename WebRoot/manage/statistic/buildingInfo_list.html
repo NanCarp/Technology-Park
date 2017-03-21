@@ -58,15 +58,15 @@
 							<#list buildlist as building>
 							<tr>
 								<td>${building_index+1}</td>
-								<td>${building.building_NO}</td>
-								<td>${building.floor_no}</td>
-								<td>${building.usable_area}</td>
+								<td>${building.building_NO!}</td>
+								<td>${building.floor_no!}</td>
+								<td>${building.usable_area!}</td>
 								<td><#if building.bstate==0>未满<#else>已满</#if></td>
-								<td>${building.area_name}</td>
-								<td>${building.area_no}</td>
-								<td>${building.direction}</td>
-								<td>${building.area}</td>
-								<td><#if building.astate?string('1','0')=='1'>已入驻<#else>未入驻</#if></td>
+								<td>${building.area_name!}</td>
+								<td>${building.area_no!}</td>
+								<td>${building.direction!}</td>
+								<td>${building.area!}</td>
+								<td><#if building.astate??><#if building.astate?string('1','0')=='1'>已入驻<#else>未入驻</#if></#if></td>
 							</tr>
 							</#list>
 							<#else>
@@ -116,7 +116,7 @@
 				form.verify({
 					num: function(val){
 						if($.trim(val)!=''){
-							if(!new RegExp("^[0-9]*$").test(val)){
+							if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
 								return '请输入正确格式的编号';
 							}
 						}
@@ -143,5 +143,4 @@
 			 })
 		</script>
 	</body>
-
 </html>

@@ -68,30 +68,33 @@
 			
 			var lock = true;
 			function _save(){
-				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-				var nodes = treeObj.getCheckedNodes(true);
-				var myArray = new Array(nodes.length);
-				for (var a = 0; a < nodes.length; a++) {
-					myArray[a] = nodes[a].id;
-				}
-				if(lock){
-					lock = false;
-					$.post('/systom/saveAuthority', {'id':id,'mid':myArray.join(),'rid':rid}, function(data){
-						layui.use('layer', function(){
-							var layer = layui.layer;
-							if(data){
-								parent.refresh_iframe();
-									layer.msg('保存成功', {time: 1000}, function(){
-										layer_close();
+				layui.use('layer', function(){
+					var layer = layui.layer;
+					var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+					var nodes = treeObj.getCheckedNodes(true);
+					if(nodes.length == 0){
+						layer.msg('请选择添加权限');return;
+					}
+					var myArray = new Array(nodes.length);
+					for (var a = 0; a < nodes.length; a++) {
+						myArray[a] = nodes[a].id;
+					}
+					if(lock){
+						lock = false;
+						$.post('/systom/saveAuthority', {'id':id,'mid':myArray.join(),'rid':rid}, function(data){
+								if(data){
+									parent.refresh_iframe();
+										layer.msg('保存成功', {time: 1000}, function(){
+											layer_close();
+										});
+								}else{
+									layer.msg('保存失败', {time: 1000}, function(){
+										lock = true;
 									});
-							}else{
-								layer.msg('保存失败', {time: 1000}, function(){
-									lock = true;
-								});
-							}
+								}
 						});
-					});
-				}
+					}
+				});
 			}
 		</script>
 	</body>

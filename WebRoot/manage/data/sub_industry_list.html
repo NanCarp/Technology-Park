@@ -38,7 +38,7 @@
 								<td>${subindustry_index+1}</td>
 								<td>${subindustry.sub_industry_code}</td>
 								<td>${subindustry.sub_industry_name}</td>
-								<td>${subindustry.superior_industry_id}</td>
+								<td>${subindustry.industry_code}${subindustry.industry_name}</td>
 								<td>${subindustry.create_time}</td>
 								<td>
 									<a onclick="<#if _edit??>_edit(${subindustry.id})</#if>" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>">编辑</a>

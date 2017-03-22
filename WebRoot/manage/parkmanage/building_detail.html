@@ -13,12 +13,13 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if building??>
 				<input type="hidden" value="${building.id!}" name="id">
+				<input type="hidden" value="<#if building.usable lt 0>1<#elseif building.usable==0>1<#else>0</#if>" name="buildstatus">
+				<input type="hidden" value="${building.usable!}" name="usable_area">
 				<div class="layui-form-item">
 					<label class="layui-form-label">大楼名：</label>
 					<div class="layui-input-block">
@@ -58,19 +59,6 @@
 					<div class="layui-input-block">
 						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="${building.total_area!}" autocomplete="off" class="layui-input">
 					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">可用面积/平方米：</label>
-					<div class="layui-input-block">
-						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="${building.usable_area!}" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-    				<label class="layui-form-label" id="v7">大楼状态</label>
-    				<div class="layui-input-block">
-     					<input type="radio" name="buildstatus" value="0" title="未满"<#if building.status=0>checked</#if>>
-      					<input type="radio" name="buildstatus" value="1" title="已满"<#if building.status=1>checked</#if>>
-      				</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
@@ -113,19 +101,6 @@
 						<input type="text" name="buildtotalarea" id="v5"  lay-verify="required|buildtotalarea" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">可用面积/平方米：</label>
-					<div class="layui-input-block">
-						<input type="text" name="buildusablearea" id="v6"  lay-verify="required|buildusablearea" value="" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-    				<label class="layui-form-label" id="v7">大楼状态</label>
-    				<div class="layui-input-block">
-     					<input type="radio" name="buildstatus" value="0" title="未满" checked="checked">
-      					<input type="radio" name="buildstatus" value="1" title="已满">
-      				</div>
-				</div>
 				</#if>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
@@ -162,11 +137,6 @@
 							return '请输入数字';
 						}
 						
-					}
-					,buildusablearea:function(value){
-						if(!new RegExp("^[0-9]*$").test(value)){
-							return '请输入数字';
-						}
 					}
 					,buildfloorno:function(value){
 						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){

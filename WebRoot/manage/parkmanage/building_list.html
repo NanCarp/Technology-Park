@@ -54,13 +54,13 @@
 					<#list buildinglist as building>
 						<tr>
 							<td>${building_index+1}</td>
-							<td>${building.name}</td>
-							<td>${building.naturename}</td>
-							<td>${building.floor_no}</td>
-							<td>${building.building_NO}</td>
-							<td>${building.total_area}</td>
-							<td>${building.usable_area}</td>
-							<td><#if building.status==0>未满<#else>已满</#if></td>
+							<td>${building.name!}</td>
+							<td>${building.naturename!}</td>
+							<td>${building.floor_no!}</td>
+							<td>${building.building_NO!}</td>
+							<td>${building.total_area!}</td>
+							<td><#if building.usable lt 0>0<#else>${building.usable!}</#if></td>
+							<td><#if building.usable lt 0>已满<#elseif building.usable==0>已满<#else>未满</#if></td>
 							<td>
 								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="_edit(${building.id})">编辑</a>
 								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${building.id})</#if>">删除</a>

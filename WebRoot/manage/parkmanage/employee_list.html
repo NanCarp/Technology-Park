@@ -39,10 +39,10 @@
 					<#list emplist as emp>
 						<tr>
 							<td>${emp_index+1}</td>
-							<td>${emp.name}</td>
-							<td>${emp.empno}</td>
-							<td>${emp.phone}</td>
-							<td>${emp.department_name}</td>
+							<td>${emp.name!}</td>
+							<td>${emp.empno!}</td>
+							<td>${emp.phone!}</td>
+							<td>${emp.department_name!}</td>
 							<td>${emp.position_name!}</td>
 							<td><#if emp.status==1>在职<#else>离职</#if></td>
 							<td>

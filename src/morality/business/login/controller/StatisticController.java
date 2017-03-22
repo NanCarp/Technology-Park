@@ -55,6 +55,17 @@ public class StatisticController extends Controller {
 	/*********************** 企业数据总览 ************************/
 	public void companylist() {
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
+		getSession().removeAttribute("wholeMapp");
+		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, null);
+		setAttr("pageno", page.getPageNumber());
+		setAttr("totalpage", page.getTotalPage());
+		setAttr("totalrow", page.getTotalRow());
+		setAttr("companylist", page.getList());
+		render("company_list.html");
+	}
+	
+	public void companylistForSearch() {
+		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
 		Page<Record> page = StatisticService.getCompanyInfosearch(pageno, 16, (Map<String,Object>)getSessionAttr("wholeMapp"));
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());
@@ -62,6 +73,7 @@ public class StatisticController extends Controller {
 		setAttr("companylist", page.getList());
 		render("company_list.html");
 	}
+	
 	public void comfind(){
 		Map<String,Object> wholeMap = new HashMap<String, Object>();
 		wholeMap.put("company_name",getPara("company_name"));
@@ -160,7 +172,7 @@ public class StatisticController extends Controller {
 	//查询界面
 	public void opensearch(){
 		if(getSessionAttr("wholeMap")!=null){
-			if(getAttrForStr("wholeMapp")!=null){
+			if(getSessionAttr("wholeMapp")!=null){
 				Map<String,Object> map = getSessionAttr("wholeMap");
 				for(Map.Entry<String, Object> entry:map.entrySet()){
 					setAttr(entry.getKey(), entry.getValue());

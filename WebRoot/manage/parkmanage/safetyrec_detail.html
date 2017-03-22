@@ -40,19 +40,19 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">检查时间：</label>
 					<div class="layui-input-block">
-						<input class="layui-input" name="check_time" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" value="${saferecord.check_time}">
+						<input class="layui-input" name="check_time" placeholder="请选择日期" lay-verify="required|check_time" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" value="${saferecord.check_time}">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">检查人员：</label>
 					<div class="layui-input-block">
-						<input type="text" name="examiner" id="v1"  lay-verify="required|examiner" value="${saferecord.examiner}" autocomplete="off" class="layui-input">
+						<input type="text" name="examiner" id="v1"  lay-verify="required|examiner"  value="${saferecord.examiner}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">整改时间：</label>
 					<div class="layui-input-block">
-						<input class="layui-input" name="rectification_time" placeholder="请选择日期" value="${saferecord.rectification_time}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
+						<input class="layui-input" name="rectification_time" lay-verify="required|rectification_time"  placeholder="请选择日期" value="${saferecord.rectification_time}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -107,7 +107,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">检查时间：</label>
 					<div class="layui-input-block">
-						<input class="layui-input" name="check_time" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
+						<input class="layui-input" name="check_time" placeholder="请选择日期" lay-verify="required|check_time" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -119,7 +119,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">整改时间：</label>
 					<div class="layui-input-block">
-						<input class="layui-input" name="rectification_time" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
+						<input class="layui-input" name="rectification_time" lay-verify="required|rectification_time" placeholder="请选择日期" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:MM:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -183,6 +183,11 @@
 				,supervision_personnel:function(value){
 				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 					      return '不能有特殊字符';
+					}
+				}
+				,company:function(value){
+					if(value==0){
+						return '请选择单位';
 					}
 				}
 

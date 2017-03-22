@@ -64,7 +64,10 @@ function refresh_iframe(){
 	var iframedoc = $('.layui-tab-item iframe:visible').get(0);
 	iframedoc.src = iframedoc.src;
 }
-
+function go_iframe(){
+	var iframedoc = $('.layui-tab-item iframe:visible').get(0);
+	iframedoc.src = 'http://'+ window.location.host +'/statistic/companylistForSearch';
+}
 function open_schedule(url, w, h){
 	layer.open({
 		type: 2,

@@ -37,12 +37,13 @@ public class EnterpriseService {
 		}
 	}
 	
-	//获取企业的行业、子级行业、父级行业ID
+	//获取企业的行业id、子级行业id、父级行业id、企业类型（大楼性质）id
 	public static List<Record> getIndustryIds(Integer id) {
-		return Db.find(" SELECT a.*,b.industry_name,b.id as industry_id,c.id AS sub_industry_id,d.id AS superior_industry_id "
+		return Db.find(" SELECT a.*,b.industry_name,b.id as industry_id,c.id AS sub_industry_id,d.id AS superior_industry_id,e.id as type_id "
 				+ " FROM  t_enterprise_in a LEFT JOIN t_industry_code b ON a.industry=b.industry_code "
 				+ " LEFT JOIN t_sub_industry c ON b.sub_industry=c.sub_industry_name "
 				+ " LEFT JOIN t_superior_industry d ON c.superior_industry_id=d.id "
+				+ " LEFT JOIN t_building_nature e ON a.enterprise_type=e.id "
 				+ " WHERE a.id=" + id);
 	}
 

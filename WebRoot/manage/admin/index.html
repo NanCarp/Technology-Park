@@ -7,21 +7,21 @@
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<style type="text/css">
+			.top_font{font-size: 22px;color: #fff;margin-left: 15px;line-height: 65px;letter-spacing: 3px;}
+		</style>
 	</head>
 	<body>
 		<div class="layui-layout layui-layout-admin">
 			<input type="hidden" id="id" value="${id!}">
 			<div class="layui-header header header-demo">
 				<div class="layui-main" style="margin: 0;">
-					<div class="admin-login-box" style="background-color: #e96388;height: 65px;width: 200px;">
-						<a class="logo" style="left: 0;" href="#">
-							<span style="font-size: 22px;color: #fff;margin-left: 15px;">园区管理系统</span>
-						</a>
-						<div class="admin-side-toggle" style="left: 215px;">
+					<div class="">
+						<span class="top_font"><i class="layui-icon" style="font-size: 27px;">&#xe62c;</i>启迪软件科技园管理系统</span>
+						<div class="admin-side-toggle">
 							<i class="fa fa-bars" aria-hidden="true"></i>
 						</div>
 					</div>
-					<img src="/resource/morality/images/top_name.png" style="position: absolute;top: 5px;left: 300px;">
 					<ul class="layui-nav admin-header-item">
 						<li class="layui-nav-item" style="display: none;">
 							<a href="javascript:;">清除缓存</a>
@@ -29,22 +29,18 @@
 						<li class="layui-nav-item" style="display: none;">
 							<a href="javascript:;">浏览网站</a>
 						</li>
-						<li class="layui-nav-item" style="color: #999;"><i class="layui-icon">&#xe613;</i>&nbsp;&nbsp;${department!}</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
 								<span><i class="layui-icon">&#xe612;</i>&nbsp;&nbsp;${role!}-${name!}</span>
 							</a>
 							<dl class="layui-nav-child">
-								<dd style="display: none;">
-									<a href="javascript:;"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
-								</dd>
 								<dd id="cpsw">
-									<a href="javascript:;">
+									<a href="javascript:;" style="color: #000;">
 										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 修改密码
 									</a>
 								</dd>
 								<dd>
-									<a href="/manage/login"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+									<a href="/manage/login"  style="color: #000;"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
 								</dd>
 							</dl>
 						</li>

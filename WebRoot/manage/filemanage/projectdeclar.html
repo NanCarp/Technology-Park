@@ -4,12 +4,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<link rel="stylesheet" href="../../resource/layui/css/layui.css"
-	media="all" />
-<link rel="stylesheet" href="../../resource/layui-admin/css/global.css"
-	media="all">
-<link rel="stylesheet" type="text/css"
-	href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+<link rel="stylesheet" href="../../resource/layui/css/layui.css"  media="all"/>
+<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 <link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
 <style type="text/css">
 .forpage {
@@ -20,17 +17,9 @@
 <body>
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
-			<a href="javascript:;"
-				class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>"
-				id="add" onclick="<#if _add??>_add()</#if>"><i
-				class="layui-icon">&#xe608;</i> 添加项目</a> <a
-				href="javascript:location.replace(location.href);" title="刷新"
-				class="layui-btn"
-				style="float: right; height: 30px; line-height: 30px;"><i
-				class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
-			<span style="float: right; line-height: 30px;">共有数据：<strong>${totalrow}</strong>
-				条
-			</span>
+			<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>"id="add" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加项目</a> 
+			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right; height: 30px; line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+			<span style="float: right; line-height: 30px;">共有数据：<strong>${totalrow}</strong>条</span>
 		</blockquote>
 		<fieldset class="layui-elem-field">
 			<legend>项目申报列表</legend>
@@ -56,7 +45,7 @@
 							<th>${project.modify_time}</th>
 							<td>
 								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${project.id})</#if>">编辑</a>
-								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini <#if _delete??><#else>layui-btn-disabled</#if>" onclick="<#if _delete??>_delete(${project.id})</#if>">删除</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-mini <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if>" onclick="<#if _delete??>_delete(${project.id})</#if>">删除</a>
 								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-warm layui-btn-mini <#if _download??><#else>layui-btn-disabled</#if>" onclick="<#if _download??>_download(${project.id})</#if>">下载</a>
 							</td>
 						</tr>

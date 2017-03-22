@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -37,7 +40,8 @@ public class ParkManageService {
 		return Db.paginate(pageno, pagesize, "select e.id,e.name,e.empno,e.phone,"
 				+ "d.department_name,p.position_name,e.status,r.role_name",
 				"from t_employee e left join t_department d on e.department_id = d.id "
-				+ "left join t_position p on p.id = e.position left join t_role r ON r.id = e.role_id");
+				+ "left join t_position p on p.id = e.position left join t_role r ON r.id = e.role_id"
+				+ " order by e.id");
 	}
 	
 	//根据id查询单个员工
@@ -96,14 +100,16 @@ public class ParkManageService {
 		}
 		sqlExceptSelect += " ORDER BY b.id";
 		return Db.paginate(pageno, pagesize, "select b.id,b.name,n.name as naturename,"
-				       + "b.floor_no,u.building_NO,b.total_area,b.usable_area,b.status",sqlExceptSelect);
+				       + "b.floor_no,u.building_NO,b.total_area,b.usable_area,b.status"
+				       + ",b.total_area-IFNULL((SELECT SUM(a.area) from t_area a where a.building_no=b.building_no),0) as usable",sqlExceptSelect);
 	}
 	
 	//根据id查询单个楼宇信息
 	public static Record getBuildingMessage(int id){	
 		return Db.findFirst("select b.id,b.nature,b.building_no,b.name,n.name as naturename,"
-				+ "b.floor_no,u.building_NO,b.total_area,b.usable_area,b.status from t_building b "
-				+ "LEFT JOIN t_building_nature n ON n.id = b.nature LEFT JOIN t_building_number u "
+				+ "b.floor_no,u.building_NO,b.total_area,b.usable_area,b.status,"
+				+ "b.total_area-IFNULL((SELECT SUM(a.area) from t_area a where a.building_no=b.building_no),0) as usable "
+				+ "from t_building b LEFT JOIN t_building_nature n ON n.id = b.nature LEFT JOIN t_building_number u "
 				+ "on b.building_no = u.id where b.id = ?",id);
 	}
 	
@@ -128,7 +134,6 @@ public class ParkManageService {
 		}
 		
 	}
-	
 	//根据id删除楼宇信息
 	public static boolean delBuild(int id){
 		return Db.deleteById("t_building", id);
@@ -168,6 +173,7 @@ public class ParkManageService {
 		if(company_name != null&& company_name!=""){
 			sqlExceptSelect +=" and a.the_company like '%"+company_name+"%'";
 		}
+		sqlExceptSelect += " ORDER BY a.id";
 		return Db.paginate(pageno, pagesize, "select a.*,u.building_NO as numb ", sqlExceptSelect);	
 	}
 	
@@ -215,7 +221,11 @@ public class ParkManageService {
 	public static List<Record> getEnterprise(){
 		return Db.find("select * from t_enterprise_in");
 	}
-	
+	//根据楼号查询剩余面积数
+	public static Record savebuildingstatus(Integer buildingno){
+		return Db.findFirst("SELECT  b.building_no,b.total_area-(SELECT SUM(area) from t_area a where a.building_no = b.building_no) "
+				+ "as sta from t_building b WHERE b.building_no = ?;",buildingno);
+	}
 	/***********************缴费管理************************/
 	//查询缴费记录
 	public static Page<Record> getPayment(Integer pageno,int pagesize,Integer year,String quarterly,String company_name){
@@ -229,6 +239,7 @@ public class ParkManageService {
 		if(company_name!=null&&company_name!=""){
 			sqlExceptSelect +=" and p.company_name like '%"+company_name+"%'";
 		}
+		sqlExceptSelect += " ORDER BY p.id";
 		return Db.paginate(pageno, pagesize, "select p.*,e.in_time ", sqlExceptSelect);	
 	}
 	
@@ -268,7 +279,7 @@ public class ParkManageService {
 		return Db.deleteById("t_payment", id);
 	}
 	
-	/***********************安全检查管理************************/
+	/***********************安全管理检查记录************************/
 	//安全管理检查记录
 	public static Page<Record> getSafeInspect(Integer pageno,int pagesize,String sdate
 											,Integer rectification,String company_name){
@@ -289,6 +300,7 @@ public class ParkManageService {
 		if(sdate!=null&&sdate!=""){
 			sqlExceptSelect +=" and DATE_FORMAT(check_time,'%Y-%m')='"+sdate+"'";
 		}
+		sqlExceptSelect += " ORDER BY id";
 		return Db.paginate(pageno, pagesize,"select *",sqlExceptSelect);
 	}
 	
@@ -333,11 +345,11 @@ public class ParkManageService {
 	public static Record getCompanyName(int id){
 		return Db.findFirst("select * from t_enterprise_in where id=?", id);
 	}
-	/***********************安全责任书签订************************/
+	/***********************园区安全责任书签订************************/
 	//园区安全责任书签订
 	public static Page<Record> getSafeProtocols(Integer pageno,int pagesize){
 		return Db.paginate(pageno, pagesize, "select p.*,e.enterprise_name", 
-				"from t_security_protocols p left join t_enterprise_in e on p.company_id = e.id");
+				"from t_security_protocols p left join t_enterprise_in e on p.company_id = e.id order by p.id");
 	}
 	
 	//根据id查询单个园区安全责任书签订情况
@@ -364,7 +376,35 @@ public class ParkManageService {
 			return Db.save("t_security_protocols", record);
 		}
 	}
-
+	// 文件下载
+	public static void downloadFile(HttpServletResponse response, Integer id) throws IOException {
+		byte[] buffer = new byte[4096];
+		Record file = Db.findById("t_security_protocols", id);
+		Integer company_id = file.getInt("company_id");
+		String company_name = Db.findById("t_enterprise_in", company_id).getStr("enterprise_name");
+		String ZipName = company_name+"安全协议签订相关附件" + ".rar";
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename=" + EncordUtil.toUtf8String(ZipName));
+		ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
+		String file_url = file.getStr("attachment");
+		String[] farr = file_url.split(",");
+		File[] fs = new File[farr.length];
+		for (int i = 0; i < farr.length; i++) {
+			fs[i] = new File(PropKit.get("filepath") + farr[i]);
+		}   
+		for (int j = 0; j < fs.length; j++) {
+			FileInputStream fis = new FileInputStream(fs[j]);
+			out.putNextEntry(new ZipEntry(fs[j].getName()));
+			int len;
+			// 读入需要下载的文件的内容，打包到zip文件
+			while ((len = fis.read(buffer)) > 0) {
+				out.write(buffer, 0, len);
+			}
+			out.closeEntry();
+			fis.close();
+		}
+		out.close();
+	}
 	/***********************通知公告************************/
 	//查询通知公告记录
 	public static Page<Record> getNotice(Integer pageno,int pagesize){

@@ -169,7 +169,11 @@
 					<div class="layui-input-block">
 						<select name="enterprisetype" id="v16" lay-verify="required|enterprisetype">
 							<option value="0">--选择企业类型--</option>
-							<option value="1" <#if enterprisein.enterprise_type=1>selected</#if> >孵化器</option>
+							<#if typelist?? && typelist?size gt 0>
+							<#list typelist as type>
+							<option value="${type.id}" <#if enterprisein.enterprise_type==type.id>selected</#if> >${type.name}</option>
+							</#list>
+							</#if>
 						</select>
 					</div>
 				</div>
@@ -318,7 +322,11 @@
 					<div class="layui-input-block">
 						<select name="enterprisetype" id="v16" lay-verify="required|enterprisetype">
 							<option value="0">--选择企业类型--</option>
-							<option value="1">孵化器</option>
+							<#if typelist?? && typelist?size gt 0>
+							<#list typelist as type>
+							<option value="${type.id}">${type.name}</option>
+							</#list>
+							</#if>
 						</select>
 					</div>
 				</div>

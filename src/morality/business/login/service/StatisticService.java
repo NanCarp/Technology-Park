@@ -355,7 +355,6 @@ public class StatisticService {
 	}
 		String select = "SELECT a.id, a.enterprise_name, a.industry,b.the_date,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees,"
 				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product";
-		System.out.println("======="+select+"  "+sqlExceptSelect);
 		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
 	}
 

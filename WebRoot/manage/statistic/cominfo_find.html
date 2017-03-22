@@ -292,7 +292,7 @@
 					$.post('/statistic/comfind', data.field, function(d){
 						if(d){
 							layer.msg('查询成功', {time: 500}, function(){
-								parent.refresh_iframe();
+								parent.go_iframe();
 							});
 						}else{
 							layer.msg('查询失败', {time: 500});

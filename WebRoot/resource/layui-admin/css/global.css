@@ -29,20 +29,20 @@
 
 .header-index{background-color: #080018; border: none;}
 
-.layui-layout-admin .header-demo{border-bottom-color: #1AA094; background-color: #fff;}
+.layui-layout-admin .header-demo{border-bottom-color: #6493FC; background-color: #6493FC;}
 .header-demo .logo{left: 40px;}
 .header-demo .layui-nav{top: 0;}
 .header-demo .layui-nav .layui-nav-item{margin: 0 10px; line-height: 70px;}
-.header-demo .layui-nav .layui-nav-item a{color: #999;}
+.header-demo .layui-nav .layui-nav-item a{color: #fff;}
 .header-demo .layui-nav .layui-this{background-color: #f2f2f2;}
 .header-demo .layui-nav .layui-nav-item a:hover, 
-.header-demo .layui-nav .layui-this a{color: #000;}
+.header-demo .layui-nav .layui-this a{color: #fff;}
 .header-demo .layui-nav .layui-this:after, 
-.header-demo .layui-nav-bar{background-color: #393D49;}
+.header-demo .layui-nav-bar{background-color: #FFA103;}
 .header-demo .layui-nav .layui-this a{padding: 0 20px;}
 
 /* 底部 */
-.footer{padding: 30px 0; line-height: 30px; text-align: center; background-color: #eee; color: #666; font-weight: 300;}
+.footer{padding: 30px 0; line-height: 30px; text-align: center; background-color: #eee; color: #fff; font-weight: 300;}
 body .layui-layout-admin .footer-demo{height: auto; padding: 5px 0; line-height: 26px;}
 .footer a{padding: 0 5px;}
 
@@ -275,7 +275,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 	height: 100%;
 }
 .admin-nav-card>.layui-tab-title{
-	border-bottom: 1px solid #1AA094;
+	border-bottom: 1px solid #6493FC;
 }
 .admin-nav-card .layui-tab-title cite{
 	font-style: normal;
@@ -283,7 +283,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 }
 .admin-nav-card>.layui-tab-title .layui-this{
 	color: white;
-    background-color: #1AA094;
+    background-color: #6493FC;
 }
 .admin-nav-card>.layui-tab-title .layui-this:after{
 	border-bottom: 0;
@@ -334,9 +334,10 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
     text-align: center;
     width: 30px;
     height: 30px;
-    background-color: #1AA094;
+    background-color: #6493FC;
     line-height: 30px;
     top: 25%;
+    left: 340px;
 }
 .admin-side-toggle:hover{
 	background-color: #5FB878;

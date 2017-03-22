@@ -65,14 +65,14 @@
 							<td>${pay.year}</td>
 							<td>${pay.quarterly}</td>
 							<td>${pay.company_name}</td>
-							<td>${pay.in_time!}</td>
+							<td>${pay.in_time?substring(0,10)}</td>
 							<td>${pay.should_pay_rent}</td>
 							<td>${pay.paid_rent}</td>
 							<td>${pay.property_costs}</td>
 							<td>${pay.paid_property_charges}</td>
 							<td>${pay.should_pay_water}</td>
 							<td>${pay.real_water_fee}</td>
-							<td>${pay.create_time}</td>
+							<td>${pay.create_time?substring(0,10)}</td>
 							<td>
 								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${pay.id})</#if>">编辑</a>
 								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${pay.id})</#if>">删除</a>

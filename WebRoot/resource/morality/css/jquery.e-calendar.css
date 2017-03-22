@@ -90,7 +90,7 @@
 }
 
 .c-today {
-    background-color: #e96388;
+    background-color: #6493FC;
     color: white;
 }
 
@@ -109,8 +109,7 @@
 .c-grid-title {
     font-weight: bold;
     float: left;
-    background-color: #1AA094;
-    color: #FFF;
+    color: #6493FC;
 }
 
 .c-event-list {

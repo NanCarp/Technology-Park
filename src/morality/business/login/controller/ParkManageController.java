@@ -20,6 +20,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
+import morality.business.login.service.FileManageService;
 import morality.business.login.service.ParkManageService;
 import morality.business.login.service.StatisticService;
 import morality.business.login.service.SystomService;
@@ -156,12 +157,21 @@ public class ParkManageController extends Controller {
 	public void saveBuild() {
 		Integer id = getParaToInt("id");
 		String name = getPara("buildname");
-		int nature = getParaToInt("buildnature");
-		int building_no = getParaToInt("buildno");
-		int floor_no = getParaToInt("buildfloorno");
-		int total_area = getParaToInt("buildtotalarea");
-		int usable_area = getParaToInt("buildusablearea");
-		int status = getParaToInt("buildstatus");
+		Integer nature = getParaToInt("buildnature");
+		Integer building_no = getParaToInt("buildno");
+		Integer floor_no = getParaToInt("buildfloorno");
+		Integer total_area = getParaToInt("buildtotalarea");
+		Integer usable_area = 0;
+		if(getParaToInt("usable_area")!=null){
+			if(getParaToInt("usable_area")<=0){
+				usable_area = 0;
+			}else{
+				usable_area = getParaToInt("usable_area");
+			}
+		}else{
+			usable_area = total_area;
+		}
+		Integer status = getParaToInt("buildstatus")==null?0:getParaToInt("buildstatus");
 		boolean result = ParkManageService.saveBuild(id, name, nature, floor_no, building_no, total_area, usable_area,
 				status);
 		renderJson("result", result);
@@ -256,20 +266,29 @@ public class ParkManageController extends Controller {
 		String building_no = getPara("buildNo");
 		String floor_no = getPara("areafloorno");
 		int area = getParaToInt("areasize");
-		if (getPara("areastatus").equals("已租")) {
-			status = 1;
-		} else {
-			status = 0;
+		if (getPara("areastatus").equals("已租")){
+			 status = 1;
+		}else{
+			 status = 0;
+		};
+		String the_company = getPara("the_company"); 
+		boolean result = ParkManageService.saveArea(id, area_name, direction, area_no, building_no, floor_no, area, status, the_company);
+		
+		//修改区域信息后，楼宇信息的可用面积以及区域状态也以此修改
+		Integer buildingno = Integer.parseInt(building_no);
+		Integer num = ParkManageService.savebuildingstatus(buildingno).getBigDecimal("sta").intValue();
+		if(num<=0){
+			Record record = Db.findFirst("select * from t_building where building_no = ?", buildingno).set("status", 1).set("usable_area", 0);	
+			Db.update("t_building", record);
+		}else{
+			Record record = Db.findFirst("select * from t_building where building_no = ?", buildingno).set("status", 0).set("usable_area",num);
+			Db.update("t_building", record);
 		}
-		;
-		String the_company = getPara("the_company");
-		boolean result = ParkManageService.saveArea(id, area_name, direction, area_no, building_no, floor_no, area,
-				status, the_company);
-		renderJson("result", result);
+		renderJson("result",result);
 	}
 
-	// 根据id删除区域信息
-	public void delArea() {
+	//根据id删除区域信息
+	public void delArea(){
 		Integer id = getParaToInt();
 		boolean data = ParkManageService.delArea(id);
 		renderJson(data);
@@ -479,7 +498,13 @@ public class ParkManageController extends Controller {
 		setAttr("safeprolist", page.getList());
 		render("safety_agreement.html");
 	}
-
+	
+	public void exportsafeattach() throws IOException{
+		Integer id = getParaToInt();
+		ParkManageService.downloadFile(getResponse(), id);
+		renderNull();	
+	}
+	
 	// 添加以及修改园区安全责任书签订情况（界面弹窗过程）
 	public void getSaftyAgree() {
 		Integer id = getParaToInt();

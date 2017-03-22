@@ -71,6 +71,10 @@ public class EnterpriseController extends Controller {
 		// 获得父级行业列表
 		List<Record> superiorindustrylist = DataDictionaryService.getSuperiorIndustryList();
 		setAttr("superiorindustrylist", superiorindustrylist);
+		
+		//获得企业类型（大楼性质）
+		List<Record> typelist = Db.find(" SELECT id,name FROM t_building_nature ");
+		setAttr("typelist", typelist);
 
 		if (null != id) {
 			// 查询相应id的企业，并设置父级行业、子级行业、行业id

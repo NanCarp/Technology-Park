@@ -3,91 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <title>主页面</title>
+<style type="text/css">
+	.main_content{
+		width: 100%;
+		float: left;
+		max-height: 460px;
+	}
+	.main_top_left{
+		width: 60%;
+		float: left;
+	}
+	.main_top_right{
+		width: 40%;
+		float: right;
+	}
+	.c_left{
+		width: 20px;
+		float: left;
+		height: 20px;
+		color: #4FB053;
+		margin: 10px 0;
+		text-align: center;
+		font: 14px/20px 'Microsoft Yahei';
+		font-weight: bolder;
+		background-color: #B7DFB8;
+	}
+	.c_right{
+		width: calc(100% - 30px);
+		float: left;
+		margin-left: 10px;
+	}
+</style>
 </head>
 <link rel="stylesheet" type="text/css" href="/resource/morality/css/jquery.e-calendar.css">
 <link rel="stylesheet" type="text/css" href="/resource/morality/css/main.css">
 <body>
 	<div class="main_container">
-		<div class="main_left">
-			<div class="notice_top">
+		<div class="main_content">
+			<div class="main_top_left">
+				<div class="notice_top">
 				<div class="no_1">通知公告</div>
-				<div class="no_2">
-					<#if Notices?? && Notices?size gt 0>
-					<#list Notices as Notice>
-					<span class="no_2_span" onclick="notice_detail(${Notice.id})">
-						<span>${Notice.title}</span>
-						<span>${Notice.inputman}</span>
-						<span>${Notice.create_time?substring(0,10)}</span>
-					</span>
-					</#list>
-					<#else>
-					<span class="no_2_span">暂无通知公告</span>
-					</#if>
-				</div>
+					<div class="no_2">
+						<#if Notices?? && Notices?size gt 0>
+						<#list Notices as Notice>
+						<span class="no_2_span" onclick="notice_detail(${Notice.id})">
+							<span>${Notice.title}</span>
+							<span>${Notice.inputman}</span>
+							<span>${Notice.create_time?substring(0,10)}</span>
+						</span>
+						</#list>
+						<#else>
+						<span class="no_2_span">暂无通知公告</span>
+						</#if>
+					</div>
+				 </div>
 			</div>
-			<div class="notice_down">
-				<div class="notice_down_1">
-					<div>
-						<span class="down_1_left">缴费提醒</span>
-						<span class="down_1_right">查看更多</span>
-					</div>
-					<#if need_pay_list?? && need_pay_list?size gt 0>
-						<div class="content">
-							<#list need_pay_list as need_pay>
-							    <input type="hidden" value="${need_pay.year}" id="need_pay"/>
-								<span title="点击查看详细" onclick="paymanage(${need_pay.year},'${need_pay.quarterly}','${need_pay.company_name}')">
-									&nbsp;&nbsp;${need_pay_index+1}.&nbsp;${need_pay.company_name}${need_pay.year}年${need_pay.quarterly}需要缴费。
-								</span>
-							</#list>
-						</div>
-						<#else>
-						<div style="margin:100px 0 0 100px;">
-							<span >暂无提醒记录</span>
-						</div>
-					</#if>
-				</div>
-				<div class="notice_down_2">
-					<div>
-						<span class="down_1_left">园区安全生产检查提醒</span>
-						<span class="down_1_right">查看更多</span>
-					</div>
-					<#if need_inspect_list?? && need_inspect_list?size gt 0>
-						<div class="content">
-							<#list need_inspect_list as need_inspect>
-								<span title="点击查看详细" onclick="savewarn('${need_inspect.company_name}')">
-									&nbsp;&nbsp;${need_inspect_index+1}.&nbsp;${need_inspect.company_name}需要安全检查。
-								</span>
-							</#list>
-						</div>
-						<#else>
-						<div style="margin:100px 0 0 100px;">
-							<span >暂无提醒记录</span>
-						</div>
-					</#if>
-				</div>
-				<div class="notice_down_3">
-					<div>
-						<span class="down_1_left">区域消息提醒</span>
-						<span class="down_1_right">查看更多</span>
-					</div>
-					<#if need_area_list?? && need_area_list?size gt 0>
-						<div class="content">
-							<#list need_area_list as need_area>
-								<span title="点击查看详细" onclick="areawarn('${need_area.direction}','${need_area.area_name}','${need_area.the_company}')">
-									&nbsp;&nbsp;${need_area_index+1}.&nbsp;${need_area.the_company}已通过审核，急需${need_area.area}平方米的入驻区域。
-								</span>
-							</#list>
-						</div>
-						<#else>
-						<div style="margin:100px 0 0 100px;">
-							<span >暂无提醒记录</span>
-						</div>
-					</#if>
-				</div>
+			<div class="main_top_right">
+				<div id="calendar"></div>
 			</div>
 		</div>
-		<div class="main_right">
-			 <div id="calendar"></div>
+		<div class="main_content">
+			<div class="notice_down_1">
+				<div>
+					<span class="down_1_left">缴费提醒</span>
+					<span class="down_1_right">
+						<i>查看更多</i>
+					</span>
+				</div>
+				<#if need_pay_list?? && need_pay_list?size gt 0>
+				<div class="content">
+					<#list need_pay_list as need_pay>
+					<input type="hidden" value="${need_pay.year}" id="need_pay"/>
+					<span class="c_span" title="点击查看详细" onclick="paymanage(${need_pay.year},'${need_pay.quarterly}','${need_pay.company_name}')">
+						<span class="c_left">${need_pay_index+1}</span>
+						<span class="c_right">${need_pay.company_name}${need_pay.year}年${need_pay.quarterly}需要缴费。</span>
+					</span>
+					</#list>
+				</div>
+				<#else>
+				<div style="margin:100px 0 0 100px;">
+					<span style="font: 16px/150px 'Microsoft Yahei';float: left;text-align: center;width: 100%;">暂无提醒记录</span>
+				</div>
+				</#if>
+			</div>
+			<div class="notice_down_2">
+				<div>
+					<span class="down_1_left" style="color: #96C35E;">园区安全生产检查提醒</span>
+					<span class="down_1_right">
+						<i>查看更多</i>
+					</span>
+				</div>
+				<#if need_inspect_list?? && need_inspect_list?size gt 0>
+				<div class="content">
+				<#list need_inspect_list as need_inspect>
+				<span class="c_span" title="点击查看详细" onclick="savewarn('${need_inspect.company_name}')">
+					<span class="c_left">${need_inspect_index+1}</span>
+					<span class="c_right">${need_inspect.company_name}需要安全检查。</span>
+				</span>
+				</#list>
+				</div>
+				<#else>
+				<div>
+					<span style="font: 16px/150px 'Microsoft Yahei';float: left;text-align: center;width: 100%;">暂无提醒记录</span>
+				</div>
+				</#if>
+			</div>
+			<div class="notice_down_3">
+				<div>
+					<span class="down_1_left" style="color: #F25757;">区域消息提醒</span>
+					<span class="down_1_right">
+						<i>查看更多</i>
+					</span>
+				</div>
+				<#if need_area_list?? && need_area_list?size gt 0>
+				<div class="content">
+				<#list need_area_list as need_area>
+					<span class="c_span" title="点击查看详细" onclick="areawarn('${need_area.direction}','${need_area.area_name}','${need_area.the_company}')">
+						<span class="c_left">${need_area_index+1}</span>
+						<span class="c_right">${need_area.the_company}已通过审核，急需${need_area.area}平方米的入驻区域。</span>
+					</span>
+				</#list>
+				</div>
+				<#else>
+				<div style="margin:100px 0 0 100px;">
+					<span style="font: 16px/150px 'Microsoft Yahei';float: left;text-align: center;width: 100%;">暂无提醒记录</span>
+				</div>
+				</#if>
+			</div>
 		</div>
 	</div>
 </body>

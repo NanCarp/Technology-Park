@@ -31,10 +31,21 @@ import morality.util.tool.EncordUtil;
 /**
  * @desc 查询统计
  * @author yangbo
+ * @date 2017/03/23
  */
 public class StatisticService {
 
-	// 获得楼区数据统计列表
+	/**
+	 * @author yangbo 
+	 * @param pageno
+	 * @param pagesize
+	 * @param fstate
+	 * @param astate
+	 * @param floorno
+	 * @param areano
+	 * @return Page<Record> result
+	 * @desc 获得楼区数据统计列表
+	 */
 	public static Page<Record> getBuildInfoList(Integer pageno, int pagesize, Integer fstate, Integer astate,
 			String floorno, String areano) {
 		String sqlExceptSelect = "FROM t_building a LEFT JOIN t_area b ON a.building_no = b.building_no left join t_building_number c on a.building_no = c.id where 1=1";
@@ -45,17 +56,26 @@ public class StatisticService {
 			sqlExceptSelect += " and b.status = " + astate;
 		}
 		if (floorno != null && floorno != "") {
-			sqlExceptSelect += " and c.building_NO like '%" + floorno +"%'";
+			sqlExceptSelect += " and c.building_NO like '%" + floorno + "%'";
 		}
 		if (areano != null && areano != "") {
-			sqlExceptSelect += " and b.area_no = '%"+ areano +"'%";
+			sqlExceptSelect += " and b.area_no = '%" + areano + "'%";
 		}
 		return Db.paginate(pageno, pagesize,
 				"SELECT a.id,a.name,a.nature,a.floor_no,a.building_no,c.building_NO, a.total_area,a.usable_area,a.status AS bstate,b.area_name,b.direction,b.area_no,b.area,b.status AS astate ",
 				sqlExceptSelect);
 	}
 
-	// 导出列表
+	/**
+	 * @author yangbo 
+	 * @param response
+	 * @param fstate
+	 * @param astate
+	 * @param floorno
+	 * @param areano
+	 * @return boolean result
+	 * @desc 导出列表
+	 */
 	public static boolean getBuildInfoForExcel(HttpServletResponse response, int fstate, int astate, String floorno,
 			String areano) {
 		List<Record> list = getBuildInfoList(1, 100000000, fstate, astate, floorno, areano).getList();
@@ -207,7 +227,14 @@ public class StatisticService {
 		return true;
 	}
 
-	// 获得公司信息
+	/**
+	 * @author yangbo 
+	 * @param pageno
+	 * @param pageSize
+	 * @param company_name
+	 * @return Page<Record> result
+	 * @desc 获得公司信息
+	 */
 	public static Page<Record> getCompanyInfoList(Integer pageno, int pageSize, String company_name) {
 		String sqlExceptSelect = " FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
 				+ "LEFT JOIN t_property_right d ON a.id = d.company_id where  1=1";
@@ -219,146 +246,172 @@ public class StatisticService {
 		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
 	}
 
-
-	//查询公司信息
-	public static Page<Record> getCompanyInfosearch(Integer pageno, int pageSize,Map<String,Object> map) {
+	/**
+	 * @author xuhui
+	 * @param pageno
+	 * @param pageSize
+	 * @param map
+	 * @return Page<Record> result
+	 * @desc 查询公司信息
+	 */
+	public static Page<Record> getCompanyInfosearch(Integer pageno, int pageSize, Map<String, Object> map) {
 
 		String sqlExceptSelect = " FROM t_enterprise_in a LEFT JOIN t_enterprise_economy b ON a.id = b.company_id LEFT JOIN t_practitioners c ON a.id = c.company_id "
 				+ "LEFT JOIN t_property_right d ON a.id = d.company_id where 1=1";
 
-	if(map!=null){
-		if(map.get("company_name")!=null&&map.get("company_name")!=""){
-			sqlExceptSelect += " and enterprise_name like '%"+map.get("company_name")+"%'";
-		}
-		if(map.get("company_type")!=null&&map.get("company_type")!=""){
-			sqlExceptSelect += " and industry="+map.get("company_type");
-		}
-		if(map.get("mindate")!=null&&map.get("mindate")!=""){
-			if(map.get("maxdate")!=null && map.get("maxdate")!=""){
-				sqlExceptSelect +=" and "+" '"+map.get("mindate")+"'"+"<=b.the_date and b.the_date<="+" '"+map.get("maxdate")+"'";
-			}else{
-				sqlExceptSelect +=" and b.the_date = "+"'"+map.get("mindate")+"'";
+		if (map != null) {
+			if (map.get("company_name") != null && map.get("company_name") != "") {
+				sqlExceptSelect += " and enterprise_name like '%" + map.get("company_name") + "%'";
+			}
+			if (map.get("company_type") != null && map.get("company_type") != "") {
+				sqlExceptSelect += " and industry=" + map.get("company_type");
+			}
+			if (map.get("mindate") != null && map.get("mindate") != "") {
+				if (map.get("maxdate") != null && map.get("maxdate") != "") {
+					sqlExceptSelect += " and " + " '" + map.get("mindate") + "'" + "<=b.the_date and b.the_date<="
+							+ " '" + map.get("maxdate") + "'";
+				} else {
+					sqlExceptSelect += " and b.the_date = " + "'" + map.get("mindate") + "'";
+				}
+			}
+			if (map.get("minsr") != null && map.get("minsr") != "") {
+				if (map.get("maxsr") != null && map.get("maxsr") != "") {
+					sqlExceptSelect += " and " + map.get("minsr") + "<=income and income<=" + map.get("maxsr");
+				} else {
+					sqlExceptSelect += " and income = " + map.get("minsr");
+				}
+			}
+			if (map.get("income_min") != null && map.get("income_min") != "") {
+				if (map.get("income_max") != null && map.get("income_max") != "") {
+					sqlExceptSelect += " and " + map.get("income_min") + "<=net_profit and net_profit>="
+							+ map.get("income_max");
+				} else {
+					sqlExceptSelect += " and net_profit = " + map.get("income_min");
+				}
+			}
+			if (map.get("tax_min") != null && map.get("tax_min") != "") {
+				if (map.get("tax_max") != null && map.get("tax_max") != "") {
+					sqlExceptSelect += " and " + map.get("tax_min") + "<=taxation and taxation<=" + map.get("tax_max");
+				} else {
+					sqlExceptSelect += " and taxation = " + map.get("tax_min");
+				}
+			}
+			if (map.get("rd_min") != null && map.get("rd_min") != "") {
+				if (map.get("rd_max") != null && map.get("rd_max") != "") {
+					sqlExceptSelect += " and " + map.get("rd_min") + "<=investment and investment<="
+							+ map.get("rd_max");
+				} else {
+					sqlExceptSelect += " and investment = " + map.get("rd_min");
+				}
+			}
+			if (map.get("doctor_min") != null && map.get("doctor_min") != "") {
+				if (map.get("doctor_max") != null && map.get("doctor_max") != "") {
+					sqlExceptSelect += " and " + map.get("doctor_min") + "<=doctor and doctor<="
+							+ map.get("doctor_max");
+				} else {
+					sqlExceptSelect += " and doctor = " + map.get("doctor_min");
+				}
+			}
+			if (map.get("junior_min") != null && map.get("junior_min") != "") {
+				if (map.get("junior_max") != null && map.get("junior_max") != "") {
+					sqlExceptSelect += " and " + map.get("junior_min") + "<=junior_college and junior_college<="
+							+ map.get("junior_max");
+				} else {
+					sqlExceptSelect += " and junior_college = " + map.get("junior_min");
+				}
+			}
+			if (map.get("styabroad_min") != null && map.get("styabroad_min") != "") {
+				if (map.get("styabroad_max") != null && map.get("styabroad_max") != "") {
+					sqlExceptSelect += " and " + map.get("styabroad_min") + "<=returnees and returnees<="
+							+ map.get("styabroad_max");
+				} else {
+					sqlExceptSelect += " and returnees = " + map.get("junior_min");
+				}
+			}
+			if (map.get("thousand_min") != null && map.get("thousand_min") != "") {
+				if (map.get("thousand_max") != null && map.get("thousand_max") != "") {
+					sqlExceptSelect += " and " + map.get("thousand_min")
+							+ "<=thousand_talents_program and thousand_talents_program<=" + map.get("thousand_max");
+				} else {
+					sqlExceptSelect += " and thousand_talents_program = " + map.get("thousand_min");
+				}
+			}
+			if (map.get("university_min") != null && map.get("university_min") != "") {
+				if (map.get("university_max") != null && map.get("university_max") != "") {
+					sqlExceptSelect += " and " + map.get("university_min") + "<=fresh_graduates and fresh_graduates<="
+							+ map.get("university_max");
+				} else {
+					sqlExceptSelect += " and fresh_graduates = " + map.get("university_min");
+				}
+			}
+			if (map.get("taxstatus_min") != null && map.get("taxstatus_min") != "") {
+				if (map.get("taxstatus_max") != null && map.get("taxstatus_max") != "") {
+					sqlExceptSelect += " and " + map.get("taxstatus_min") + "<=insurance and insurance<="
+							+ map.get("taxstatus_max");
+				} else {
+					sqlExceptSelect += " and insurance = " + map.get("taxstatus_min");
+				}
+			}
+			if (map.get("addtax_min") != null && map.get("addtax_min") != "") {
+				if (map.get("addtax_max") != null && map.get("addtax_max") != "") {
+					sqlExceptSelect += " and " + map.get("addtax_min") + "<=add_insurance and add_insurance<="
+							+ map.get("addtax_max");
+				} else {
+					sqlExceptSelect += " and add_insurance = " + map.get("addtax_min");
+				}
+			}
+			if (map.get("intellapply_min") != null && map.get("intellapply_min") != "") {
+				if (map.get("intellapply_max") != null && map.get("intellapply_max") != "") {
+					sqlExceptSelect += " and " + map.get("intellapply_min") + "<=apply and apply<="
+							+ map.get("intellapply_max");
+				} else {
+					sqlExceptSelect += " and apply = " + map.get("intellapply_min");
+				}
+			}
+			if (map.get("aprintell_min") != null && map.get("aprintell_min") != "") {
+				if (map.get("aprintell_max") != null && map.get("aprintell_max") != "") {
+					sqlExceptSelect += " and " + map.get("aprintell_min") + "<=approval and approval<="
+							+ map.get("aprintell_max");
+				} else {
+					sqlExceptSelect += " and approval = " + map.get("aprintell_min");
+				}
+			}
+			if (map.get("invent_min") != null && map.get("invent_min") != "") {
+				if (map.get("invent_max") != null && map.get("invent_max") != "") {
+					sqlExceptSelect += " and " + map.get("invent_min") + "<=patent and patent<="
+							+ map.get("invent_max");
+				} else {
+					sqlExceptSelect += " and patent = " + map.get("invent_min");
+				}
+			}
+			if (map.get("software_min") != null && map.get("software_min") != "") {
+				if (map.get("software_max") != null && map.get("software_max") != "") {
+					sqlExceptSelect += " and " + map.get("software_min") + "<=copyright and copyright<="
+							+ map.get("software_max");
+				} else {
+					sqlExceptSelect += " and copyright = " + map.get("software_min");
+				}
+			}
+			if (map.get("product_min") != null && map.get("product_min") != "") {
+				if (map.get("product_max") != null && map.get("product_max") != "") {
+					sqlExceptSelect += " and " + map.get("product_min") + "<= software_product and software_product <= "
+							+ map.get("product_max");
+				} else {
+					sqlExceptSelect += " and software_product = " + map.get("product_min");
+				}
 			}
 		}
-		if(map.get("minsr")!=null&&map.get("minsr")!=""){
-			if(map.get("maxsr")!=null && map.get("maxsr")!=""){
-				sqlExceptSelect +=" and "+map.get("minsr") +"<=income and income<=" +map.get("maxsr");
-			}else{
-				sqlExceptSelect +=" and income = "+map.get("minsr");
-			}
-		}
-		if(map.get("income_min")!=null&&map.get("income_min")!=""){
-			if(map.get("income_max")!=null&&map.get("income_max")!=""){
-				sqlExceptSelect +=" and "+map.get("income_min")+"<=net_profit and net_profit>="+map.get("income_max");
-			}else{
-				sqlExceptSelect +=" and net_profit = "+map.get("income_min");
-			}
-		}
-		if(map.get("tax_min")!=null&&map.get("tax_min")!=""){
-			if(map.get("tax_max")!=null && map.get("tax_max")!=""){
-				sqlExceptSelect +=" and "+map.get("tax_min") +"<=taxation and taxation<=" +map.get("tax_max");
-			}else{
-				sqlExceptSelect +=" and taxation = "+map.get("tax_min");
-			}
-		}
-		if(map.get("rd_min")!=null&&map.get("rd_min")!=""){
-			if(map.get("rd_max")!=null && map.get("rd_max")!=""){
-				sqlExceptSelect +=" and "+map.get("rd_min") +"<=investment and investment<=" +map.get("rd_max");
-			}else{
-				sqlExceptSelect +=" and investment = "+map.get("rd_min");
-			}
-		}
-		if(map.get("doctor_min")!=null&&map.get("doctor_min")!=""){
-			if(map.get("doctor_max")!=null && map.get("doctor_max")!=""){
-				sqlExceptSelect +=" and "+map.get("doctor_min") +"<=doctor and doctor<=" +map.get("doctor_max");
-			}else{
-				sqlExceptSelect +=" and doctor = "+map.get("doctor_min");
-			}
-		}
-		if(map.get("junior_min")!=null&&map.get("junior_min")!=""){
-			if(map.get("junior_max")!=null && map.get("junior_max")!=""){
-				sqlExceptSelect +=" and "+map.get("junior_min") +"<=junior_college and junior_college<=" +map.get("junior_max");
-			}else{
-				sqlExceptSelect +=" and junior_college = "+map.get("junior_min");
-			}
-		}
-		if(map.get("styabroad_min")!=null&&map.get("styabroad_min")!=""){
-			if(map.get("styabroad_max")!=null && map.get("styabroad_max")!=""){
-				sqlExceptSelect +=" and "+map.get("styabroad_min") +"<=returnees and returnees<=" +map.get("styabroad_max");
-			}else{
-				sqlExceptSelect +=" and returnees = "+map.get("junior_min");
-			}
-		}
-		if(map.get("thousand_min")!=null&&map.get("thousand_min")!=""){
-			if(map.get("thousand_max")!=null && map.get("thousand_max")!=""){
-				sqlExceptSelect +=" and "+map.get("thousand_min") +"<=thousand_talents_program and thousand_talents_program<=" +map.get("thousand_max");
-			}else{
-				sqlExceptSelect +=" and thousand_talents_program = "+map.get("thousand_min");
-			}
-		}
-		if(map.get("university_min")!=null&&map.get("university_min")!=""){
-			if(map.get("university_max")!=null && map.get("university_max")!=""){
-				sqlExceptSelect +=" and "+map.get("university_min") +"<=fresh_graduates and fresh_graduates<=" +map.get("university_max");
-			}else{
-				sqlExceptSelect +=" and fresh_graduates = "+map.get("university_min");
-			}
-		}
-		if(map.get("taxstatus_min")!=null&&map.get("taxstatus_min")!=""){
-			if(map.get("taxstatus_max")!=null && map.get("taxstatus_max")!=""){
-				sqlExceptSelect +=" and "+map.get("taxstatus_min") +"<=insurance and insurance<=" +map.get("taxstatus_max");
-			}else{
-				sqlExceptSelect +=" and insurance = "+map.get("taxstatus_min");
-			}
-		}
-		if(map.get("addtax_min")!=null&&map.get("addtax_min")!=""){
-			if(map.get("addtax_max")!=null && map.get("addtax_max")!=""){
-				sqlExceptSelect +=" and "+map.get("addtax_min") +"<=add_insurance and add_insurance<=" +map.get("addtax_max");
-			}else{
-				sqlExceptSelect +=" and add_insurance = "+map.get("addtax_min");
-			}
-		}
-		if(map.get("intellapply_min")!=null&&map.get("intellapply_min")!=""){
-			if(map.get("intellapply_max")!=null && map.get("intellapply_max")!=""){
-				sqlExceptSelect +=" and "+map.get("intellapply_min") +"<=apply and apply<=" +map.get("intellapply_max");
-			}else{
-				sqlExceptSelect +=" and apply = "+map.get("intellapply_min");
-			}
-		}
-		if(map.get("aprintell_min")!=null&&map.get("aprintell_min")!=""){
-			if(map.get("aprintell_max")!=null && map.get("aprintell_max")!=""){
-				sqlExceptSelect +=" and "+map.get("aprintell_min") +"<=approval and approval<=" +map.get("aprintell_max");
-			}else{
-				sqlExceptSelect +=" and approval = "+map.get("aprintell_min");
-			}
-		}
-		if(map.get("invent_min")!=null&&map.get("invent_min")!=""){
-			if(map.get("invent_max")!=null && map.get("invent_max")!=""){
-				sqlExceptSelect +=" and "+map.get("invent_min") +"<=patent and patent<=" +map.get("invent_max");
-			}else{
-				sqlExceptSelect +=" and patent = "+map.get("invent_min");
-			}
-		}
-		if(map.get("software_min")!=null&&map.get("software_min")!=""){
-			if(map.get("software_max")!=null && map.get("software_max")!=""){
-				sqlExceptSelect +=" and "+map.get("software_min") +"<=copyright and copyright<=" +map.get("software_max");
-			}else{
-				sqlExceptSelect +=" and copyright = "+map.get("software_min");
-			}
-		}
-		if(map.get("product_min")!=null&&map.get("product_min")!=""){
-			if(map.get("product_max")!=null && map.get("product_max")!=""){
-				sqlExceptSelect +=" and "+map.get("product_min") +"<= software_product and software_product <= " +map.get("product_max");
-			}else{
-				sqlExceptSelect +=" and software_product = "+map.get("product_min");
-			}
-		}
-	}
 		String select = "SELECT a.id, a.enterprise_name, a.industry,b.the_date,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees,"
 				+ "c.thousand_talents_program,c.fresh_graduates,c.insurance,c.add_insurance,d.apply,d.approval,d.patent,d.copyright,d.software_product";
 		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
 	}
 
-	// 根据ID获得公司信息
+	/**
+	 * @author yangbo 
+	 * @param id
+	 * @return Record result
+	 * @desc 根据ID获得公司信息
+	 */
 	public static Record getComInfoById(Integer id) {
 		return Db.findFirst(
 				"SELECT a.id, a.enterprise_name, a.industry,b.income,b.net_profit,b.taxation,b.investment,c.quantity,c.doctor,c.junior_college,c.returnees, "
@@ -367,7 +420,15 @@ public class StatisticService {
 						+ "LEFT JOIN t_property_right d ON a.id = d.company_id where a.id=?",
 				id);
 	}
-	// 导出Word
+
+	/**
+	 * @author yangbo 
+	 * @param response
+	 * @param request
+	 * @param id
+	 * @throws IOException
+	 * @desc 导出Word
+	 */
 	public static void excWord(HttpServletResponse response, HttpServletRequest request, Integer id)
 			throws IOException {
 		Map<String, Object> dataMap = new HashMap<>();
@@ -390,7 +451,7 @@ public class StatisticService {
 		dataMap.put("patent", comInfo.getInt("patent"));
 		dataMap.put("copyright", comInfo.getInt("copyright"));
 		dataMap.put("sp", comInfo.getInt("software_product"));
-		DocUtil.toPreview(request, DocUtil.WORD_TEEPLATE, dataMap);
+		DocUtil.toPreview(request, DocUtil.WORD_TEMPLATE, dataMap);
 		try {
 			File previewFile = new File(request.getSession().getServletContext().getRealPath(DocUtil.PREVIEW_DOC));
 			InputStream is = new FileInputStream(previewFile);
@@ -411,15 +472,402 @@ public class StatisticService {
 		}
 	}
 
+	/**
+	 * @author liyu 
+	 * @param response
+	 * @param map
+	 * @return boolean result
+	 * @desc 导出列表
+	 */
+	public static boolean getCompanyForExcel(HttpServletResponse response, Map<String, Object> map) {
+		List<Record> list = getCompanyInfosearch(1, 10000, map).getList();
+		HSSFWorkbook wbook = new HSSFWorkbook();
+		HSSFSheet sheet = wbook.createSheet();
+		wbook.setSheetName(0, "企业情况统计", (short) 1);
+		sheet.addMergedRegion(new Region(0, (short) 0, 0, (short) 19));
+		// 设置列宽
+		sheet.setColumnWidth((short) 0, (short) 4000);
+		sheet.setColumnWidth((short) 1, (short) 4000);
+		sheet.setColumnWidth((short) 2, (short) 4000);
+		sheet.setColumnWidth((short) 3, (short) 4000);
+		sheet.setColumnWidth((short) 4, (short) 4000);
+		sheet.setColumnWidth((short) 5, (short) 4000);
+		sheet.setColumnWidth((short) 6, (short) 4000);
+		sheet.setColumnWidth((short) 7, (short) 4000);
+		sheet.setColumnWidth((short) 9, (short) 4000);
+		sheet.setColumnWidth((short) 10, (short) 4000);
+		sheet.setColumnWidth((short) 11, (short) 4000);
+		sheet.setColumnWidth((short) 12, (short) 4000);
+		sheet.setColumnWidth((short) 13, (short) 4000);
+		sheet.setColumnWidth((short) 14, (short) 4000);
+		sheet.setColumnWidth((short) 15, (short) 4000);
+		sheet.setColumnWidth((short) 16, (short) 4000);
+		sheet.setColumnWidth((short) 17, (short) 4000);
+		sheet.setColumnWidth((short) 18, (short) 4000);
+
+		HSSFCellStyle cellStyle = wbook.createCellStyle();
+		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		HSSFFont font = wbook.createFont();
+		font.setFontName("黑体");
+		font.setFontHeightInPoints((short) 20);// 设置字体大小
+		cellStyle.setFont(font);
+		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+
+		HSSFCellStyle cellBorder = wbook.createCellStyle();
+		cellBorder.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		cellBorder.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+		cellBorder.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		cellBorder.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+		cellBorder.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+
+		HSSFRow row;
+		for (int i = 0; i < 3; i++) {
+			// 第一行
+			if (i == 0) {
+				row = sheet.createRow(i);
+				HSSFCell cell0 = row.createCell((short) 0);
+				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell0.setCellStyle(cellStyle);
+				cell0.setCellValue("企业情况统计表");
+			}
+			if (i == 1) {
+				// 第二行
+				row = sheet.createRow(i);
+				HSSFCell cell0 = row.createCell((short) 0);
+				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell0.setCellStyle(cellBorder);
+				cell0.setCellValue("企业名称");
+
+				HSSFCell cell1 = row.createCell((short) 1);
+				cell1.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell1.setCellStyle(cellBorder);
+				cell1.setCellValue("企业类型");
+
+				HSSFCell cell2 = row.createCell((short) 2);
+				cell2.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell2.setCellStyle(cellBorder);
+				cell2.setCellValue("企业总收入");
+
+				HSSFCell cell3 = row.createCell((short) 3);
+				cell3.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell3.setCellStyle(cellBorder);
+				cell3.setCellValue("企业净利润");
+
+				HSSFCell cell4 = row.createCell((short) 4);
+				cell4.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell4.setCellStyle(cellBorder);
+				cell4.setCellValue("企业上缴税费");
+
+				HSSFCell cell5 = row.createCell((short) 5);
+				cell5.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell5.setCellStyle(cellBorder);
+				cell5.setCellValue("企业R&D投入");
+
+				HSSFCell cell6 = row.createCell((short) 6);
+				cell6.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell6.setCellStyle(cellBorder);
+				cell6.setCellValue("企业从业人员");
+
+				HSSFCell cell7 = row.createCell((short) 7);
+				cell7.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell7.setCellStyle(cellBorder);
+				cell7.setCellValue("博士");
+
+				HSSFCell cell8 = row.createCell((short) 8);
+				cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell8.setCellStyle(cellBorder);
+				cell8.setCellValue("大专以上");
+
+				HSSFCell cell9 = row.createCell((short) 9);
+				cell9.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell9.setCellStyle(cellBorder);
+				cell9.setCellValue("留学人员");
+
+				HSSFCell cell10 = row.createCell((short) 10);
+				cell10.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell10.setCellStyle(cellBorder);
+				cell10.setCellValue("千人计划");
+
+				HSSFCell cell11 = row.createCell((short) 11);
+				cell11.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell11.setCellStyle(cellBorder);
+				cell11.setCellValue("吸纳应届大学毕业生");
+
+				HSSFCell cell12 = row.createCell((short) 12);
+				cell12.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell12.setCellStyle(cellBorder);
+				cell12.setCellValue("缴纳保险情况");
+
+				HSSFCell cell13 = row.createCell((short) 13);
+				cell13.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell13.setCellStyle(cellBorder);
+				cell13.setCellValue("当年新增保险");
+
+				HSSFCell cell14 = row.createCell((short) 14);
+				cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell14.setCellStyle(cellBorder);
+				cell14.setCellValue("申请知识产权");
+
+				HSSFCell cell15 = row.createCell((short) 15);
+				cell15.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell15.setCellStyle(cellBorder);
+				cell15.setCellValue("批准知识产权");
+
+				HSSFCell cell16 = row.createCell((short) 16);
+				cell16.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell16.setCellStyle(cellBorder);
+				cell16.setCellValue("发明专利");
+
+				HSSFCell cell17 = row.createCell((short) 17);
+				cell17.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell17.setCellStyle(cellBorder);
+				cell17.setCellValue("软件著作权");
+
+				HSSFCell cell18 = row.createCell((short) 18);
+				cell18.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell18.setCellStyle(cellBorder);
+				cell18.setCellValue("软件产品");
+
+			}
+			if (i == 2) {
+				// 第三行
+				row = sheet.createRow(i);
+				HSSFCell cell0 = row.createCell((short) 0);
+				cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell0.setCellStyle(cellBorder);
+				cell0.setCellValue("（单位）");
+
+				HSSFCell cell1 = row.createCell((short) 1);
+				cell1.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell1.setCellStyle(cellBorder);
+				cell1.setCellValue("");
+
+				HSSFCell cell2 = row.createCell((short) 2);
+				cell2.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell2.setCellStyle(cellBorder);
+				cell2.setCellValue("（万元）");
+
+				HSSFCell cell3 = row.createCell((short) 3);
+				cell3.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell3.setCellStyle(cellBorder);
+				cell3.setCellValue("（万元）");
+
+				HSSFCell cell4 = row.createCell((short) 4);
+				cell4.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell4.setCellStyle(cellBorder);
+				cell4.setCellValue("（万元）");
+
+				HSSFCell cell5 = row.createCell((short) 5);
+				cell5.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell5.setCellStyle(cellBorder);
+				cell5.setCellValue("（万元）");
+
+				HSSFCell cell6 = row.createCell((short) 6);
+				cell6.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell6.setCellStyle(cellBorder);
+				cell6.setCellValue("（人）");
+
+				HSSFCell cell7 = row.createCell((short) 7);
+				cell7.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell7.setCellStyle(cellBorder);
+				cell7.setCellValue("（人）");
+
+				HSSFCell cell8 = row.createCell((short) 8);
+				cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell8.setCellStyle(cellBorder);
+				cell8.setCellValue("（人）");
+
+				HSSFCell cell9 = row.createCell((short) 9);
+				cell9.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell9.setCellStyle(cellBorder);
+				cell9.setCellValue("（人）");
+
+				HSSFCell cell10 = row.createCell((short) 10);
+				cell10.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell10.setCellStyle(cellBorder);
+				cell10.setCellValue("（人）");
+
+				HSSFCell cell11 = row.createCell((short) 11);
+				cell11.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell11.setCellStyle(cellBorder);
+				cell11.setCellValue("（人）");
+
+				HSSFCell cell12 = row.createCell((short) 12);
+				cell12.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell12.setCellStyle(cellBorder);
+				cell12.setCellValue("（个）");
+
+				HSSFCell cell13 = row.createCell((short) 13);
+				cell13.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell13.setCellStyle(cellBorder);
+				cell13.setCellValue("（个）");
+
+				HSSFCell cell14 = row.createCell((short) 14);
+				cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell14.setCellStyle(cellBorder);
+				cell14.setCellValue("（个）");
+
+				HSSFCell cell15 = row.createCell((short) 15);
+				cell15.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell15.setCellStyle(cellBorder);
+				cell15.setCellValue("（个）");
+
+				HSSFCell cell16 = row.createCell((short) 16);
+				cell16.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell16.setCellStyle(cellBorder);
+				cell16.setCellValue("（个）");
+
+				HSSFCell cell17 = row.createCell((short) 17);
+				cell17.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell17.setCellStyle(cellBorder);
+				cell17.setCellValue("（个）");
+
+				HSSFCell cell18 = row.createCell((short) 18);
+				cell18.setEncoding(HSSFCell.ENCODING_UTF_16);
+				cell18.setCellStyle(cellBorder);
+				cell18.setCellValue("（个）");
+
+			}
+		}
+		for (int i = 0; i < list.size(); i++) {
+
+			row = sheet.createRow(i + 3);
+			Record r = list.get(i);
+
+			HSSFCell cell0 = row.createCell((short) 0);
+			cell0.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell0.setCellStyle(cellBorder);
+			cell0.setCellValue(r.getStr("enterprise_name"));
+
+			HSSFCell cell1 = row.createCell((short) 1);
+			cell1.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell1.setCellStyle(cellBorder);
+			cell1.setCellValue(r.getInt("industry"));
+
+			HSSFCell cell2 = row.createCell((short) 2);
+			cell2.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell2.setCellStyle(cellBorder);
+			cell2.setCellValue(r.getBigDecimal("income") == null ? 0 : r.getBigDecimal("income").doubleValue());
+
+			HSSFCell cell3 = row.createCell((short) 3);
+			cell3.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell3.setCellStyle(cellBorder);
+			cell3.setCellValue(r.getBigDecimal("net_profit") == null ? 0 : r.getBigDecimal("net_profit").doubleValue());
+
+			HSSFCell cell4 = row.createCell((short) 4);
+			cell4.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell4.setCellStyle(cellBorder);
+			cell4.setCellValue(r.getBigDecimal("taxation") == null ? 0 : r.getBigDecimal("taxation").doubleValue());
+
+			HSSFCell cell5 = row.createCell((short) 5);
+			cell5.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell5.setCellStyle(cellBorder);
+			cell5.setCellValue(r.getBigDecimal("investment") == null ? 0 : r.getBigDecimal("investment").doubleValue());
+
+			HSSFCell cell6 = row.createCell((short) 6);
+			cell6.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell6.setCellStyle(cellBorder);
+			cell6.setCellValue(r.getLong("quantity") == null ? 0 : r.getLong("quantity"));
+
+			HSSFCell cell7 = row.createCell((short) 7);
+			cell7.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell7.setCellStyle(cellBorder);
+			cell7.setCellValue(r.getInt("doctor") == null ? 0 : r.getInt("doctor"));
+
+			HSSFCell cell8 = row.createCell((short) 8);
+			cell8.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell8.setCellStyle(cellBorder);
+			cell8.setCellValue(r.getInt("junior_college") == null ? 0 : r.getInt("junior_college"));
+
+			HSSFCell cell9 = row.createCell((short) 9);
+			cell9.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell9.setCellStyle(cellBorder);
+			cell9.setCellValue(r.getInt("returnees") == null ? 0 : r.getInt("returnees"));
+
+			HSSFCell cell10 = row.createCell((short) 10);
+			cell10.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell10.setCellStyle(cellBorder);
+			cell10.setCellValue(
+					r.getInt("thousand_talents_program") == null ? 0 : r.getInt("thousand_talents_program"));
+
+			HSSFCell cell11 = row.createCell((short) 11);
+			cell11.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell11.setCellStyle(cellBorder);
+			cell11.setCellValue(r.getInt("fresh_graduates") == null ? 0 : r.getInt("fresh_graduates"));
+
+			HSSFCell cell12 = row.createCell((short) 12);
+			cell12.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell12.setCellStyle(cellBorder);
+			cell12.setCellValue(r.getInt("insurance") == null ? 0 : r.getInt("insurance"));
+
+			HSSFCell cell13 = row.createCell((short) 13);
+			cell13.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell13.setCellStyle(cellBorder);
+			cell13.setCellValue(r.getInt("add_insurance") == null ? 0 : r.getInt("add_insurance"));
+
+			HSSFCell cell14 = row.createCell((short) 14);
+			cell14.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell14.setCellStyle(cellBorder);
+			cell14.setCellValue(r.getInt("apply") == null ? 0 : r.getInt("apply"));
+
+			HSSFCell cell15 = row.createCell((short) 15);
+			cell15.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell15.setCellStyle(cellBorder);
+			cell15.setCellValue(r.getInt("approval") == null ? 0 : r.getInt("approval"));
+
+			HSSFCell cell16 = row.createCell((short) 16);
+			cell16.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell16.setCellStyle(cellBorder);
+			cell16.setCellValue(r.getInt("patent") == null ? 0 : r.getInt("patent"));
+
+			HSSFCell cell17 = row.createCell((short) 17);
+			cell17.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell17.setCellStyle(cellBorder);
+			cell17.setCellValue(r.getInt("copyright") == null ? 0 : r.getInt("copyright"));
+
+			HSSFCell cell18 = row.createCell((short) 18);
+			cell18.setEncoding(HSSFCell.ENCODING_UTF_16);
+			cell18.setCellStyle(cellBorder);
+			cell18.setCellValue(r.getInt("software_product") == null ? 0 : r.getInt("software_product"));
+
+		}
+		response.addHeader("Content-Disposition", "attachment;filename=" + EncordUtil.toUtf8String("企业情况统计表") + ".xls");
+		response.setContentType("application/vnd.ms-excel;charset=utf-8");
+		try {
+			ServletOutputStream out = response.getOutputStream();
+			wbook.write(out);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
 	/*********************** 园区缴费情况管理 ************************/
-	// 园区缴费情况总表分页
+	/**
+	 * @author yangbo 
+	 * @param pageno
+	 * @param pageSize
+	 * @return Page<Record> result
+	 * @desc 园区缴费情况总表分页
+	 */
 	public static Page<Record> getParkpayList(Integer pageno, int pageSize) {
 		String sqlExceptSelect = " FROM t_payment ";
 		String select = "SELECT * ";
 		return Db.paginate(pageno, pageSize, select, sqlExceptSelect);
 	}
 
-	// 查询园区缴费情况列表
+	/**
+	 * @author liyu 
+	 * @param pageno
+	 * @param pagesize
+	 * @param companyname
+	 * @param year
+	 * @return Page<Record> result
+	 * @desc 查询园区缴费情况列表
+	 */
 	public static Page<Record> getParkpayList(Integer pageno, Integer pagesize, String companyname, String year) {
 		String select = "SELECT company_id, company_name,year, "
 				+ "SUM(CASE WHEN quarterly = '第一季度' THEN should_pay_rent ELSE 0 END) should_pay_rent1, "
@@ -459,7 +907,14 @@ public class StatisticService {
 		return Db.paginate(pageno, pagesize, select, sqlExceptSelect);
 	}
 
-	// 导出列表
+	/**
+	 * @author yangbo 
+	 * @param response
+	 * @param companyname
+	 * @param year
+	 * @return boolean result
+	 * @desc 导出列表
+	 */
 	public static boolean getPaymentForExcel(HttpServletResponse response, String companyname, String year) {
 		String time = year == "" ? "2017" : year;
 		String name = companyname;

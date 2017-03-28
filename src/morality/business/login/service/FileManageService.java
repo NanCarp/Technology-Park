@@ -21,7 +21,14 @@ import morality.util.tool.EncordUtil;
 public class FileManageService {
 
 	/************************文件传阅管理*****************************/
-	// 获得文件传阅列表
+	/**
+	 * @author xuhui 
+	 * @param pageno
+	 * @param pageSize
+	 * @param rid
+	 * @return Page<Record> result
+	 * @desc 获得文件传阅列表
+	 */
 	public static Page<Record> getWjcyList(Integer pageno, int pageSize,Integer rid) {
 		String sqlExceptSelect = " FROM t_file a LEFT JOIN t_employee b ON a.uploader = b.id";
 			sqlExceptSelect += " where FIND_IN_SET("+rid+",recipient) or a.uploader="+rid;
@@ -29,13 +36,23 @@ public class FileManageService {
 				sqlExceptSelect);
 	}
 
+	/**
+	 * @author yangbo
+	 * @return List<Record> result
+	 */
 	// 获得园区主任
 	public static List<Record> getParkheadInfo() {
 		return Db.find(
 				"SELECT id, name,9999 AS pid FROM t_employee UNION SELECT 9999 AS id, '海安科技园' AS name, 0 FROM DUAL");
 	}
 
-	// 文件下载
+	/**
+	 * @author yangbo 
+	 * @param response
+	 * @param id
+	 * @throws IOException
+	 * @desc 文件下载
+	 */
 	public static void downloadFile(HttpServletResponse response, Integer id) throws IOException {
 		byte[] buffer = new byte[4096];
 		Record file = Db.findById("t_file", id);
@@ -64,7 +81,15 @@ public class FileManageService {
 	}
 	
 	/*********************** 项目申报管理 ************************/
-	// 获得项目申报列表
+	
+	/**
+	 * @author xuhui 
+	 * @param pageno
+	 * @param pagesize
+	 * @param recipient_id
+	 * @return Page<Record> result
+	 * @desc 获得项目申报列表
+	 */
 	public static Page<Record> getProjectList(Integer pageno, Integer pagesize, Integer recipient_id) {
 		String sqlExceptSelect = " FROM t_project a LEFT JOIN t_employee b ON a.uploader = b.id WHERE FIND_IN_SET("+recipient_id+",recipient) "
 				+ "OR uploader= "+recipient_id;
@@ -72,7 +97,13 @@ public class FileManageService {
 				sqlExceptSelect);
 	}
 
-	// 项目下载
+	/**
+	 * @author yangbo 
+	 * @param response
+	 * @param id
+	 * @throws IOException
+	 * @desc 项目下载
+	 */
 	public static void downloadProject(HttpServletResponse response, Integer id) throws IOException {
 		byte[] buffer = new byte[4096];
 		Record file = Db.findById("t_project", id);

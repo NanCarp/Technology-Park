@@ -16,12 +16,25 @@ import com.jfinal.plugin.activerecord.Record;
 
 import morality.business.login.service.DataDictionaryService;
 import morality.util.interceptor.ManageInterceptor;
-
+/**
+ * 
+* @ClassName: DataDictionaryController 
+* @Description: 数据字典管理控制器
+* @author liyu
+* @date 2017/3/23
+*
+ */
 @Before(ManageInterceptor.class)
 public class DataDictionaryController extends Controller {
 
 	/******************************* 职位管理 *******************************/
 	// 职位列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void position_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -49,6 +62,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getPosition() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -58,6 +77,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void savePosition() {
 		Integer id = getParaToInt("id");
 		String positionname = getPara("positionname");
@@ -67,6 +92,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delPosition() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_position", id);
@@ -75,6 +106,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 部门管理 *******************************/
 	// 部门列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void department_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -103,6 +140,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getDepartment() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -112,6 +155,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveDepartment() {
 		Integer id = getParaToInt("id");
 		String departmentname = getPara("departmentname");
@@ -122,6 +171,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delDepartment() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_department", id);
@@ -130,6 +185,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 大楼编号管理 *******************************/
 	// 大楼编号列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void building_no_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -159,6 +220,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getBuildingNo() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -168,16 +235,27 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveBuildingNo() {
 		Integer id = getParaToInt("id");
 		String buildingNo = getPara("buildingno");
 		Integer sortId = getParaToInt("sortid");
 		boolean result = DataDictionaryService.saveBuildingNo(id, buildingNo, sortId);
-
 		renderJson("result", result);
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delBuildingNo() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_building_number", id);
@@ -186,6 +264,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 大楼性质管理 *******************************/
 	// 大楼性质列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void building_nature_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -215,6 +299,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getBuildingNature() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -224,6 +314,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveBuildingNature() {
 		Integer id = getParaToInt("id");
 		String name = getPara("name");
@@ -234,6 +330,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delBuildingNature() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_building_nature", id);
@@ -242,6 +344,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 行业代码父级管理 *******************************/
 	// 行业代码父级列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void superior_industry_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -271,6 +379,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getSuperiorIndustry() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -280,6 +394,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveSuperiorIndustry() {
 		Integer id = getParaToInt("id");
 		String industryCode = getPara("industrycode");
@@ -290,6 +410,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delSuperiorIndustry() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_superior_industry", id);
@@ -298,6 +424,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 行业代码子级管理 *******************************/
 	// 行业代码子级列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void sub_industry_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -327,6 +459,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getSubIndustry() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -341,6 +479,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 通过父级行业ID，获得其子级行业列表，以Json格式返回
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getIndustryBySubId() {
 		Integer subId = getParaToInt("subindustryid");// 父级行业ID
 		List<Record> industrylist = DataDictionaryService.getIndustryBySubId(subId);
@@ -349,6 +493,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveSubIndustry() {
 		Integer id = getParaToInt("id");
 		String industrycode = getPara("industrycode");
@@ -360,6 +510,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delSubIndustry() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_sub_industry", id);
@@ -368,6 +524,12 @@ public class DataDictionaryController extends Controller {
 
 	/******************************* 行业代码管理 *******************************/
 	// 行业代码列表
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void industry_code_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -397,6 +559,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getIndustryCode() {
 		Integer id = getParaToInt();
 		List<Record> subindustrylist = DataDictionaryService.getSubIndustryList();
@@ -415,6 +583,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 通过父级行业ID，获得其子级行业列表，以Json格式返回
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void getSubIndustryBySuperId() {
 		Integer superId = getParaToInt("superiorindustryid");// 父级行业ID
 		List<Record> subindustrylist = DataDictionaryService.getSubIndustryBySuperId(superId);
@@ -423,6 +597,12 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void saveIndustryCode() {
 		// 获取父级行业名称
 		Integer superiorId = getParaToInt("superiorindustryid");
@@ -448,18 +628,16 @@ public class DataDictionaryController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/3/23
+	 * @param void
+	 * @return void
+	 */
 	public void delIndustryCode() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_industry_code", id);
 		renderJson(result);
 	}
 
-	/*********************** 树型菜单 ************************/
-	public void industryTree() {
-		// 合并list
-		List<Record> allIndustries = DataDictionaryService.getAllIndustries();
-
-		// renderJson
-		renderJson(allIndustries);
-	}
 }

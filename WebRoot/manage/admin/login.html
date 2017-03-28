@@ -5,15 +5,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>科技园企业管理系统</title>
+		<link rel="shortcut icon" href="/logo.ico" />
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all"/>
 		<link rel="stylesheet" href="../../resource/layui-admin/css/login.css" />
 	</head>
 
 	<body class="beg-login-bg">
+		<div class="qd_top">启迪软件科技园管理系统</div>
 		<div class="beg-login-box">
-			<header>
-				<h1>园区管理系统</h1>
-			</header>
 			<div class="beg-login-main">
 				<form class="layui-form" method="post">
 					<div class="layui-form-item">
@@ -24,48 +23,33 @@
 					</div>
 					<div class="layui-form-item">
 						<label class="beg-login-icon">
-                        <i class="layui-icon">&#xe642;</i>
-                    </label>
+                        	<i class="layui-icon">&#xe642;</i>
+                    	</label>
 						<input type="password" name="password" id="val2" autocomplete="off" placeholder="请输入密码" class="layui-input">
 					</div>
+					<div class="layui-form-item" style="margin-top: 25px;">
+						<button class="layui-btn layui-btn-primary" lay-submit lay-filter="login" style="width: 100%;background-color: #6493FC;color: white;letter-spacing: 4px;font-weight: bolder;">
+                           <i class="layui-icon">&#xe650;</i> 登录
+                        </button>
+					</div>
 					<div class="layui-form-item">
-						<div class="beg-pull-left beg-login-remember">
+						<div class="beg-login-remember">
 							<label>记住帐号？</label>
 							<input type="checkbox" name="rememberMe" value="true" lay-skin="switch" checked="" title="记住帐号">
-						</div>
-						<div class="beg-pull-right">
-							<button class="layui-btn layui-btn-primary" lay-submit lay-filter="login">
-                            <i class="layui-icon">&#xe650;</i> 登录
-                        </button>
 						</div>
 					</div>
 				</form>
 			</div>
-			<footer>
-				<p>品德网络 © </p>
-			</footer>
 		</div>
-		<canvas width="1903" height="380" style="position: absolute; top: 0px; left: 0px; z-index: -1;"></canvas>
+		<footer>
+			<div class="license">Copyright 2017 启迪（海安）软件科技园 系统管理  HA license</div>
+		</footer>
 		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
-		<script type="text/javascript" src="../../resource/morality/js/canvas-particle.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../../resource/layui-admin/js/jquery.mkinfinite.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				var config = {
-					vx: 4,
-					vy:  4,
-					height: 2,
-					width: 2,
-					count: 100,
-					color: "121, 162, 185",
-					stroke: "100,200,180",
-					dist: 6000,
-					e_dist: 20000,
-					max_conn: 10
-				}
-				CanvasParticle(config);
-			
 				if($.cookie("online")=="true"){
 					$("#val1").val($.cookie("username")); 
 					$("#val2").val($.cookie("password")); 
@@ -73,8 +57,18 @@
 				}else{
 					$("input[name='rememberMe']").attr("checked", false);
 				}
+				$('body').mkinfinite({
+					maxZoom:       1.4,
+					animationTime: 9000,
+					imagesRatio:   (960 / 720),
+					isFixedBG:     true,
+					zoomIn:        true,
+					imagesList:    new Array(
+						'/resource/layui-admin/images/seekr.jpg'
+					)
+				});
 			});
-		
+			
 			layui.use(['layer','form'], function(){
 				var form = layui.form();
 				var layer = layui.layer;

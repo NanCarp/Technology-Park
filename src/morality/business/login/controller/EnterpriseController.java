@@ -15,6 +15,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import morality.business.login.service.DataDictionaryService;
 import morality.business.login.service.EnterpriseService;
+import morality.business.login.service.ParkManageService;
 import morality.util.interceptor.ManageInterceptor;
 
 /**
@@ -27,6 +28,10 @@ public class EnterpriseController extends Controller {
 
 	/******************************* 入驻企业管理 *******************************/
 	// 入驻企业列表
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void in_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -50,7 +55,7 @@ public class EnterpriseController extends Controller {
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
+		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename").trim();
 
 		Page<Record> page = EnterpriseService.getEnterpriseInListByPage(pageno, pagesize, enterprisename);
 
@@ -64,6 +69,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void getEnterpriseIn() {
 		// 企业ID
 		Integer id = getParaToInt();
@@ -92,6 +101,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void saveEnterpriseIn() {
 
 		Record record = new Record();
@@ -121,6 +134,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void delEnterpriseIn() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_enterprise_in", id);
@@ -128,6 +145,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 企业离驻
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void enterpriseRetreat() {
 		Record record = new Record();
 		record.set("id", getParaToInt("id"));
@@ -135,14 +156,25 @@ public class EnterpriseController extends Controller {
 		record.set("is_retreat", true);
 		record.set("retreat_time", new Date());
 		record.set("modify_time", new Date());
-
 		boolean result = EnterpriseService.saveEnterprise(record);
-
+		
+		//企业离驻后，改变区域管理，区域状态为空，公司为空；
+		String company_name = ParkManageService.getEnterperiseById(getParaToInt("id")).getStr("enterprise_name");
+		boolean is_retreat = ParkManageService.getEnterperiseById(getParaToInt("id")).getBoolean("is_retreat");
+		if(is_retreat == true){
+			Record rec = Db.findFirst("select * from t_area where the_company = '"+company_name+"' ").set("status", false).set("the_company", null);
+			Db.update("t_area",rec);
+		}
+		
 		renderJson("result", result);
 	}
 
 	/******************************* 离驻企业管理 *******************************/
 	// 离驻企业列表
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void retreat_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -159,7 +191,7 @@ public class EnterpriseController extends Controller {
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		String start = getPara("start") == null ? "" : getPara("start");
 		String end = getPara("end") == null ? "" : getPara("end");
-		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
+		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename").trim();
 
 		Page<Record> page = EnterpriseService.getEnterpriseRetreatList(pageno, pagesize, enterprisename, start, end);
 
@@ -175,6 +207,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void getEnterpriseRetreat() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -186,6 +222,10 @@ public class EnterpriseController extends Controller {
 
 	/******************************* 企业经济情况管理 *******************************/
 	// 企业经济情况列表
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void economy_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -206,7 +246,7 @@ public class EnterpriseController extends Controller {
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
+		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename").trim();
 
 		Page<Record> page = EnterpriseService.getEconomyList(pageno, pagesize, enterprisename);
 
@@ -220,6 +260,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void getEconomy() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -234,6 +278,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void saveEconomy() {
 		// 通过ID查询企业，获得企业名称
 		Integer companyid = getParaToInt("enterpriseid");
@@ -245,10 +293,10 @@ public class EnterpriseController extends Controller {
 		record.set("company_id", getParaToInt("enterpriseid"));
 		record.set("company_name", companyname);
 		record.set("the_date", getPara("thedate"));
-		record.set("income", getParaToInt("income"));
-		record.set("net_profit", getParaToInt("netprofit"));
-		record.set("taxation", getParaToInt("taxation"));
-		record.set("investment", getParaToInt("investment"));
+		record.set("income", getPara("income"));
+		record.set("net_profit", getPara("netprofit"));
+		record.set("taxation", getPara("taxation"));
+		record.set("investment", getPara("investment"));
 		record.set("modify_time", new Date());
 
 		boolean result = EnterpriseService.saveEconomy(record);
@@ -257,6 +305,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void delEconomy() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_enterprise_economy", id);
@@ -265,6 +317,10 @@ public class EnterpriseController extends Controller {
 
 	/******************************* 企业从业人员管理 *******************************/
 	// 企业从业人员列表
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void practitioners_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -285,7 +341,7 @@ public class EnterpriseController extends Controller {
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
+		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename").trim();
 
 		Page<Record> page = EnterpriseService.getPractitionersList(pageno, pagesize, enterprisename);
 
@@ -299,6 +355,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void getPractitioner() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -313,6 +373,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void savePractitioner() {
 		// 通过ID查询企业，获得企业名称
 		Integer companyid = getParaToInt("enterpriseid");
@@ -340,6 +404,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void delPractitioner() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_practitioners", id);
@@ -348,6 +416,10 @@ public class EnterpriseController extends Controller {
 
 	/******************************* 企业知识产权管理 *******************************/
 	// 企业知识产权列表
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void property_right_list() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -368,7 +440,7 @@ public class EnterpriseController extends Controller {
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
-		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename");
+		String enterprisename = getPara("enterprisename") == null ? "" : getPara("enterprisename").trim();
 
 		Page<Record> page = EnterpriseService.getPropertyRightList(pageno, pagesize, enterprisename);
 
@@ -382,6 +454,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 获得单条记录
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void getPropertyRight() {
 		Integer id = getParaToInt();
 		if (null != id) {
@@ -396,6 +472,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 保存数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void savePropertyRight() {
 		// 通过ID查询企业，获得企业名称
 		Integer companyid = getParaToInt("enterpriseid");
@@ -420,6 +500,10 @@ public class EnterpriseController extends Controller {
 	}
 
 	// 删除数据
+	/**
+	 * @author liyu
+	 * @date 2017/03/23 
+	 */
 	public void delPropertyRight() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_property_right", id);

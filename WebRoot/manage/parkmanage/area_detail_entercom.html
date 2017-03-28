@@ -23,9 +23,12 @@
 					<label class="layui-form-label">入驻单位：</label>
 					<div class="layui-input-block">
 						<select name="company_name" id="v4" lay-verify="company">
-					    	<option value="0" selected>--选择单位--</option>
+					    	<option value="选择单位" selected>--选择单位--</option>
 							<#list list as prise>
+							<#if prise.is_retreat == false>
 							<option value="${prise.enterprise_name}">${prise.enterprise_name}</option>
+							<#else>
+							</#if>
 							</#list>
 						</select>
 					</div>
@@ -46,14 +49,7 @@
 			layui.use(['form'], function() {
 				var form = layui.form(),
 				layer = layui.layer;
-			
-				form.verify({
-					company:function(value){
-					    if(value==0){
-						      return '请选择单位';
-						}
-					}
-				});     
+    
 				//监听提交
 				var lock = true;
 				form.on('submit(save)', function(data) {

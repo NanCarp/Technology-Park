@@ -1,12 +1,12 @@
 .beg-login-bg {
-	background: url(../Images/login-bg-1.jpg) no-repeat center center fixed;
-	background-color: #0461b9;
+	background: url(../images/seekr.jpg) no-repeat center center fixed;
 }
-
 .beg-login-box {
-	width: 450px;
-	height: 330px;
-	margin: 10% auto;
+	position: fixed;
+	width: 400px;
+	height: 300px;
+	right: 18%;
+	top: 25%;
 	background-color: rgba(255, 255, 255, 0.407843);
 	border-radius: 10px;
 	color: aliceblue;
@@ -26,7 +26,7 @@
 
 .beg-login-box .beg-login-main {
 	height: 185px;
-	padding: 30px 90px 0;
+	padding: 48px 62px 0;
 }
 
 .beg-login-main .layui-form-item {
@@ -68,6 +68,7 @@
 
 .beg-login-remember {
 	line-height: 38px;
+	text-align: center;
 }
 
 .beg-login-remember .layui-form-switch {
@@ -89,4 +90,26 @@
 	position: absolute;
 	left: 115px;
 	height: 38px;
+}
+.license{
+	display: block;
+	font-size: 14px;
+	color: white;
+	position: fixed;
+	bottom: 1%;
+	left: 50%;
+	margin-left: -195px;
+	white-space: nowrap;
+	overflow: hidden;	
+}
+.qd_top{
+	display: block;
+	position: fixed;
+	font-size: 44px;
+	color: white;
+	letter-spacing: 4px;
+	top: 14%;
+	right: 15%;
+	white-space: nowrap;
+	overflow: hidden;
 }

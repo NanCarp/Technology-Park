@@ -14,14 +14,23 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import morality.business.login.service.FileManageService;
+import morality.business.login.service.ParkManageService;
 import morality.util.interceptor.ManageInterceptor;
 
+	/**
+	 * @author xuhui
+	 * @data 2017/03/23
+	 * @desc 文件管理
+	 *
+	 */
 @Before(ManageInterceptor.class)
 public class FileManageController extends Controller {
 
 
 	/*********************** 文件传阅管理 ************************/
-	// 文件传阅管理
+	/**
+	 * @desc 文件传阅管理
+	 */
 	public void filelist() {
 		Record admin = getSessionAttr("admin");
 		Integer rid = admin.getInt("role_id");
@@ -47,8 +56,10 @@ public class FileManageController extends Controller {
 		setAttr("wjcylist", page.getList());
 		render("fileread.html");
 	}
-
-	// 添加以及修改文件传阅管理
+	
+	/**
+	 * @desc 添加以及修改文件传阅管理
+	 */
 	public void getFileRead() {
 		Integer id = getParaToInt();
 		Record record = Db.findById("t_file", id);
@@ -61,19 +72,25 @@ public class FileManageController extends Controller {
 		render("fileread_detail.html");
 	}
 
-	// 获得园区主任
+	/**
+	 * @desc 获得园区主任
+	 */
 	public void getParkhead() {
 		renderJson(FileManageService.getParkheadInfo());
 	}
 
-	// 删除文件
+	/**
+	 * @desc 删除文件
+	 */
 	public void delFile() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_file", id);
 		renderJson(result);
 	}
 
-	// 上传文件
+	/**
+	 * @desc 上传文件
+	 */
 	public void uploadfile() {
 		UploadFile uf = getFile("file1");
 		String fname = uf.getOriginalFileName();
@@ -84,7 +101,9 @@ public class FileManageController extends Controller {
 		renderJson(responseMap);
 	}
 
-	// 保存文件
+	/**
+	 * @desc 保存文件
+	 */
 	public void saveFile() {
 		boolean result = false;
 		Integer id = getParaToInt("id");
@@ -106,7 +125,10 @@ public class FileManageController extends Controller {
 		renderJson(result);
 	}
 
-	// 下载文件
+	/**
+	 * @throws IOException
+	 * @desc 下载文件
+	 */
 	public void downloadFile() throws IOException {
 		Integer id = getParaToInt();
 		FileManageService.downloadFile(getResponse(), id);
@@ -114,7 +136,9 @@ public class FileManageController extends Controller {
 	}
 
 	/*********************** 项目申报管理 ************************/
-	// 项目申报管理
+	/**
+	 * @desc 项目申报管理
+	 */
 	public void projectDeclar() {
 		// 验证权限
 		Record admin = getSessionAttr("admin");
@@ -142,7 +166,9 @@ public class FileManageController extends Controller {
 		render("projectdeclar.html");
 	}
 
-	// 添加项目申报管理
+	/**
+	 * @desc 添加项目申报管理
+	 */
 	public void getProject() {
 		Integer id = getParaToInt();
 		Record record = Db.findById("t_project", id);
@@ -155,14 +181,18 @@ public class FileManageController extends Controller {
 		render("projectdeclar_detail.html");
 	}
 
-	// 删除项目
+	/**
+	 * @desc 删除项目
+	 */
 	public void delProject() {
 		Integer id = getParaToInt();
 		boolean result = Db.deleteById("t_project", id);
 		renderJson(result);
 	}
 
-	// 保存项目
+	/**
+	 * @desc 保存项目
+	 */
 	public void saveProject() {
 		boolean result = false;
 		Integer id = getParaToInt("id");
@@ -184,7 +214,10 @@ public class FileManageController extends Controller {
 		renderJson(result);
 	}
 
-	// 下载项目
+	/**
+	 * @throws IOException
+	 * @desc 下载项目
+	 */
 	public void downloadProject() throws IOException {
 		Integer id = getParaToInt();
 		FileManageService.downloadProject(getResponse(), id);

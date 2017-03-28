@@ -37,25 +37,25 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业总收入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="income" id="v3"  lay-verify="required|number" value="${economy.income}" autocomplete="off" class="layui-input">
+						<input type="text" name="income" id="v3"  lay-verify="required|money" value="${economy.income}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业净利润：</label>
 					<div class="layui-input-block">
-						<input type="text" name="netprofit" id="v4" lay-verify="required|number" value="${economy.net_profit}" autocomplete="off" class="layui-input">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|money" value="${economy.net_profit}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业上缴税费：</label>
 					<div class="layui-input-block">
-						<input type="text" name="taxation" id="v5"  lay-verify="required|number" value="${economy.taxation}" autocomplete="off" class="layui-input">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|money" value="${economy.taxation}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业R&D投入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="investment" id="v6" lay-verify="required|number" value="${economy.investment}" autocomplete="off" class="layui-input">
+						<input type="text" name="investment" id="v6" lay-verify="required|money" value="${economy.investment}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
@@ -79,25 +79,25 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业总收入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="income" id="v3"  lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="income" id="v3"  lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业净利润：</label>
 					<div class="layui-input-block">
-						<input type="text" name="netprofit" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业上缴税费：</label>
 					<div class="layui-input-block">
-						<input type="text" name="taxation" id="v5"  lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">企业R&D投入：</label>
 					<div class="layui-input-block">
-						<input type="text" name="investment" id="v6" lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="investment" id="v6" lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
@@ -130,7 +130,14 @@
 						  if(value==0){
 							  return '请选择企业';
 						  }
-					  }
+					  },
+					  money: function(value){
+							if($.trim(value)!=""){
+								if(!new RegExp("^[0-9]+(.[0-9]{1,4})?$").test(value)){
+								      return '请输入正确的金额';
+								}
+							}
+						},
 				});     
 				
 				//监听提交

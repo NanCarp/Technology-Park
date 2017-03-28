@@ -23,6 +23,12 @@ public class DocUtil {
     public static final String PREVIEW_DOC = "/resource/morality/module/model.docx";
     public static final String SAFE_DOC ="/resource/morality/module/saferecord.docx";
     
+    /**
+     * @param request
+     * @param temp
+     * @return
+     * @throws IOException Template 
+     */
     public static Template configTemplate(HttpServletRequest request, String temp) throws IOException {
 	    Configuration config = new Configuration();
 	    ServletContext sc = request.getSession().getServletContext();
@@ -32,6 +38,11 @@ public class DocUtil {
         return template;
     }   
 
+    /**
+     * @param request
+     * @param temp
+     * @param root 
+     */
     public static void toPreview(HttpServletRequest request, String temp, Map<?, ?> root){
         try {
 	        String previewPath = request.getSession().getServletContext().getRealPath("")+PREVIEW_DOC;
@@ -45,6 +56,11 @@ public class DocUtil {
 	    	e.printStackTrace();
 	    }   
     } 
+    /**
+     * @param request
+     * @param temp
+     * @param root  
+     */
     public static void toSafe(HttpServletRequest request, String temp, Map<?, ?> root){
         try {
 	        String safePath = request.getSession().getServletContext().getRealPath("")+SAFE_DOC;

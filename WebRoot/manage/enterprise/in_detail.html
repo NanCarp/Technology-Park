@@ -10,8 +10,6 @@
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-		<link rel="stylesheet" type="text/css" href="/resource/zTree/css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="/resource/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<title>企业入驻详情</title>
 	</head>
 	<body>
@@ -92,7 +90,7 @@
 							<option value="100" <#if enterprisein.registration_type=100 >selected</#if>>100内资企业</option>
 							<option value="110" <#if enterprisein.registration_type=110 >selected</#if>>110国有企业</option>
 							<option value="120" <#if enterprisein.registration_type=120 >selected</#if>>120集体企业</option>
-							<option value="130" <#if enterprisein.registration_type=130 >selected</#if>>130集体企业</option>
+							<option value="130" <#if enterprisein.registration_type=130 >selected</#if>>130股份合作企业</option>
 							<option value="140" <#if enterprisein.registration_type=140 >selected</#if>>140联营企业</option>
 							<option value="141" <#if enterprisein.registration_type=141 >selected</#if>>141国有联营企业</option>
 							<option value="142" <#if enterprisein.registration_type=142 >selected</#if>>142集体联营企业</option>
@@ -130,7 +128,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册资本(万元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="registeredcapital" id="v10" lay-verify="required|number" value="${enterprisein.registered_capital}" autocomplete="off" class="layui-input">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|money" value="${enterprisein.registered_capital}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -161,7 +159,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租单价：</label>
 					<div class="layui-input-block">
-						<input type="text" name="unitprice" id="v15"  lay-verify="required|number" value="${enterprisein.unit_price}" autocomplete="off" class="layui-input">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|money" value="${enterprisein.unit_price}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -245,7 +243,7 @@
 							<option value="100">100内资企业</option>
 							<option value="110">110国有企业</option>
 							<option value="120">120集体企业</option>
-							<option value="130">130集体企业</option>
+							<option value="130">130股份合作企业</option>
 							<option value="140">140联营企业</option>
 							<option value="141">141国有联营企业</option>
 							<option value="142">142集体联营企业</option>
@@ -283,7 +281,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">注册资本(万元)：</label>
 					<div class="layui-input-block">
-						<input type="text" name="registeredcapital" id="v10" lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -314,7 +312,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">房租单价：</label>
 					<div class="layui-input-block">
-						<input type="text" name="unitprice" id="v15"  lay-verify="required|number" autocomplete="off" class="layui-input">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -341,8 +339,6 @@
 		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
-		<script type="text/javascript" src="/resource/zTree/js/jquery.ztree.core-3.5.js"></script>
-		<script type="text/javascript" src="/resource/zTree/js/jquery.ztree.excheck-3.5.js"></script>
 		<script>
 			layui.use(['laydate','form','jquery'], function() {
 				var $ = layui.jquery;
@@ -386,7 +382,14 @@
 							      return '请输入正确的组织机构代码';
 							}
 						}
-					}, 
+					},
+					money: function(value){
+						if($.trim(value)!=""){
+							if(!new RegExp("^[0-9]+(\.[0-9]{1,4})?$").test(value)){
+							      return '请输入正确的金额';
+							}
+						}
+					},
 				});     
 				
 				//监听提交

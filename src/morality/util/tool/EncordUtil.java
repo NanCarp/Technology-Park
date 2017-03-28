@@ -5,6 +5,10 @@ package morality.util.tool;
 */
 public class EncordUtil {
 	
+	/**
+	 * @param s
+	 * @return String 
+	 */
 	public static String toUtf8String(String s){ 
 	     StringBuffer sb = new StringBuffer(); 
 	       for (int i=0;i<s.length();i++){ 

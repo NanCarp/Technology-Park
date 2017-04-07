@@ -13,14 +13,18 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
-
-	<body>
+	<style>
+	.form-label{
+	float:left;display:block;padding:9px 0px;width:100px;font-weight:400;text-align:right
+	}
+	</style>
+	<body style="min-width: 400px;">
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if saferecord??>
 				<input id="id" name="id" type="hidden" value="${saferecord.id}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">被检查单位：</label>
+					<label class="form-label">被检查单位：</label>
 					<div class="layui-input-block">
 						<select name="company_id" id="v4" lay-verify="company">
 					    	<option value="0" selected>--选择单位--</option>
@@ -31,7 +35,7 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">安全工作生产检查：</label>
+					<label class="layui-form-label">安全工作　生产检查：</label>
 					<div class="layui-input-block">
      					<input type="radio" name="is_rectification" value="1" title="已检查"<#if saferecord.is_rectification==true>checked</#if>>
       					<input type="radio" name="is_rectification" value="0" title="未检查"<#if saferecord.is_rectification==false>checked</#if>>
@@ -56,13 +60,13 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">整改责任人：</label>
+					<label class="form-label">整改责任人：</label>
 					<div class="layui-input-block">
 						<input type="text" name="rectification_man" id="v1"  lay-verify="required|rectification_man" value="${saferecord.rectification_man}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">督查责任人：</label>
+					<label class="form-label">督查责任人：</label>
 					<div class="layui-input-block">
 						<input type="text" name="supervision_personnel" id="v1"  lay-verify="required|supervision_personnel" value="${saferecord.supervision_personnel}" autocomplete="off" class="layui-input">
 					</div>
@@ -74,7 +78,7 @@
     				</div>
   				</div>
   				<div class="layui-form-item layui-form-text">
-    				<label class="layui-form-label">整改落实情况:</label>
+    				<label class="form-label">整改落实情况:</label>
     				<div class="layui-input-block">
      				 	<textarea placeholder="请输入内容" name="performance" class="layui-textarea">${saferecord.performance}</textarea>
     				</div>
@@ -87,7 +91,7 @@
   				</div>
   				<#else>
   				<div class="layui-form-item">
-  					<label class="layui-form-label">被检查单位：</label>
+  					<label class="form-label">被检查单位：</label>
 					<div class="layui-input-block">
 						<select name="company_id" id="v4" lay-verify="company">
 					   	 	<option value="0" selected>--选择单位--</option>
@@ -98,7 +102,7 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">安全工作生产检查：</label>
+					<label class="layui-form-label">安全工作　生产检查：</label>
 					<div class="layui-input-block">
      					<input type="radio" name="is_rectification" value="1" title="已检查">
       					<input type="radio" name="is_rectification" value="0" title="未检查" checked="checked">
@@ -123,13 +127,13 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">整改责任人：</label>
+					<label class="form-label">整改责任人：</label>
 					<div class="layui-input-block">
 						<input type="text" name="rectification_man" id="v1"  lay-verify="required|rectification_man" value="" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">督查责任人：</label>
+					<label class="form-label">　督查责任人：</label>
 					<div class="layui-input-block">
 						<input type="text" name="supervision_personnel" id="v1"  lay-verify="required|supervision_personnel" value="" autocomplete="off" class="layui-input">
 					</div>
@@ -141,7 +145,7 @@
     				</div>
   				</div>
   				<div class="layui-form-item layui-form-text">
-    				<label class="layui-form-label">整改落实情况:</label>
+    				<label class="form-label">整改落实情况:</label>
     				<div class="layui-input-block">
      				 	<textarea placeholder="请输入内容" name="performance" class="layui-textarea"></textarea>
     				</div>

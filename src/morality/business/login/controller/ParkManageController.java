@@ -28,9 +28,10 @@ import morality.util.interceptor.ManageInterceptor;
 import morality.util.tool.MD5Util;
 
 	/**
-	 * @author mxuhui
-	 * @desc 园区管理
-	 * @date 2017/03/23
+	 * @ClassName:ParkManageController 
+	 * @Description:园区管理
+	 * @author:xuhui
+	 * @date:2017年03月23日
 	 */
 
 @Before(ManageInterceptor.class)

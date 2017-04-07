@@ -12,13 +12,18 @@
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 		<title>企业从业人员情况</title>
 	</head>
+	<style>
+		.form-label{
+			float:left;display:block;padding:9px 0px;width:100px;font-weight:400;text-align:right
+		}
+	</style>
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if practitioner??>
 				<input type="hidden" id="v0" name="id" value="${practitioner.id}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
 					    	<option value="0">--选择企业--</option>
@@ -29,62 +34,62 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" value="${practitioner.the_date}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业从业人员：</label>
+					<label class="form-label" >企业从业人员：</label>
 					<div class="layui-input-block">
 						<input type="text" name="quantity" id="v3"  lay-verify="required|number" value="${practitioner.quantity}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">博士：</label>
+					<label class="form-label" >博士：</label>
 					<div class="layui-input-block">
 						<input type="text" name="doctor" id="v4" lay-verify="required|number" value="${practitioner.doctor}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">大专以上：</label>
+					<label class="form-label" >大专以上：</label>
 					<div class="layui-input-block">
 						<input type="text" name="juniorcollege" id="v5"  lay-verify="required|number" value="${practitioner.junior_college}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">留学人员：</label>
+					<label class="form-label" >留学人员：</label>
 					<div class="layui-input-block">
 						<input type="text" name="returnees" id="v6" lay-verify="required|number" value="${practitioner.junior_college}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">千人计划人数：</label>
+					<label class="form-label" >千人计划人数：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thousand" id="v7" lay-verify="required|number" value="${practitioner.thousand_talents_program}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">吸纳应届大学毕业生：</label>
+					<label class="form-label" >吸纳应届大学：毕业生　　&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="freshgraduates" id="v8" lay-verify="required|number" value="${practitioner.fresh_graduates}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">缴纳保险情况：</label>
+					<label class="form-label" >缴纳保险情况：</label>
 					<div class="layui-input-block">
 						<input type="text" name="insurance" id="v9" lay-verify="required|number" value="${practitioner.insurance}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">当年新增保险：</label>
+					<label class="form-label" >当年新增保险：</label>
 					<div class="layui-input-block">
 						<input type="text" name="addinsurance" id="v10" lay-verify="required|number" value="${practitioner.add_insurance}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
 					    	<option value="0">--选择企业--</option>
@@ -95,62 +100,62 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业从业人员：</label>
+					<label class="form-label" >企业从业人员：</label>
 					<div class="layui-input-block">
 						<input type="text" name="quantity" id="v3" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">博士：</label>
+					<label class="form-label" >博士：</label>
 					<div class="layui-input-block">
 						<input type="text" name="doctor" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">大专以上：</label>
+					<label class="form-label" >大专以上：</label>
 					<div class="layui-input-block">
 						<input type="text" name="juniorcollege" id="v5" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">留学人员：</label>
+					<label class="form-label" >留学人员：</label>
 					<div class="layui-input-block">
 						<input type="text" name="returnees" id="v6" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">千人计划人数：</label>
+					<label class="form-label" >千人计划人数：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thousand" id="v7" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">吸纳应届大学毕业生：</label>
+					<label class="form-label" >吸纳应届大学：毕业生　　&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="freshgraduates" id="v8" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">缴纳保险情况：</label>
+					<label class="form-label" >缴纳保险情况：</label>
 					<div class="layui-input-block">
 						<input type="text" name="insurance" id="v9" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">当年新增保险：</label>
+					<label class="form-label" >当年新增保险：</label>
 					<div class="layui-input-block">
 						<input type="text" name="addinsurance" id="v10" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				</#if>
 				<div class="layui-form-item">
-					<div class="layui-input-block">
+					<div class="layui-input-inline">
 						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
 					</div>
 				</div>

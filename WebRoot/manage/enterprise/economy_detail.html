@@ -12,13 +12,18 @@
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 		<title>企业经济情况</title>
 	</head>
+	<style>
+		.form-label{
+			float:left;display:block;padding:9px 0px;width:100px;font-weight:400;text-align:right
+		}
+	</style>
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if economy??>
 				<input type="hidden" id="v0" name="id" value="${economy.id}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
 					    	<option value="0">--选择企业--</option>
@@ -29,38 +34,38 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" value="${economy.the_date}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业总收入：</label>
+					<label class="form-label" >企业总收入：</label>
 					<div class="layui-input-block">
 						<input type="text" name="income" id="v3"  lay-verify="required|money" value="${economy.income}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业净利润：</label>
+					<label class="form-label" >企业净利润：</label>
 					<div class="layui-input-block">
 						<input type="text" name="netprofit" id="v4" lay-verify="required|money" value="${economy.net_profit}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业上缴税费：</label>
+					<label class="form-label" >企业上缴税费：</label>
 					<div class="layui-input-block">
 						<input type="text" name="taxation" id="v5"  lay-verify="required|money" value="${economy.taxation}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业R&D投入：</label>
+					<label class="form-label" >企业R&D投入：</label>
 					<div class="layui-input-block">
 						<input type="text" name="investment" id="v6" lay-verify="required|money" value="${economy.investment}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
 					    	<option value="0">--选择企业--</option>
@@ -71,31 +76,31 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业总收入：</label>
+					<label class="form-label" >企业总收入：</label>
 					<div class="layui-input-block">
 						<input type="text" name="income" id="v3"  lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业净利润：</label>
+					<label class="form-label" >企业净利润：</label>
 					<div class="layui-input-block">
 						<input type="text" name="netprofit" id="v4" lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业上缴税费：</label>
+					<label class="form-label" >企业上缴税费：</label>
 					<div class="layui-input-block">
 						<input type="text" name="taxation" id="v5"  lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业R&D投入：</label>
+					<label class="form-label" >企业R&D投入：</label>
 					<div class="layui-input-block">
 						<input type="text" name="investment" id="v6" lay-verify="required|money" autocomplete="off" class="layui-input">
 					</div>

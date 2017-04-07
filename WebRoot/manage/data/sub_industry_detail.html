@@ -18,13 +18,13 @@
 				<#if subindustry??>
 				<input type="hidden" id="v0" name="id" value="${subindustry.id}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">子级行业代码：</label>
+					<label class="layui-form-label">行业代码：</label>
 					<div class="layui-input-block">
 						<input type="text" name="industrycode" id="v1"  lay-verify="required|number" value="${subindustry.sub_industry_code}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">子级行业名称：</label>
+					<label class="layui-form-label">行业名称：</label>
 					<div class="layui-input-block">
 						<input type="text" name="industryname" id="v2" lay-verify="required|industryname" value="${subindustry.sub_industry_name}" autocomplete="off" class="layui-input">
 					</div>
@@ -42,13 +42,13 @@
 				</div>
 				<#else>
 				<div class="layui-form-item">
-					<label class="layui-form-label">子级行业代码：</label>
+					<label class="layui-form-label">行业代码：</label>
 					<div class="layui-input-block">
 						<input type="text" id="v1"  name="industrycode" lay-verify="required|number" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">子级行业名称：</label>
+					<label class="layui-form-label">行业名称：</label>
 					<div class="layui-input-block">
 						<input type="text" id="v2" name="industryname" lay-verify="required|name" autocomplete="off" class="layui-input">
 					</div>

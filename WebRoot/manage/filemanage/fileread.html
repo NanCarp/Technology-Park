@@ -11,7 +11,7 @@
 	<style type="text/css">
 		.forpage{text-align: right;margin-top: 10px;}
 	</style>
-<body>
+<body style="min-width: 800px;">
 	<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 				<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" id="add" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加文件</a>
@@ -77,11 +77,11 @@
 	});
 	
 	function _add(){
-		parent.open_window('添加文件','/filemanage/getFileRead',540, 540);
+		parent.open_window('添加文件','/filemanage/getFileRead',540, 370);
 	}
 	
 	function _edit(id){
-		parent.open_window('编辑文件','/filemanage/getFileRead/' + id,540, 540);
+		parent.open_window('编辑文件','/filemanage/getFileRead/' + id,540, 370);
 	}
 	
 	function _download(id){

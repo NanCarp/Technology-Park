@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 
-	<body>
+	<body style="min-width: 400px;">
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if Area??>
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">面积/平方米：</label>
+					<label class="layui-form-label">&nbsp&nbsp&nbsp总面积：(平方米) &nbsp&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="${Area.area}" autocomplete="off" class="layui-input">
 					</div>
@@ -117,7 +117,7 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">面积/平方米：</label>
+					<label class="layui-form-label">&nbsp&nbsp&nbsp总面积：(平方米) &nbsp&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="" autocomplete="off" class="layui-input">
 					</div>

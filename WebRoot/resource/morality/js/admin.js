@@ -18,7 +18,8 @@ function layer_show(title,url,w,h){
 		maxmin: true,
 		shade:0.4,
 		title: title,
-		content: url
+		content: url,
+		resize: false,
 	});
 }
 function layer_show_noshadow(title,url,w,h){

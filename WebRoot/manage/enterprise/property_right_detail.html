@@ -12,13 +12,18 @@
 		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 		<title>企业知识产权情况</title>
 	</head>
+	<style>
+		.form-label{
+			float:left;display:block;padding:9px 0px;width:100px;font-weight:400;text-align:right
+		}
+	</style>
 	<body>
 		<div style="margin: 15px;">
 			<form class="layui-form">
 				<#if propertyright??>
 				<input type="hidden" id="v0" name="id" value="${propertyright.id}">
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
 					    	<option value="0">--选择企业--</option>
@@ -29,44 +34,44 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" value="${propertyright.the_date}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">申请知识产权(个)：</label>
+					<label class="form-label" >申请知识产权：(个)　　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="apply" id="v3"  lay-verify="required|number" value="${propertyright.apply}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">批准知识产权(个)：</label>
+					<label class="form-label" >批准知识产权：(个)　　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="approval" id="v4" lay-verify="required|number" value="${propertyright.approval}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">发明专利(个)：</label>
+					<label class="form-label" >发明专利：(个)　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="patent" id="v5"  lay-verify="required|number" value="${propertyright.patent}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">发明著作权(个)：</label>
+					<label class="form-label" >发明著作权：(个)　　&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="copyright" id="v6" lay-verify="required|number" value="${propertyright.copyright}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">软件产品(个)：</label>
+					<label class="form-label" >软件产品：(个)　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="software" id="v7" lay-verify="required|number" value="${propertyright.software_product}" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<#else>
 				<div class="layui-form-item">
-					<label class="layui-form-label">企业名称：</label>
+					<label class="form-label" >企业名称：</label>
 					<div class="layui-input-block">
 						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
 					    	<option value="0">--选择企业--</option>
@@ -77,37 +82,37 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">时间：</label>
+					<label class="form-label" >时间：</label>
 					<div class="layui-input-block">
 						<input type="text" name="thedate" id="v2" lay-verify="required|thedate"  autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">申请知识产权(个)：</label>
+					<label class="form-label" >申请知识产权：(个)　　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="apply" id="v3"  lay-verify="required|number"  autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">批准知识产权(个)：</label>
+					<label class="form-label" >批准知识产权：(个)　　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="approval" id="v4" lay-verify="required|number"  autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">发明专利(个)：</label>
+					<label class="form-label" >发明专利：(个)　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="patent" id="v5"  lay-verify="required|number"  autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">发明著作权(个)：</label>
+					<label class="form-label" >发明著作权：(个)　　&nbsp</label>
 					<div class="layui-input-block">
 						<input type="text" name="copyright" id="v6" lay-verify="required|number"  autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">软件产品(个)：</label>
+					<label class="form-label" >软件产品：(个)　　</label>
 					<div class="layui-input-block">
 						<input type="text" name="software" id="v7" lay-verify="required|number"  autocomplete="off" class="layui-input">
 					</div>

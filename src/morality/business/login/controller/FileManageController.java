@@ -18,9 +18,10 @@ import morality.business.login.service.ParkManageService;
 import morality.util.interceptor.ManageInterceptor;
 
 	/**
+	 * @ClassName:FileManageController
+	 * @Description:文件管理模块
 	 * @author xuhui
-	 * @data 2017/03/23
-	 * @desc 文件管理
+	 * @data 2017年03月23日
 	 *
 	 */
 @Before(ManageInterceptor.class)

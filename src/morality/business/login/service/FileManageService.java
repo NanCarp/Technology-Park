@@ -15,8 +15,10 @@ import com.jfinal.plugin.activerecord.Record;
 import morality.util.tool.EncordUtil;
 
 /**
- * @desc 文件传输
- * @author yangbo
+ * @ClassName:FileManageService
+ * @Description:文件传输
+ * @author:yangbo
+ * @date:2017年3月24日
  */
 public class FileManageService {
 

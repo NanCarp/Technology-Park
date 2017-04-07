@@ -33,9 +33,10 @@ import morality.util.tool.DocUtil;
 import morality.util.tool.EncordUtil;
 
 	/**
-	 * @author xuhui
-	 * @date 2017/03/23
-	 * @desc 园区管理
+	 * @ClassName:ParkManageService
+	 * @Description:园区管理
+	 * @author:xuhui
+	 * @date 2017年03月23日
 	 */
 
 public class ParkManageService {
@@ -161,6 +162,7 @@ public class ParkManageService {
 				+ "from t_building b LEFT JOIN t_building_nature n ON n.id = b.nature LEFT JOIN t_building_number u "
 				+ "on b.building_no = u.id where b.id = ?",id);
 	}
+	
 	/**
 	 * @param id
 	 * @param name
@@ -173,6 +175,7 @@ public class ParkManageService {
 	 * @return boolean result
 	 * @desc 修改以及添加楼宇信息
 	 */
+	
 	public static boolean saveBuild(Integer id,String name,int nature,int floor_no
 						,int building_no,int total_area,int usable_area,int status){
 		Record record = new Record();
